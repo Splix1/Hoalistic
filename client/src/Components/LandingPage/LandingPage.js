@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './LandingPage.css';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -13,6 +13,9 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { NavLink } from 'react-router-dom';
+import supabase from '../../client';
+import { Context } from '../ContextProvider';
 
 const theme = createTheme();
 
@@ -20,14 +23,23 @@ function LandingPage() {
   let [firstName, setFirstName] = useState('');
   let [lastName, setLastName] = useState('');
   let [email, setEmail] = useState('');
+  const { setUser } = useContext(Context);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    const email = data.get('email');
+    const password = data.get('password');
+
+    const { user, error } = await supabase.auth.signIn({
+      email: email,
+      password: password,
     });
+    if (error) {
+      alert('There was a problem signing in.');
+    } else {
+      setUser(user);
+    }
   };
 
   return (
@@ -99,14 +111,16 @@ function LandingPage() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
+                  <NavLink to="#">
+                    <Link variant="body2">Forgot password?</Link>
+                  </NavLink>
                 </Grid>
                 <Grid item>
-                  <Link href="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
+                  <NavLink to="/signup">
+                    <Link variant="body2">
+                      {"Don't have an account? Sign Up"}
+                    </Link>
+                  </NavLink>
                 </Grid>
               </Grid>
             </Box>
