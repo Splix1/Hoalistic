@@ -13,6 +13,7 @@ function Routes() {
         <Switch></Switch>
       ) : (
         <Switch>
+          <Route path="login" component={LandingPage} />
           <Route path="*" component={LandingPage} />
         </Switch>
       )}
