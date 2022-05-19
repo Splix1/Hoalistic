@@ -20,6 +20,7 @@ export default function NavBar() {
             sx={{ mr: 2 }}
           >
             <MenuIcon />
+            Hoalistic
           </IconButton>
           <Typography
             variant="h6"

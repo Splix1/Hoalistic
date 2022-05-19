@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import supabase from './client';
 import LandingPage from './Components/LandingPage/LandingPage';
+import SignUp from './Components/SignUp/SignUp';
 
 function Routes() {
   //   const isLoggedIn = supabase.auth.user();
@@ -13,7 +14,7 @@ function Routes() {
         <Switch></Switch>
       ) : (
         <Switch>
-          <Route path="login" component={LandingPage} />
+          <Route path="/signup" component={SignUp} />
           <Route path="*" component={LandingPage} />
         </Switch>
       )}
