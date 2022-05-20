@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useContext } from 'react';
 import './App.css';
 import Routes from './Routes';
 import NavBar from './Components/NavBar/NavBar';
@@ -8,7 +7,7 @@ import { setUser } from './Store/User';
 import { Context } from './Components/ContextProvider';
 
 function App() {
-  const { state, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
 
   useEffect(() => {
     let user = supabase.auth.user();
