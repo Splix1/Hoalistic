@@ -13,7 +13,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
 import { setUser } from '../../Store/User';
@@ -22,6 +22,7 @@ const theme = createTheme();
 
 function LandingPage() {
   const { state, dispatch } = useContext(Context);
+  const history = useHistory();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -37,6 +38,7 @@ function LandingPage() {
       alert('There was a problem signing in.');
     } else {
       dispatch(setUser(user));
+      history.push('/dashboard');
     }
   };
 

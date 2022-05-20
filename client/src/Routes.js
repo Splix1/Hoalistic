@@ -5,6 +5,8 @@ import LandingPage from './Components/LandingPage/LandingPage';
 import SignUp from './Components/SignUp/SignUp';
 import Dashboard from './Components/Dashboard/Dashboard';
 import { Context } from './Components/ContextProvider';
+import CreateUnits from './Components/Units/CreateUnit';
+import Units from './Components/Units/Units';
 
 function Routes() {
   const { state, dispatch } = useContext(Context);
@@ -14,6 +16,7 @@ function Routes() {
       {state?.id ? (
         <Switch>
           <Route path="/dashboard" component={Dashboard} />
+          <Route path="/units" component={Units} />
         </Switch>
       ) : (
         <Switch>
