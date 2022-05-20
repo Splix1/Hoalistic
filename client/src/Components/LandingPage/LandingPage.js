@@ -16,14 +16,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
+import { setUser } from '../../Store/User';
 
 const theme = createTheme();
 
 function LandingPage() {
-  let [firstName, setFirstName] = useState('');
-  let [lastName, setLastName] = useState('');
-  let [email, setEmail] = useState('');
-  const { setUser } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -38,7 +36,7 @@ function LandingPage() {
     if (error) {
       alert('There was a problem signing in.');
     } else {
-      setUser(user);
+      dispatch(setUser(user));
     }
   };
 

@@ -1,13 +1,16 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useReducer } from 'react';
+import user from '../Store/User';
 
 export const Context = createContext();
 
+const initialState = {};
+
 export default function ContextProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [state, dispatch] = useReducer(user, initialState);
 
   const value = {
-    user,
-    setUser,
+    state,
+    dispatch,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

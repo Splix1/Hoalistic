@@ -15,8 +15,7 @@ const initialState = {};
 
 export default function NavBar() {
   const history = useHistory();
-  const { user, setUser } = useContext(Context);
-  const [state, dispatch] = useReducer(User, initialState);
+  const { state, dispatch } = useContext(Context);
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -40,7 +39,7 @@ export default function NavBar() {
           <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
             Hoalistic
           </Typography>
-          {!user ? (
+          {!state?.id ? (
             <div>
               <Button color="inherit" onClick={() => history.push('/')}>
                 Login

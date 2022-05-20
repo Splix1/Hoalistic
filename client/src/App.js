@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Routes from './Routes';
 import NavBar from './Components/NavBar/NavBar';
 import supabase from './client';
+import { setUser } from './Store/User';
+import { Context } from './Components/ContextProvider';
 
 function App() {
-  const [data, setData] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(supabase.auth.user());
+  const { state, dispatch } = useContext(Context);
 
   useEffect(() => {
-    fetch('/api')
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
+    let user = supabase.auth.user();
+    dispatch(setUser(user));
   }, []);
 
   return (
