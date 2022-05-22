@@ -9,6 +9,15 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+*::-webkit-scrollbar {
+  display: none;
+}
+
 .App {
   text-align: center;
 }
+
+#navbar {
+  position: sticky;
+}
+

@@ -18,14 +18,14 @@ export default function NavBar() {
   const { state, dispatch } = useContext(Context);
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
+    await supabase.auth.signOut();
     dispatch(setUser({}));
     history.push('/');
   };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           <IconButton
             size="large"

@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div className="App">
-      <NavBar />
+      <NavBar id="navbar" />
       <Routes />
     </div>
   );
