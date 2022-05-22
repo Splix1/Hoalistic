@@ -17,6 +17,7 @@ function Routes() {
         <Switch>
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/units" component={Units} />
+          <Route path="*" component={Dashboard} />
         </Switch>
       ) : (
         <Switch>
