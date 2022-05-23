@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 import './Units.css';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
+import CurrencyInput from 'react-currency-input-field';
 
 const mdTheme = createTheme();
 
@@ -86,14 +87,15 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
-                      type={'number'}
-                      required
-                      fullWidth
-                      id="monthlyAssessment"
-                      label="Monthly Assessment"
-                      name="monthlyAssessment"
-                      autoComplete="dollar"
+                    <CurrencyInput
+                      id="input-example"
+                      name="input-name"
+                      prefix="$"
+                      placeholder="Monthly Assessment"
+                      defaultValue={0}
+                      decimalsLimit={2}
+                      style={{ height: '3rem', fontSize: '1rem' }}
+                      onValueChange={(value) => console.log('bruh')}
                     />
                   </Grid>
                 </div>

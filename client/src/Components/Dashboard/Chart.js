@@ -16,8 +16,8 @@ function createData(time, amount) {
 }
 
 const data = [
-  createData('00:00', 0),
-  createData('03:00', 300),
+  createData('0', 100),
+  createData('1', 200),
   createData('06:00', 600),
   createData('09:00', 800),
   createData('12:00', 1500),
@@ -32,7 +32,7 @@ export default function Chart() {
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>Future Projections</Title>
       <ResponsiveContainer>
         <LineChart
           data={data}
@@ -51,19 +51,7 @@ export default function Chart() {
           <YAxis
             stroke={theme.palette.text.secondary}
             style={theme.typography.body2}
-          >
-            <Label
-              angle={270}
-              position="left"
-              style={{
-                textAnchor: 'middle',
-                fill: theme.palette.text.primary,
-                ...theme.typography.body1,
-              }}
-            >
-              Sales ($)
-            </Label>
-          </YAxis>
+          ></YAxis>
           <Line
             isAnimationActive={false}
             type="monotone"
