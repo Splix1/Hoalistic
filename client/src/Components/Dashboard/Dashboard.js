@@ -22,6 +22,8 @@ import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
 import { TextField } from '@mui/material';
+import Title from './Title';
+import { Button } from '@mui/material';
 
 const mdTheme = createTheme();
 
@@ -56,14 +58,6 @@ function DashboardContent() {
                 >
                   <Chart />
                 </Paper>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                ></Paper>
               </Grid>
               <Grid item xs={12} md={4} lg={3}>
                 <Paper
@@ -75,6 +69,43 @@ function DashboardContent() {
                   }}
                 >
                   <Deposits />
+                </Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    height: 300,
+                    width: 1150,
+                  }}
+                >
+                  <div>
+                    <Title>Recurring Costs</Title>
+                    <Button variant="outlined">Add a Monthly Cost</Button>
+                    <h4>Estimated Monthly Water Cost</h4>
+                    <h4>Estimated Monthly Electricity Cost</h4>
+                    <h4>Estimated Monthly Garbage Cost</h4>
+                  </div>
+
+                  <div>
+                    <Title>Expected Projects</Title>
+                    <Button variant="outlined">Add a Project</Button>
+                    <h4>Fix Leak & Reseal Splitblock</h4>
+                  </div>
+
+                  <div>
+                    <Title>Looking Forward</Title>
+                    <h4>
+                      When is the last time your building was tuckpointed?
+                    </h4>
+                    <h4>
+                      When is the last time your building was waterproofed?
+                    </h4>
+                    <h4>Do you have any possible maintenance concerns?</h4>
+                  </div>
                 </Paper>
               </Grid>
             </Grid>

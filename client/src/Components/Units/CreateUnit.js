@@ -40,7 +40,6 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
       dateMovedIn: dateMovedIn,
     });
     await supabase.from('Tenants').insert({ name, unit: unitNumber });
-    console.log('unitData', unitData);
     newUnit(unitData[0]);
     setCreatingUnit(false);
   }
