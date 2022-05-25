@@ -42,7 +42,6 @@ function DashboardContent() {
   let [projectCost, setProjectCost] = React.useState(0);
   let [projects, setProjects] = React.useState([]);
 
-  console.log(projects);
   React.useEffect(() => {
     async function fetchBudgets() {
       let { email } = supabase.auth.user();
@@ -78,18 +77,18 @@ function DashboardContent() {
   }
 
   async function createProject() {
+    if (projectName === '' || projectCost === 0 || projectDate === '') {
+      alert('All fields are required!');
+      return;
+    }
     let { data, error } = await supabase.from('Projects').insert({
       name: projectName,
       cost: projectCost,
       begin_date: projectDate,
       HOA: user.id,
     });
+    setProjects([...projects, data[0]]);
     setCreatingProject(false);
-    if (error) {
-      console.log(`ERROR`, error);
-    } else {
-      console.log(data);
-    }
   }
 
   return (
