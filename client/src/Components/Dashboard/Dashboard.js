@@ -24,10 +24,29 @@ import Orders from './Orders';
 import { TextField } from '@mui/material';
 import Title from './Title';
 import { Button } from '@mui/material';
+import CurrencyInput from 'react-currency-input-field';
+import supabase from '../../client';
 
 const mdTheme = createTheme();
 
 function DashboardContent() {
+  let [creatingCost, setCreatingCost] = React.useState(false);
+  let [costName, setCostName] = React.useState('');
+  let [costPrice, setCostPrice] = React.useState(0);
+
+  async function createCost() {
+    let { email } = supabase.auth.user();
+    const user = await supabase.from('HOAs').select('*').eq('email', email);
+    let { data, error } = await supabase
+      .from('HOA_costs')
+      .insert({ name: costName, cost: costPrice, HOA: user.data[0].id });
+    if (error) {
+      console.log(`ERROR`, error);
+    } else {
+      console.log(`DATA`, data);
+    }
+  }
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -84,7 +103,49 @@ function DashboardContent() {
                 >
                   <div>
                     <Title>Recurring Costs</Title>
-                    <Button variant="outlined">Add a Monthly Cost</Button>
+                    {creatingCost ? (
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <TextField
+                          required
+                          id="name"
+                          label="Cost Name"
+                          name="name"
+                          autoComplete="Jimmy"
+                          onChange={(evt) => setCostName(evt.target.value)}
+                        />
+                        <CurrencyInput
+                          id="input-example"
+                          name="input-name"
+                          prefix="$"
+                          placeholder="Please enter a number"
+                          defaultValue={0}
+                          decimalsLimit={2}
+                          style={{ height: '3rem', fontSize: '1rem' }}
+                          onValueChange={(value) => setCostPrice(value)}
+                        />
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                          <Button
+                            variant="contained"
+                            onClick={() => createCost()}
+                          >
+                            Create Cost
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={() => setCreatingCost(false)}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        onClick={() => setCreatingCost(true)}
+                      >
+                        Add a Monthly Cost
+                      </Button>
+                    )}
                     <h4>Estimated Monthly Water Cost</h4>
                     <h4>Estimated Monthly Electricity Cost</h4>
                     <h4>Estimated Monthly Garbage Cost</h4>
