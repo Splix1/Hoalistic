@@ -56,14 +56,11 @@ function DashboardContent() {
   }, []);
 
   async function createCost() {
-    let { data, error } = await supabase
+    let { data } = await supabase
       .from('HOA_costs')
-      .insert({ name: costName, cost: costPrice, HOA: user.data[0].id });
-    if (error) {
-      console.log(`ERROR`, error);
-    } else {
-      console.log(`DATA`, data);
-    }
+      .insert({ name: costName, cost: costPrice, HOA: user.id });
+    setRecurringCosts([...recurringCosts, data[0]]);
+    setCreatingCost(false);
   }
 
   return (
@@ -116,7 +113,7 @@ function DashboardContent() {
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    height: 300,
+                    height: 'fit-content',
                     width: 1150,
                   }}
                 >
@@ -166,7 +163,7 @@ function DashboardContent() {
                       </Button>
                     )}
                     {recurringCosts.map((cost) => (
-                      <h4>
+                      <h4 key={cost.id}>
                         {cost.name}: ${cost.cost}
                       </h4>
                     ))}
