@@ -26,6 +26,7 @@ import Title from './Title';
 import { Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
+import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 
@@ -33,10 +34,28 @@ function DashboardContent() {
   let [creatingCost, setCreatingCost] = React.useState(false);
   let [costName, setCostName] = React.useState('');
   let [costPrice, setCostPrice] = React.useState(0);
+  let [recurringCosts, setRecurringCosts] = React.useState([]);
+  let { state, dispatch } = React.useContext(Context);
+  let [user, setUser] = React.useState(null);
+
+  React.useEffect(() => {
+    async function fetchRecurringCosts() {
+      let { email } = supabase.auth.user();
+      const { data: userData } = await supabase
+        .from('HOAs')
+        .select('*')
+        .eq('email', email);
+      setUser(userData[0]);
+      let { data } = await supabase
+        .from('HOA_costs')
+        .select('*')
+        .eq('HOA', userData[0].id);
+      setRecurringCosts(data);
+    }
+    fetchRecurringCosts();
+  }, []);
 
   async function createCost() {
-    let { email } = supabase.auth.user();
-    const user = await supabase.from('HOAs').select('*').eq('email', email);
     let { data, error } = await supabase
       .from('HOA_costs')
       .insert({ name: costName, cost: costPrice, HOA: user.data[0].id });
@@ -146,9 +165,11 @@ function DashboardContent() {
                         Add a Monthly Cost
                       </Button>
                     )}
-                    <h4>Estimated Monthly Water Cost</h4>
-                    <h4>Estimated Monthly Electricity Cost</h4>
-                    <h4>Estimated Monthly Garbage Cost</h4>
+                    {recurringCosts.map((cost) => (
+                      <h4>
+                        {cost.name}: ${cost.cost}
+                      </h4>
+                    ))}
                   </div>
 
                   <div>
