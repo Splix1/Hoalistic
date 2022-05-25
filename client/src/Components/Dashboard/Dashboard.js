@@ -42,6 +42,7 @@ function DashboardContent() {
   let [projectCost, setProjectCost] = React.useState(0);
   let [projects, setProjects] = React.useState([]);
 
+  console.log(projects);
   React.useEffect(() => {
     async function fetchBudgets() {
       let { email } = supabase.auth.user();
@@ -191,7 +192,7 @@ function DashboardContent() {
                       </Button>
                     )}
                     {recurringCosts.map((cost) => (
-                      <h4 key={cost.id}>
+                      <h4 key={cost.id} className="budget-item">
                         {cost.name}: ${cost.cost}
                       </h4>
                     ))}
@@ -252,7 +253,16 @@ function DashboardContent() {
                       </Button>
                     )}
 
-                    <h4>Fix Leak & Reseal Splitblock</h4>
+                    {projects.map((project) => {
+                      return (
+                        <div className="budget-item">
+                          <h4>
+                            {project.name}: ${project.cost} <br />
+                            Begin: {project.begin_date}
+                          </h4>
+                        </div>
+                      );
+                    })}
                   </div>
 
                   <div>

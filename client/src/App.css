@@ -21,3 +21,6 @@ body {
   position: sticky;
 }
 
+.budget-item {
+  border-style:ridge;
+}
