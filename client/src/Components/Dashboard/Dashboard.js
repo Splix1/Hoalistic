@@ -35,32 +35,60 @@ function DashboardContent() {
   let [costName, setCostName] = React.useState('');
   let [costPrice, setCostPrice] = React.useState(0);
   let [recurringCosts, setRecurringCosts] = React.useState([]);
-  let { state, dispatch } = React.useContext(Context);
   let [user, setUser] = React.useState(null);
+  let [creatingProject, setCreatingProject] = React.useState(false);
+  let [projectName, setProjectName] = React.useState('');
+  let [projectDate, setProjectDate] = React.useState('');
+  let [projectCost, setProjectCost] = React.useState(0);
+  let [projects, setProjects] = React.useState([]);
 
   React.useEffect(() => {
-    async function fetchRecurringCosts() {
+    async function fetchBudgets() {
       let { email } = supabase.auth.user();
       const { data: userData } = await supabase
         .from('HOAs')
         .select('*')
         .eq('email', email);
       setUser(userData[0]);
-      let { data } = await supabase
+      let { data: recurringCostsData } = await supabase
         .from('HOA_costs')
         .select('*')
         .eq('HOA', userData[0].id);
-      setRecurringCosts(data);
+      setRecurringCosts(recurringCostsData);
+      let { data: projectsData } = await supabase
+        .from('Projects')
+        .select('*')
+        .eq('HOA', userData[0].id);
+      setProjects(projectsData);
     }
-    fetchRecurringCosts();
+    fetchBudgets();
   }, []);
 
   async function createCost() {
+    if (costName === '' || costPrice === 0) {
+      alert('Name and price are required!');
+      return;
+    }
     let { data } = await supabase
       .from('HOA_costs')
       .insert({ name: costName, cost: costPrice, HOA: user.id });
     setRecurringCosts([...recurringCosts, data[0]]);
     setCreatingCost(false);
+  }
+
+  async function createProject() {
+    let { data, error } = await supabase.from('Projects').insert({
+      name: projectName,
+      cost: projectCost,
+      begin_date: projectDate,
+      HOA: user.id,
+    });
+    setCreatingProject(false);
+    if (error) {
+      console.log(`ERROR`, error);
+    } else {
+      console.log(data);
+    }
   }
 
   return (
@@ -171,7 +199,59 @@ function DashboardContent() {
 
                   <div>
                     <Title>Expected Projects</Title>
-                    <Button variant="outlined">Add a Project</Button>
+                    {creatingProject ? (
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <TextField
+                          required
+                          id="name"
+                          label="Project Name"
+                          name="name"
+                          autoComplete="Jimmy"
+                          onChange={(evt) => setProjectName(evt.target.value)}
+                        />
+                        <TextField
+                          type={'date'}
+                          required
+                          fullWidth
+                          id="dateMovedIn"
+                          name="dateMovedIn"
+                          autoComplete="Jimmy"
+                          onChange={(evt) => setProjectDate(evt.target.value)}
+                        />
+                        <CurrencyInput
+                          id="input-example"
+                          name="input-name"
+                          prefix="$"
+                          placeholder="Please enter a number"
+                          defaultValue={0}
+                          decimalsLimit={2}
+                          style={{ height: '3rem', fontSize: '1rem' }}
+                          onValueChange={(value) => setProjectCost(value)}
+                        />
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                          <Button
+                            variant="contained"
+                            onClick={() => createProject()}
+                          >
+                            Create Project
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={() => setCreatingProject(false)}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        onClick={() => setCreatingProject(true)}
+                      >
+                        Add a Project
+                      </Button>
+                    )}
+
                     <h4>Fix Leak & Reseal Splitblock</h4>
                   </div>
 
