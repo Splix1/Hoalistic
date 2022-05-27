@@ -42,6 +42,10 @@ function DashboardContent() {
   let [projectDate, setProjectDate] = React.useState('');
   let [projectCost, setProjectCost] = React.useState(0);
   let [projects, setProjects] = React.useState([]);
+  let [furthestProjectMonth, setFurthestProjectMonth] = React.useState(0);
+  let { state } = React.useContext(Context);
+
+  console.log(state);
 
   React.useEffect(() => {
     async function fetchBudgets() {
@@ -61,11 +65,20 @@ function DashboardContent() {
         .select('*')
         .eq('HOA', userData[0].id);
       let currentDate = new Date().getMonth();
+      let furthestProject = currentDate;
       let upcomingProjects = projectsData.filter((currentProject) => {
-        if (new Date(currentProject.begin_date).getMonth() > currentDate)
-          return currentProject;
+        if (new Date(currentProject.begin_date).getMonth() > currentDate) {
+          let currentProjectMonth = new Date(currentProject).getMonth();
+          if (currentProjectMonth > furthestProject)
+            furthestProject = currentProjectMonth;
+          return {
+            ...currentProject,
+            month: currentProjectMonth,
+          };
+        }
       });
       setProjects(upcomingProjects);
+      setFurthestProjectMonth(furthestProject);
     }
     fetchBudgets();
   }, []);
@@ -97,6 +110,10 @@ function DashboardContent() {
     setCreatingProject(false);
   }
 
+  function createData(month, amount) {
+    return { x: month, y: amount };
+  }
+
   async function generateChartData() {
     let sumOfCosts = recurringCosts.reduce((sum, currentCost) => {
       sum += currentCost.cost;
@@ -115,6 +132,12 @@ function DashboardContent() {
       },
       0
     );
+
+    let data = [];
+
+    // for(let i = 1; i <= furthestProjectMonth; i++){
+    //   let HOABalance =
+    // }
   }
 
   return (
@@ -137,16 +160,7 @@ function DashboardContent() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Chart />
-                </Paper>
+                <Chart />
               </Grid>
               <Grid item xs={12} md={4} lg={3}>
                 <Paper
@@ -217,7 +231,11 @@ function DashboardContent() {
                       </Button>
                     )}
                     {recurringCosts.map((cost) => (
-                      <h4 key={cost.id} className="budget-item">
+                      <h4
+                        key={cost.id}
+                        className="budget-item"
+                        style={{ height: '2rem' }}
+                      >
                         {cost.name}: ${cost.cost}
                       </h4>
                     ))}

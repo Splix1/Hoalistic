@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
+import { Paper } from '@mui/material';
 import {
   LineChart,
   Line,
@@ -9,57 +10,35 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import Title from './Title';
+import {
+  ArgumentAxis,
+  ValueAxis,
+  Chart,
+  LineSeries,
+} from '@devexpress/dx-react-chart-material-ui';
 
 function createData(month, amount) {
-  return { month, amount };
+  return { x: month, y: amount };
 }
 
 const data = [
-  createData('0', 100),
-  createData('1', 200),
-  createData('06:00', 600),
-  createData('09:00', 800),
-  createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
-  createData('24:00', undefined),
+  { x: 6, y: 9900 },
+  { x: 7, y: 10000 },
+  { x: 8, y: 4100 },
+  { x: 9, y: 4200 },
+  { x: 10, y: 4300 },
 ];
 
-export default function Chart() {
-  const theme = useTheme();
-
+export default function Chartt() {
   return (
-    <React.Fragment>
+    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
       <Title>Future Projections</Title>
-      <ResponsiveContainer>
-        <LineChart
-          data={data}
-          margin={{
-            top: 16,
-            right: 16,
-            bottom: 0,
-            left: 24,
-          }}
-        >
-          <XAxis
-            dataKey="time"
-            stroke={theme.palette.text.secondary}
-            style={theme.typography.body2}
-          />
-          <YAxis
-            stroke={theme.palette.text.secondary}
-            style={theme.typography.body2}
-          ></YAxis>
-          <Line
-            isAnimationActive={false}
-            type="monotone"
-            dataKey="amount"
-            stroke={theme.palette.primary.main}
-            dot={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </React.Fragment>
+      <Chart data={data}>
+        <ArgumentAxis />
+        <ValueAxis />
+
+        <LineSeries valueField="y" argumentField="x" />
+      </Chart>
+    </Paper>
   );
 }

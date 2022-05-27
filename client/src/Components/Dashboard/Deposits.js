@@ -4,6 +4,8 @@ import Typography from '@mui/material/Typography';
 import Title from './Title';
 import { Button, TextField } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
+import { setUser } from '../../Store/User';
+import { Context } from '../ContextProvider';
 
 function preventDefault(event) {
   event.preventDefault();
@@ -12,8 +14,10 @@ function preventDefault(event) {
 export default function Deposits() {
   let [HOABalance, setHOABalance] = React.useState(0);
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
+  let { state, dispatch } = React.useContext(Context);
 
   function numberWithCommas(x) {
+    if (!x) return;
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
@@ -28,8 +32,8 @@ export default function Deposits() {
         name="input-name"
         prefix="$"
         placeholder="Please enter a number"
-        defaultValue={0}
         decimalsLimit={2}
+        step
         style={{ height: '3rem', fontSize: '1rem' }}
         onValueChange={(value) => setHOABalanceField(numberWithCommas(value))}
       />
@@ -37,12 +41,15 @@ export default function Deposits() {
         fullWidth
         variant="contained"
         sx={{ mt: 3, mb: 2 }}
-        onClick={() => setHOABalance(HOABalanceField)}
+        onClick={() => {
+          setHOABalance(HOABalanceField);
+          dispatch(setUser({ ...state, HOABalance: HOABalanceField }));
+        }}
       >
         Update Balance
       </Button>
       <Button fullWidth variant="contained">
-        Run Graph
+        Run Chart
       </Button>
     </React.Fragment>
   );
