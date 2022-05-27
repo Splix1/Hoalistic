@@ -27,6 +27,7 @@ import { Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
+import axios from 'axios';
 
 const mdTheme = createTheme();
 
@@ -59,7 +60,12 @@ function DashboardContent() {
         .from('Projects')
         .select('*')
         .eq('HOA', userData[0].id);
-      setProjects(projectsData);
+      let currentDate = new Date().getMonth();
+      let upcomingProjects = projectsData.filter((currentProject) => {
+        if (new Date(currentProject.begin_date).getMonth() > currentDate)
+          return currentProject;
+      });
+      setProjects(upcomingProjects);
     }
     fetchBudgets();
   }, []);
@@ -89,6 +95,26 @@ function DashboardContent() {
     });
     setProjects([...projects, data[0]]);
     setCreatingProject(false);
+  }
+
+  async function generateChartData() {
+    let sumOfCosts = recurringCosts.reduce((sum, currentCost) => {
+      sum += currentCost.cost;
+      return sum;
+    }, 0);
+
+    let { data: monthly_assessments } = await supabase
+      .from('Units')
+      .select('monthly_assessment')
+      .eq('HOA', user.id);
+
+    let sumOfAssessments = monthly_assessments.reduce(
+      (sum, currentAssessment) => {
+        sum += currentAssessment.monthly_assessment;
+        return sum;
+      },
+      0
+    );
   }
 
   return (

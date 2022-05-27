@@ -41,6 +41,9 @@ export default function Deposits() {
       >
         Update Balance
       </Button>
+      <Button fullWidth variant="contained">
+        Run Graph
+      </Button>
     </React.Fragment>
   );
 }
