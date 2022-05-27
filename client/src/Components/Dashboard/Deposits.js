@@ -11,7 +11,7 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Deposits() {
+export default function Deposits({ generateChartData }) {
   let [HOABalance, setHOABalance] = React.useState(0);
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
   let { state, dispatch } = React.useContext(Context);
@@ -33,22 +33,22 @@ export default function Deposits() {
         prefix="$"
         placeholder="Please enter a number"
         decimalsLimit={2}
-        step
         style={{ height: '3rem', fontSize: '1rem' }}
-        onValueChange={(value) => setHOABalanceField(numberWithCommas(value))}
+        transformRawValue={(value) => value.replace(',', '')}
+        onValueChange={(value) => setHOABalanceField(value)}
       />
       <Button
         fullWidth
         variant="contained"
         sx={{ mt: 3, mb: 2 }}
         onClick={() => {
-          setHOABalance(HOABalanceField);
+          setHOABalance(numberWithCommas(HOABalanceField));
           dispatch(setUser({ ...state, HOABalance: HOABalanceField }));
         }}
       >
         Update Balance
       </Button>
-      <Button fullWidth variant="contained">
+      <Button fullWidth variant="contained" onClick={generateChartData}>
         Run Chart
       </Button>
     </React.Fragment>

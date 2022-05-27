@@ -18,7 +18,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
+import FutureProjections from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
 import { TextField } from '@mui/material';
@@ -44,8 +44,7 @@ function DashboardContent() {
   let [projects, setProjects] = React.useState([]);
   let [furthestProjectMonth, setFurthestProjectMonth] = React.useState(0);
   let { state } = React.useContext(Context);
-
-  console.log(state);
+  let [chartData, setChartData] = React.useState([]);
 
   React.useEffect(() => {
     async function fetchBudgets() {
@@ -134,10 +133,42 @@ function DashboardContent() {
     );
 
     let data = [];
+    let monthToCompare = new Date().getMonth();
 
-    // for(let i = 1; i <= furthestProjectMonth; i++){
-    //   let HOABalance =
-    // }
+    for (let i = 1; i <= furthestProjectMonth; i++) {
+      let projectsToSubtract = projects
+        .filter(
+          (project) =>
+            new Date(project.begin_date).getMonth() <= monthToCompare + i
+        )
+        .reduce((subSum, currentProjCost) => {
+          subSum += currentProjCost.cost;
+          return subSum;
+        }, 0);
+
+      let months = {
+        1: 'Jan',
+        2: 'Feb',
+        3: 'Mar',
+        4: 'Apr',
+        5: 'May',
+        6: 'Jun',
+        7: 'Jul',
+        8: 'Aug',
+        9: 'Sep',
+        10: 'Oct',
+        11: 'Nov',
+        12: 'Dec',
+      };
+      let correctAssSum = sumOfAssessments * i;
+      let correctCostSum = sumOfCosts * i;
+
+      let HOABalance =
+        +state.HOABalance + correctAssSum - correctCostSum - projectsToSubtract;
+
+      data.push(createData(months[monthToCompare + i], HOABalance));
+    }
+    setChartData(data);
   }
 
   return (
@@ -160,7 +191,7 @@ function DashboardContent() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>
-                <Chart />
+                <FutureProjections data={chartData} />
               </Grid>
               <Grid item xs={12} md={4} lg={3}>
                 <Paper
@@ -171,7 +202,7 @@ function DashboardContent() {
                     height: 240,
                   }}
                 >
-                  <Deposits />
+                  <Deposits generateChartData={generateChartData} />
                 </Paper>
               </Grid>
               <Grid item xs={12}>

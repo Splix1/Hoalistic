@@ -21,15 +21,15 @@ function createData(month, amount) {
   return { x: month, y: amount };
 }
 
-const data = [
-  { x: 6, y: 9900 },
-  { x: 7, y: 10000 },
-  { x: 8, y: 4100 },
-  { x: 9, y: 4200 },
-  { x: 10, y: 4300 },
-];
+// const data = [
+//   { x: 6, y: 9900 },
+//   { x: 7, y: 10000 },
+//   { x: 8, y: 4100 },
+//   { x: 9, y: 4200 },
+//   { x: 10, y: 4300 },
+// ];
 
-export default function Chartt() {
+export default function FutureProjections({ data }) {
   return (
     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
       <Title>Future Projections</Title>
