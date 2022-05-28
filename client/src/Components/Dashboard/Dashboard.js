@@ -123,10 +123,7 @@ function DashboardContent() {
     let data = [];
     let monthToCompare = new Date().getMonth();
 
-    let j = 1;
-
     for (let i = 1; i <= 10; i++) {
-      if (j === 13) j = 1;
       let projectsToSubtract = projects
         .filter(
           (project) =>
@@ -151,14 +148,13 @@ function DashboardContent() {
         11: 'Nov',
         12: 'Dec',
       };
-      let correctAssSum = sumOfAssessments * j;
-      let correctCostSum = sumOfCosts * j;
+      let correctAssSum = sumOfAssessments * i;
+      let correctCostSum = sumOfCosts * i;
 
       let HOABalance =
         +state.HOABalance + correctAssSum - correctCostSum - projectsToSubtract;
 
-      data.push(createData(months[monthToCompare + j], HOABalance));
-      j++;
+      data.push(createData(months[monthToCompare + i], HOABalance));
     }
     setChartData(data);
   }
