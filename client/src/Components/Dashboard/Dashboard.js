@@ -1,33 +1,19 @@
 import * as React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
-import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
 import FutureProjections from './Chart';
 import Deposits from './Deposits';
-import Orders from './Orders';
 import { TextField } from '@mui/material';
 import Title from './Title';
 import { Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
-import axios from 'axios';
 
 const mdTheme = createTheme();
 
@@ -42,7 +28,6 @@ function DashboardContent() {
   let [projectDate, setProjectDate] = React.useState('');
   let [projectCost, setProjectCost] = React.useState(0);
   let [projects, setProjects] = React.useState([]);
-  let [furthestProjectMonth, setFurthestProjectMonth] = React.useState(0);
   let { state } = React.useContext(Context);
   let [chartData, setChartData] = React.useState([]);
 
@@ -77,7 +62,6 @@ function DashboardContent() {
         }
       });
       setProjects(upcomingProjects);
-      setFurthestProjectMonth(furthestProject);
     }
     fetchBudgets();
   }, []);
@@ -99,7 +83,7 @@ function DashboardContent() {
       alert('All fields are required!');
       return;
     }
-    let { data, error } = await supabase.from('Projects').insert({
+    let { data } = await supabase.from('Projects').insert({
       name: projectName,
       cost: projectCost,
       begin_date: projectDate,
@@ -114,6 +98,10 @@ function DashboardContent() {
   }
 
   async function generateChartData() {
+    if (!state?.HOABalance) {
+      alert('Please set your current balance.');
+      return;
+    }
     let sumOfCosts = recurringCosts.reduce((sum, currentCost) => {
       sum += currentCost.cost;
       return sum;
@@ -135,7 +123,10 @@ function DashboardContent() {
     let data = [];
     let monthToCompare = new Date().getMonth();
 
-    for (let i = 1; i <= furthestProjectMonth; i++) {
+    let j = 1;
+
+    for (let i = 1; i <= 10; i++) {
+      if (j === 13) j = 1;
       let projectsToSubtract = projects
         .filter(
           (project) =>
@@ -160,13 +151,14 @@ function DashboardContent() {
         11: 'Nov',
         12: 'Dec',
       };
-      let correctAssSum = sumOfAssessments * i;
-      let correctCostSum = sumOfCosts * i;
+      let correctAssSum = sumOfAssessments * j;
+      let correctCostSum = sumOfCosts * j;
 
       let HOABalance =
         +state.HOABalance + correctAssSum - correctCostSum - projectsToSubtract;
 
-      data.push(createData(months[monthToCompare + i], HOABalance));
+      data.push(createData(months[monthToCompare + j], HOABalance));
+      j++;
     }
     setChartData(data);
   }
@@ -329,7 +321,7 @@ function DashboardContent() {
 
                     {projects.map((project) => {
                       return (
-                        <div className="budget-item">
+                        <div key={project.id} className="budget-item">
                           <h4>
                             {project.name}: ${project.cost} <br />
                             Begin: {project.begin_date}

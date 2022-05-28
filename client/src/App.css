@@ -9,7 +9,7 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-.App::-webkit-scrollbar {
+body::-webkit-scrollbar {
   display: none;
 }
 

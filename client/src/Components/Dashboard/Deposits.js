@@ -1,15 +1,10 @@
 import * as React from 'react';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Title from './Title';
-import { Button, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import { setUser } from '../../Store/User';
 import { Context } from '../ContextProvider';
-
-function preventDefault(event) {
-  event.preventDefault();
-}
 
 export default function Deposits({ generateChartData }) {
   let [HOABalance, setHOABalance] = React.useState(0);
