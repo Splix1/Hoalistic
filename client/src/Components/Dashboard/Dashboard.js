@@ -122,39 +122,59 @@ function DashboardContent() {
 
     let data = [];
     let monthToCompare = new Date().getMonth();
+    let yearToCompare = new Date().getFullYear();
+    let months = {
+      1: 'Jan',
+      2: 'Feb',
+      3: 'Mar',
+      4: 'Apr',
+      5: 'May',
+      6: 'Jun',
+      7: 'Jul',
+      8: 'Aug',
+      9: 'Sep',
+      10: 'Oct',
+      11: 'Nov',
+      12: 'Dec',
+    };
 
-    for (let i = 1; i <= 10; i++) {
+    let j = 1;
+    let yearCounter = 0;
+    let monthCounter = 1;
+
+    for (let i = 0; i < 12; i++) {
+      if (months[monthToCompare + j] === undefined) {
+        yearCounter++;
+        j = -monthToCompare + 1;
+      }
       let projectsToSubtract = projects
-        .filter(
-          (project) =>
-            new Date(project.begin_date).getMonth() <= monthToCompare + i
-        )
+        .filter((project) => {
+          let currentProject = new Date(project.begin_date);
+          if (
+            currentProject.getMonth() <= monthToCompare &&
+            currentProject.getFullYear() <= yearToCompare
+          ) {
+            return project;
+          }
+        })
         .reduce((subSum, currentProjCost) => {
           subSum += currentProjCost.cost;
           return subSum;
         }, 0);
 
-      let months = {
-        1: 'Jan',
-        2: 'Feb',
-        3: 'Mar',
-        4: 'Apr',
-        5: 'May',
-        6: 'Jun',
-        7: 'Jul',
-        8: 'Aug',
-        9: 'Sep',
-        10: 'Oct',
-        11: 'Nov',
-        12: 'Dec',
-      };
-      let correctAssSum = sumOfAssessments * i;
-      let correctCostSum = sumOfCosts * i;
-
+      let correctAssSum = sumOfAssessments * monthCounter;
+      let correctCostSum = sumOfCosts * monthCounter;
       let HOABalance =
         +state.HOABalance + correctAssSum - correctCostSum - projectsToSubtract;
 
-      data.push(createData(months[monthToCompare + i], HOABalance));
+      data.push(
+        createData(
+          `${months[monthToCompare + j]}/${yearToCompare + yearCounter}`,
+          HOABalance
+        )
+      );
+      j++;
+      monthCounter++;
     }
     setChartData(data);
   }
