@@ -121,7 +121,7 @@ function DashboardContent() {
     );
 
     let data = [];
-    let monthToCompare = new Date().getMonth();
+    let monthToCompare = new Date().getMonth() + 1;
     let yearToCompare = new Date().getFullYear();
     let months = {
       1: 'Jan',
@@ -138,6 +138,7 @@ function DashboardContent() {
       12: 'Dec',
     };
 
+    //j is a controlled variable to make month calculation, i will not work as it's meant to be exact amount of data to produce (12 + 1 will result in undefined month, therefore must be controlled and indicates a new year), yearCounter is to determine if the data you're looking at is in a future year, monthCounter is to determine how many months of costs/assessments to account for
     let j = 1;
     let yearCounter = 0;
     let monthCounter = 1;
@@ -147,6 +148,13 @@ function DashboardContent() {
         yearCounter++;
         j = -monthToCompare + 1;
       }
+      console.log(
+        j,
+        yearCounter,
+        months[5],
+        months[monthToCompare + j],
+        monthToCompare
+      );
       let projectsToSubtract = projects
         .filter((project) => {
           let currentProject = new Date(project.begin_date);
