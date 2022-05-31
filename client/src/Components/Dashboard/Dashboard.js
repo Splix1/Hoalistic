@@ -213,7 +213,7 @@ function DashboardContent() {
       data.push(
         createData(
           `${months[currentMonth + j]}/${currentYear + yearCounter}`,
-          HOABalance.toString()
+          HOABalance
         )
       );
       j++;

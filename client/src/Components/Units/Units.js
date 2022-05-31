@@ -41,6 +41,10 @@ function Units() {
     setUnits([...units, unit]);
   }
 
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
   return (
     <ThemeProvider theme={mdTheme}>
       <CssBaseline />

@@ -32,3 +32,18 @@ body::-webkit-scrollbar {
   margin-top: 5px;
 }
 
+.display-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.single-unit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.editing-unit {
+  background-color: white;
+}
