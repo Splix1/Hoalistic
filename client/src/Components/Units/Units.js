@@ -41,7 +41,6 @@ function Units() {
     setUnits([...units, unit]);
   }
 
-  console.log(units);
   return (
     <ThemeProvider theme={mdTheme}>
       <CssBaseline />

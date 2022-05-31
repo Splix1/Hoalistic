@@ -19,11 +19,13 @@ import CurrencyInput from 'react-currency-input-field';
 const mdTheme = createTheme();
 
 function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
+  let [monthlyAssessment, setMonthlyAssessment] = useState(0);
+
   async function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const unitNumber = data.get('unitNumber');
-    const monthlyAssessment = data.get('monthlyAssessment');
+
     if (monthlyAssessment < 0) {
       alert('Monthly Assessment cannot be negative!');
       return;
@@ -87,14 +89,14 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <CurrencyInput
-                      id="input-example"
-                      name="input-name"
+                      id="monthlyAssessment"
+                      name="monthlyAssessment"
                       prefix="$"
                       placeholder="Monthly Assessment"
                       defaultValue={0}
                       decimalsLimit={2}
                       style={{ height: '3rem', fontSize: '1rem' }}
-                      onValueChange={(value) => console.log('bruh')}
+                      onValueChange={(value) => setMonthlyAssessment(value)}
                     />
                   </Grid>
                 </div>

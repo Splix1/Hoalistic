@@ -30,6 +30,12 @@ function DashboardContent() {
   let [projects, setProjects] = React.useState([]);
   let { state } = React.useContext(Context);
   let [chartData, setChartData] = React.useState([]);
+  let [monthlyAssessments, setMonthlyAssessments] = React.useState([]);
+  let [creatingUnit, setCreatingUnit] = React.useState(false);
+  let [unitID, setUnitID] = React.useState(null);
+  let [unitAssessment, setUnitAssessment] = React.useState(0);
+  let [unitMovedIn, setUnitMovedIn] = React.useState('');
+  let [unitTenantName, setUnitTenantName] = React.useState('');
 
   React.useEffect(() => {
     async function fetchBudgets() {
@@ -39,15 +45,18 @@ function DashboardContent() {
         .select('*')
         .eq('email', email);
       setUser(userData[0]);
+
       let { data: recurringCostsData } = await supabase
         .from('HOA_costs')
         .select('*')
         .eq('HOA', userData[0].id);
       setRecurringCosts(recurringCostsData);
+
       let { data: projectsData } = await supabase
         .from('Projects')
         .select('*')
         .eq('HOA', userData[0].id);
+
       let currentDate = new Date().getMonth();
       let furthestProject = currentDate;
       let upcomingProjects = projectsData.filter((currentProject) => {
@@ -62,6 +71,12 @@ function DashboardContent() {
         }
       });
       setProjects(upcomingProjects);
+
+      let { data: monthlyAssessmentsData } = await supabase
+        .from('Units')
+        .select('*')
+        .eq('HOA', userData[0].id);
+      setMonthlyAssessments(monthlyAssessmentsData);
     }
     fetchBudgets();
   }, []);
@@ -93,6 +108,27 @@ function DashboardContent() {
     setCreatingProject(false);
   }
 
+  async function createUnit() {
+    if (
+      unitAssessment === 0 ||
+      unitID === '' ||
+      unitMovedIn === '' ||
+      unitTenantName === ''
+    ) {
+      alert('All fields are required!');
+      return;
+    }
+    let { data: unitData } = await supabase.from('Units').insert({
+      tenant_name: unitTenantName,
+      monthly_assessment: unitAssessment,
+      unitID: unitID,
+      HOA: user.id,
+      dateMovedIn: unitMovedIn,
+    });
+    setMonthlyAssessments([...monthlyAssessments, unitData[0]]);
+    setCreatingUnit(false);
+  }
+
   function createData(month, amount) {
     return { x: month, y: amount };
   }
@@ -102,6 +138,7 @@ function DashboardContent() {
       alert('Please set your current balance.');
       return;
     }
+
     let sumOfCosts = recurringCosts.reduce((sum, currentCost) => {
       sum += currentCost.cost;
       return sum;
@@ -121,8 +158,8 @@ function DashboardContent() {
     );
 
     let data = [];
-    let monthToCompare = new Date().getMonth() + 1;
-    let yearToCompare = new Date().getFullYear();
+    let currentMonth = new Date().getMonth() + 1;
+    let currentYear = new Date().getFullYear();
     let months = {
       1: 'Jan',
       2: 'Feb',
@@ -138,29 +175,27 @@ function DashboardContent() {
       12: 'Dec',
     };
 
-    //j is a controlled variable to make month calculation, i will not work as it's meant to be exact amount of data to produce (12 + 1 will result in undefined month, therefore must be controlled and indicates a new year), yearCounter is to determine if the data you're looking at is in a future year, monthCounter is to determine how many months of costs/assessments to account for
+    //j is a controlled variable to make month calculation, i will not work as it's meant to be exact
+    //amount of data to produce (12 + 1 will result in undefined month, therefore must be controlled
+    //and indicates a new year), yearCounter is to determine if the data you're looking at is in a
+    //future year, monthCounter is to determine how many months of costs/assessments to account for
     let j = 1;
     let yearCounter = 0;
-    let monthCounter = 1;
 
     for (let i = 0; i < 12; i++) {
-      if (months[monthToCompare + j] === undefined) {
+      let monthCounter = i + 1;
+      //if month + j is greater than 12 therefore not a month and in a new year
+      if (months[currentMonth + j] === undefined) {
         yearCounter++;
-        j = -monthToCompare + 1;
+        j = -currentMonth + 1;
       }
-      console.log(
-        j,
-        yearCounter,
-        months[5],
-        months[monthToCompare + j],
-        monthToCompare
-      );
+
       let projectsToSubtract = projects
         .filter((project) => {
           let currentProject = new Date(project.begin_date);
           if (
-            currentProject.getMonth() <= monthToCompare &&
-            currentProject.getFullYear() <= yearToCompare
+            currentProject.getMonth() <= currentMonth + i &&
+            currentProject.getFullYear() <= currentYear
           ) {
             return project;
           }
@@ -177,14 +212,17 @@ function DashboardContent() {
 
       data.push(
         createData(
-          `${months[monthToCompare + j]}/${yearToCompare + yearCounter}`,
-          HOABalance
+          `${months[currentMonth + j]}/${currentYear + yearCounter}`,
+          HOABalance.toString()
         )
       );
       j++;
-      monthCounter++;
     }
     setChartData(data);
+  }
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
   return (
@@ -283,7 +321,7 @@ function DashboardContent() {
                         className="budget-item"
                         style={{ height: '2rem' }}
                       >
-                        {cost.name}: ${cost.cost}
+                        {cost.name}: ${numberWithCommas(cost.cost)}
                       </h4>
                     ))}
                   </div>
@@ -347,7 +385,8 @@ function DashboardContent() {
                       return (
                         <div key={project.id} className="budget-item">
                           <h4>
-                            {project.name}: ${project.cost} <br />
+                            {project.name}: ${numberWithCommas(project.cost)}{' '}
+                            <br />
                             Begin: {project.begin_date}
                           </h4>
                         </div>
@@ -356,14 +395,86 @@ function DashboardContent() {
                   </div>
 
                   <div>
-                    <Title>Looking Forward</Title>
-                    <h4>
-                      When is the last time your building was tuckpointed?
-                    </h4>
-                    <h4>
-                      When is the last time your building was waterproofed?
-                    </h4>
-                    <h4>Do you have any possible maintenance concerns?</h4>
+                    <Title>Unit Assessments</Title>
+                    {creatingUnit ? (
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <TextField
+                          required
+                          id="unitID"
+                          label="Unit ID"
+                          name="unitID"
+                          autoComplete="Jimmy"
+                          onChange={(evt) => setUnitID(evt.target.value)}
+                        />
+
+                        <CurrencyInput
+                          id="unitAssessment"
+                          name="unitAssessment"
+                          prefix="$"
+                          placeholder="Please enter a number"
+                          defaultValue={0}
+                          decimalsLimit={2}
+                          style={{ height: '3rem', fontSize: '1rem' }}
+                          onValueChange={(value) => setUnitAssessment(value)}
+                        />
+                        <TextField
+                          type={'date'}
+                          required
+                          fullWidth
+                          id="dateMovedIn"
+                          name="dateMovedIn"
+                          autoComplete="Jimmy"
+                          onChange={(evt) => setUnitMovedIn(evt.target.value)}
+                        />
+                        <TextField
+                          required
+                          fullWidth
+                          id="tenantName"
+                          name="tenantName"
+                          label="Tenant Name"
+                          autoComplete="Jimmy"
+                          onChange={(evt) =>
+                            setUnitTenantName(evt.target.value)
+                          }
+                        />
+
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                          <Button
+                            variant="contained"
+                            onClick={() => createUnit()}
+                          >
+                            Create Unit
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={() => setCreatingUnit(false)}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        onClick={() => setCreatingUnit(true)}
+                      >
+                        Create a Unit
+                      </Button>
+                    )}
+                    {monthlyAssessments.map((assessment) => (
+                      <h4
+                        key={assessment.id}
+                        className="budget-item"
+                        style={{ height: 'fit-content' }}
+                      >
+                        {assessment.unitID}
+                        <br />
+                        {assessment.tenant_name}: $
+                        {numberWithCommas(assessment.monthly_assessment)}
+                        <br />
+                        Moved in: {assessment.dateMovedIn}
+                      </h4>
+                    ))}
                   </div>
                 </Paper>
               </Grid>
