@@ -86,8 +86,13 @@ function Units() {
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>
                 {units.map((unit) => (
-                  <div>
-                    <SingleUnit theUnit={unit} creatingUnit={creatingUnit} />
+                  <div key={unit.id}>
+                    <SingleUnit
+                      theUnit={unit}
+                      creatingUnit={creatingUnit}
+                      units={units}
+                      setUnits={setUnits}
+                    />
                     <br />
                   </div>
                 ))}

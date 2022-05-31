@@ -5,10 +5,11 @@ import { Typography, TextField, Button } from '@mui/material';
 import './Units.css';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
+import DeletingUnit from './DeletingUnit';
 
 const mdTheme = createTheme();
 
-function SingleUnit({ creatingUnit, theUnit }) {
+function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
   let { dateMovedIn, monthly_assessment, tenant_name, unitID } = theUnit;
   let [newUnitID, setNewUnitID] = useState(unitID);
   let [tenantName, setTenantName] = useState(tenant_name);
@@ -16,6 +17,7 @@ function SingleUnit({ creatingUnit, theUnit }) {
   let [movedIn, setMovedIn] = useState(dateMovedIn);
   let [editingUnit, setEditingUnit] = useState(false);
   let [unit, setUnit] = useState(theUnit);
+  let [deletingUnit, setDeletingUnit] = useState(false);
 
   function col() {
     return creatingUnit ? 'black' : 'white';
@@ -42,6 +44,11 @@ function SingleUnit({ creatingUnit, theUnit }) {
 
     setUnit(updatedUnit[0]);
     setEditingUnit(false);
+  }
+
+  async function deleteUnit() {
+    let { data } = await supabase.from('Units').delete().eq('id', unit?.id);
+    setUnits(units.filter((unit) => unit.id !== data[0].id));
   }
 
   return (
@@ -75,7 +82,9 @@ function SingleUnit({ creatingUnit, theUnit }) {
               <Button variant="contained" onClick={() => setEditingUnit(true)}>
                 edit
               </Button>
-              <Button variant="contained">delete</Button>
+              <Button variant="contained" onClick={() => setDeletingUnit(true)}>
+                delete
+              </Button>
             </div>
           </div>
         ) : (
@@ -134,6 +143,12 @@ function SingleUnit({ creatingUnit, theUnit }) {
             </div>
           </div>
         )}
+        {deletingUnit ? (
+          <DeletingUnit
+            setDeletingUnit={setDeletingUnit}
+            deleteUnit={deleteUnit}
+          />
+        ) : null}
       </Paper>
     </ThemeProvider>
   );
