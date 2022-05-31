@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import supabase from '../../client';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import SingleProject from './SingleProject';
+import CreateProjects from './CreateProjects';
 
 const mdTheme = createTheme();
 export default function Projects() {
@@ -31,6 +32,10 @@ export default function Projects() {
     fetchProjects();
   }, []);
 
+  function newProject(project) {
+    setProjects([...projects, project]);
+  }
+
   return (
     <ThemeProvider theme={mdTheme}>
       <CssBaseline />
@@ -47,22 +52,22 @@ export default function Projects() {
         <Typography component="h1" variant="h4" sx={{ color: 'black' }}>
           Projects
         </Typography>
-        {/* {creatingUnit ? (
-          <CreateUnits
-            setCreatingUnit={setCreatingUnit}
-            creatingUnit={creatingUnit}
-            newUnit={newUnit}
+        {creatingProject ? (
+          <CreateProjects
+            setCreatingProject={setCreatingProject}
+            creatingProject={creatingProject}
+            newProject={newProject}
           />
-        ) : null} */}
-        {/* {!creatingUnit ? (
+        ) : null}
+        {!creatingProject ? (
           <Button
             variant="contained"
             sx={{ top: 50 }}
-            onClick={() => setCreatingUnit(!creatingUnit)}
+            onClick={() => setCreatingProject(!creatingProject)}
           >
-            Create Unit
+            Create Project
           </Button>
-        ) : null} */}
+        ) : null}
         <br />
         <br />
         <br />

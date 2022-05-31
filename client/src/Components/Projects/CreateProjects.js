@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,38 +9,35 @@ import Container from '@mui/material/Container';
 import { Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import './Units.css';
 import supabase from '../../client';
 import CurrencyInput from 'react-currency-input-field';
 
 const mdTheme = createTheme();
 
-function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
-  let [monthlyAssessment, setMonthlyAssessment] = useState(0);
+function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
+  let [projectCost, setProjectCost] = useState(0);
 
   async function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const unitNumber = data.get('unitNumber');
+    const projectName = data.get('projectName');
 
-    if (monthlyAssessment < 0) {
-      alert('Monthly Assessment cannot be negative!');
+    if (projectCost < 0) {
+      alert('Project cost cannot be negative!');
       return;
     }
-    const dateMovedIn = data.get('dateMovedIn');
-    const name = data.get('name');
+    const beginDate = data.get('beginDate');
+
     let { email } = supabase.auth.user();
     const user = await supabase.from('HOAs').select('*').eq('email', email);
-    let { data: unitData } = await supabase.from('Units').insert({
-      tenant_name: name,
-      monthly_assessment: monthlyAssessment,
-      unitID: unitNumber,
+    let { data: unitData } = await supabase.from('Projects').insert({
+      name: projectName,
+      cost: projectCost,
       HOA: user.data[0].id,
-      dateMovedIn: dateMovedIn,
+      begin_date: beginDate,
     });
-    await supabase.from('Tenants').insert({ name, unit: unitNumber });
-    newUnit(unitData[0]);
-    setCreatingUnit(false);
+    newProject(unitData[0]);
+    setCreatingProject(false);
   }
 
   return (
@@ -50,7 +47,7 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          backgroundColor: creatingUnit ? 'gray' : 'white',
+          backgroundColor: creatingProject ? 'gray' : 'white',
           flexGrow: 1,
           height: '100vh',
           overflow: 'auto',
@@ -78,43 +75,33 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
                     <TextField
                       required
                       fullWidth
-                      id="unitNumber"
-                      label="Unit #"
-                      name="unitNumber"
+                      id="projectName"
+                      label="Project Name"
+                      name="projectName"
                       autoComplete="1A"
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <CurrencyInput
-                      id="monthlyAssessment"
-                      name="monthlyAssessment"
+                      id="projectCost"
+                      name="projectCost"
                       prefix="$"
-                      placeholder="Monthly Assessment"
+                      placeholder="Project Cost"
                       defaultValue={0}
                       decimalsLimit={2}
                       style={{ height: '3rem', fontSize: '1rem' }}
-                      onValueChange={(value) => setMonthlyAssessment(value)}
+                      onValueChange={(value) => setProjectCost(value)}
                     />
                   </Grid>
                 </div>
                 <div id="form-inputs">
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={24} sm={12}>
                     <TextField
                       type={'date'}
                       required
                       fullWidth
-                      id="dateMovedIn"
-                      name="dateMovedIn"
-                      autoComplete="Jimmy"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="name"
-                      label="Tenant Name"
-                      name="name"
+                      id="beginDate"
+                      name="beginDate"
                       autoComplete="Jimmy"
                     />
                   </Grid>
@@ -126,7 +113,7 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
                 </Button>
                 <Button
                   variant="contained"
-                  onClick={() => setCreatingUnit(false)}
+                  onClick={() => setCreatingProject(false)}
                 >
                   Cancel
                 </Button>
@@ -139,4 +126,4 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
   );
 }
 
-export default CreateUnits;
+export default CreateProjects;
