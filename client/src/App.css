@@ -44,7 +44,7 @@ body::-webkit-scrollbar {
   align-items: flex-start;
 }
 
-.editing-unit {
+.editing-unit, .editing-project {
   background-color: white;
 }
 
@@ -57,4 +57,11 @@ body::-webkit-scrollbar {
     height: fit-content;
     width: fit-content;
     border-radius: 8px;
+}
+
+.single-project {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
 }

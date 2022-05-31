@@ -7,6 +7,7 @@ import Dashboard from './Components/Dashboard/Dashboard';
 import { Context } from './Components/ContextProvider';
 import CreateUnits from './Components/Units/CreateUnit';
 import Units from './Components/Units/Units';
+import Projects from './Components/Projects/Projects';
 
 function Routes() {
   const { state, dispatch } = useContext(Context);
@@ -17,6 +18,7 @@ function Routes() {
         <Switch>
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/units" component={Units} />
+          <Route path="/projects" component={Projects} />
           <Route path="*" component={Dashboard} />
         </Switch>
       ) : (
