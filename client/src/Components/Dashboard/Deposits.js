@@ -17,7 +17,7 @@ export default function Deposits({ generateChartData }) {
   }
 
   return (
-    <React.Fragment>
+    <div>
       <Title>Current HOA Balance</Title>
       <Typography component="h1" variant="h5">
         ${HOABalance}
@@ -28,8 +28,7 @@ export default function Deposits({ generateChartData }) {
         prefix="$"
         placeholder="Please enter a number"
         decimalsLimit={2}
-        style={{ height: '3rem', fontSize: '1rem' }}
-        transformRawValue={(value) => value.replace(',', '')}
+        style={{ height: '2rem', fontSize: '1rem' }}
         onValueChange={(value) => setHOABalanceField(value)}
       />
       <Button
@@ -46,6 +45,6 @@ export default function Deposits({ generateChartData }) {
       <Button fullWidth variant="contained" onClick={generateChartData}>
         Run Chart
       </Button>
-    </React.Fragment>
+    </div>
   );
 }
