@@ -47,7 +47,6 @@ function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          backgroundColor: creatingProject ? 'gray' : 'white',
           flexGrow: 1,
           height: '100vh',
           overflow: 'auto',

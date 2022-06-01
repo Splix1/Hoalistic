@@ -38,6 +38,7 @@ export default function BasicMenu() {
         <MenuItem onClick={() => handleClose('/dashboard')}>Dashboard</MenuItem>
         <MenuItem onClick={() => handleClose('/units')}>Units</MenuItem>
         <MenuItem onClick={() => handleClose('/projects')}>Projects</MenuItem>
+        <MenuItem onClick={() => handleClose('/costs')}>Costs</MenuItem>
       </Menu>
     </div>
   );

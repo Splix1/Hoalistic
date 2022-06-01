@@ -37,18 +37,18 @@ body::-webkit-scrollbar {
   flex-direction: row;
 }
 
-.single-unit {
+.single-unit, .single-project, .single-cost {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
 }
 
-.editing-unit, .editing-project {
+.editing-unit, .editing-project, .editing-cost {
   background-color: white;
 }
 
-#deleting-unit {
+#deleting-unit, #deleting-project, #deleting-cost {
     background-color: none;
     display: flex;
     flex-direction: row;
@@ -59,9 +59,3 @@ body::-webkit-scrollbar {
     border-radius: 8px;
 }
 
-.single-project {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: flex-start;
-}

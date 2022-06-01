@@ -8,6 +8,7 @@ import { Context } from './Components/ContextProvider';
 import CreateUnits from './Components/Units/CreateUnit';
 import Units from './Components/Units/Units';
 import Projects from './Components/Projects/Projects';
+import HOACosts from './Components/HOACosts/HOACosts';
 
 function Routes() {
   const { state, dispatch } = useContext(Context);
@@ -19,6 +20,7 @@ function Routes() {
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/units" component={Units} />
           <Route path="/projects" component={Projects} />
+          <Route path="/costs" component={HOACosts} />
           <Route path="*" component={Dashboard} />
         </Switch>
       ) : (
