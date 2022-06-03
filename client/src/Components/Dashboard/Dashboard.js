@@ -28,7 +28,6 @@ function DashboardContent() {
   let [projectDate, setProjectDate] = React.useState('');
   let [projectCost, setProjectCost] = React.useState(0);
   let [projects, setProjects] = React.useState([]);
-  let { state } = React.useContext(Context);
   let [chartData, setChartData] = React.useState([]);
   let [monthlyAssessments, setMonthlyAssessments] = React.useState([]);
   let [creatingUnit, setCreatingUnit] = React.useState(false);
@@ -36,9 +35,11 @@ function DashboardContent() {
   let [unitAssessment, setUnitAssessment] = React.useState(0);
   let [unitMovedIn, setUnitMovedIn] = React.useState('');
   let [unitTenantName, setUnitTenantName] = React.useState('');
+  let [HOABalance, setHOABalance] = React.useState(0);
 
   React.useEffect(() => {
     async function fetchBudgets() {
+      //fetch user data
       let { email } = supabase.auth.user();
       const { data: userData } = await supabase
         .from('HOAs')
@@ -46,12 +47,14 @@ function DashboardContent() {
         .eq('email', email);
       setUser(userData[0]);
 
+      //fetch recurring costs
       let { data: recurringCostsData } = await supabase
         .from('HOA_costs')
         .select('*')
         .eq('HOA', userData[0].id);
       setRecurringCosts(recurringCostsData);
 
+      //fetch projects
       let { data: projectsData } = await supabase
         .from('Projects')
         .select('*')
@@ -72,11 +75,18 @@ function DashboardContent() {
       });
       setProjects(upcomingProjects);
 
+      //fetch unit assessments
       let { data: monthlyAssessmentsData } = await supabase
         .from('Units')
         .select('*')
         .eq('HOA', userData[0].id);
       setMonthlyAssessments(monthlyAssessmentsData);
+
+      //update balance
+      setHOABalance(userData[0].balance);
+
+      //run chart
+      generateChartData(userData[0]);
     }
     fetchBudgets();
   }, []);
@@ -133,12 +143,7 @@ function DashboardContent() {
     return { x: month, y: amount };
   }
 
-  async function generateChartData() {
-    if (!state?.HOABalance) {
-      alert('Please set your current balance.');
-      return;
-    }
-
+  async function generateChartData(currentUser) {
     let sumOfCosts = recurringCosts.reduce((sum, currentCost) => {
       sum += currentCost.cost;
       return sum;
@@ -147,7 +152,7 @@ function DashboardContent() {
     let { data: monthly_assessments } = await supabase
       .from('Units')
       .select('monthly_assessment')
-      .eq('HOA', user.id);
+      .eq('HOA', currentUser.id);
 
     let sumOfAssessments = monthly_assessments.reduce(
       (sum, currentAssessment) => {
@@ -208,7 +213,10 @@ function DashboardContent() {
       let correctAssSum = sumOfAssessments * monthCounter;
       let correctCostSum = sumOfCosts * monthCounter;
       let HOABalance =
-        +state.HOABalance + correctAssSum - correctCostSum - projectsToSubtract;
+        +currentUser.balance +
+        correctAssSum -
+        correctCostSum -
+        projectsToSubtract;
 
       data.push(
         createData(
@@ -256,7 +264,12 @@ function DashboardContent() {
                     height: 240,
                   }}
                 >
-                  <Deposits generateChartData={generateChartData} />
+                  <Deposits
+                    generateChartData={generateChartData}
+                    HOABalance={HOABalance}
+                    setHOABalance={setHOABalance}
+                    user={user}
+                  />
                 </Paper>
               </Grid>
               <Grid item xs={12}>
