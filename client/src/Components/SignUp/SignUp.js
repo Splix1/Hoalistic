@@ -27,6 +27,7 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget);
     const email = data.get('email');
     const password = data.get('password');
+    const confirmPassword = data.get('confirmPassword');
     const firstName = data.get('firstName');
     const lastName = data.get('lastName');
     const address = data.get('address');
@@ -35,6 +36,10 @@ export default function SignUp() {
     const zip = data.get('zip');
     const estYearBuilt = data.get('estYearBuilt');
     const missionStatement = data.get('missionStatement');
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
     const { user, session, error } = await supabase.auth.signUp({
       email: email,
       password: password,
