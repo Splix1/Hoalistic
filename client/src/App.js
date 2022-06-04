@@ -11,13 +11,14 @@ function App() {
   const { state, dispatch } = useContext(Context);
   const location = useLocation();
   const history = useHistory();
-  const params = useParams();
 
   useEffect(() => {
-    let user = supabase.auth.user();
+    const user = supabase.auth.session();
     dispatch(setUser(user));
-    if (location.hash.includes('type=recovery')) {
-      let access_token = location.hash.split('&')[0].slice(14);
+    const searchParams = new URLSearchParams(location.hash);
+    if (searchParams.getAll('type').includes('recovery')) {
+      const access_token =
+        searchParams.get('#access_token') || searchParams.get('access_token');
       dispatch(setUser({ ...state, access_token: access_token }));
       history.push('/resetpassword');
     }
