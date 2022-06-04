@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import './LandingPage.css';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -16,7 +15,7 @@ import { setUser } from '../../Store/User';
 
 const theme = createTheme();
 
-function LandingPage() {
+export default function ForgotPassword() {
   const { state, dispatch } = useContext(Context);
   const history = useHistory();
 
@@ -24,18 +23,17 @@ function LandingPage() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get('email');
-    const password = data.get('password');
 
-    const { user, error } = await supabase.auth.signIn({
-      email: email,
-      password: password,
-    });
-    if (error) {
-      alert('There was a problem signing in.');
-    } else {
-      dispatch(setUser(user));
-      history.push('/dashboard');
+    if (!email) {
+      alert('Please provide an email!');
+      return;
     }
+    const { error } = await supabase.auth.api.resetPasswordForEmail(email);
+    if (error) {
+      alert('There was a problem with this email.');
+      return;
+    }
+    alert(`Password recovery sent to ${email}!`);
   };
 
   return (
@@ -69,7 +67,7 @@ function LandingPage() {
             }}
           >
             <Typography component="h1" variant="h5">
-              Sign in
+              Password Recovery
             </Typography>
             <Box
               component="form"
@@ -87,35 +85,25 @@ function LandingPage() {
                 autoComplete="email"
                 autoFocus
               />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
+
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                request reset
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <NavLink to="/recoverpassword">
-                    <Link variant="body2">Forgot password?</Link>
-                  </NavLink>
-                </Grid>
+              <Grid
+                container
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
                 <Grid item>
-                  <NavLink to="/signup">
-                    <Link variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link>
+                  <NavLink to="/login">
+                    <Link variant="body2">{'Sign In'}</Link>
                   </NavLink>
                 </Grid>
               </Grid>
@@ -126,5 +114,3 @@ function LandingPage() {
     </ThemeProvider>
   );
 }
-
-export default LandingPage;

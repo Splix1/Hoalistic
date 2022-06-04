@@ -9,6 +9,8 @@ import CreateUnits from './Components/Units/CreateUnit';
 import Units from './Components/Units/Units';
 import Projects from './Components/Projects/Projects';
 import HOACosts from './Components/HOACosts/HOACosts';
+import ForgotPassword from './Components/ForgotPassword/ForgotPassword';
+import ResetPassword from './Components/ForgotPassword/ResetPassword';
 
 function Routes() {
   const { state, dispatch } = useContext(Context);
@@ -26,6 +28,9 @@ function Routes() {
       ) : (
         <Switch>
           <Route path="/signup" component={SignUp} />
+          <Route path="/recoverpassword" component={ForgotPassword} />
+          <Route path="/login" component={LandingPage} />
+          <Route path="/resetpassword" component={ResetPassword} />
           <Route path="*" component={LandingPage} />
         </Switch>
       )}

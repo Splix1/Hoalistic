@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import './LandingPage.css';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -16,24 +15,32 @@ import { setUser } from '../../Store/User';
 
 const theme = createTheme();
 
-function LandingPage() {
+export default function ResetPassword() {
   const { state, dispatch } = useContext(Context);
   const history = useHistory();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get('email');
     const password = data.get('password');
+    const confirmPassword = data.get('confirmPassword');
 
-    const { user, error } = await supabase.auth.signIn({
-      email: email,
-      password: password,
-    });
+    if (password !== confirmPassword) {
+      alert('Passwords must match!');
+      return;
+    }
+
+    const { data: newData, error } = await supabase.auth.api.updateUser(
+      state.access_token,
+      {
+        password: password,
+      }
+    );
     if (error) {
-      alert('There was a problem signing in.');
+      alert('There was a problem updating your password.');
+      return;
     } else {
-      dispatch(setUser(user));
+      dispatch(setUser(supabase.auth.user()));
       history.push('/dashboard');
     }
   };
@@ -69,7 +76,7 @@ function LandingPage() {
             }}
           >
             <Typography component="h1" variant="h5">
-              Sign in
+              Reset Password
             </Typography>
             <Box
               component="form"
@@ -78,44 +85,45 @@ function LandingPage() {
               sx={{ mt: 1 }}
             >
               <TextField
+                type="password"
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
+                id="password"
+                label="New Password"
+                name="password"
                 autoComplete="email"
                 autoFocus
               />
               <TextField
+                type="password"
                 margin="normal"
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                id="email"
+                label="Confirm Password"
+                name="confirmPassword"
+                autoComplete="confirmPassword"
               />
+
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                update password
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <NavLink to="/recoverpassword">
-                    <Link variant="body2">Forgot password?</Link>
-                  </NavLink>
-                </Grid>
+              <Grid
+                container
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
                 <Grid item>
-                  <NavLink to="/signup">
-                    <Link variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link>
+                  <NavLink to="/login">
+                    <Link variant="body2">{'Sign In'}</Link>
                   </NavLink>
                 </Grid>
               </Grid>
@@ -126,5 +134,3 @@ function LandingPage() {
     </ThemeProvider>
   );
 }
-
-export default LandingPage;

@@ -5,13 +5,22 @@ import NavBar from './Components/NavBar/NavBar';
 import supabase from './client';
 import { setUser } from './Store/User';
 import { Context } from './Components/ContextProvider';
+import { useLocation, useHistory, useParams } from 'react-router-dom';
 
 function App() {
-  const { dispatch } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
+  const location = useLocation();
+  const history = useHistory();
+  const params = useParams();
 
   useEffect(() => {
     let user = supabase.auth.user();
     dispatch(setUser(user));
+    if (location.hash.includes('type=recovery')) {
+      let firstSplit = location.hash.split('&')[0].slice(14);
+      dispatch(setUser({ ...state, access_token: firstSplit }));
+      history.push('/resetpassword');
+    }
   }, []);
 
   return (
