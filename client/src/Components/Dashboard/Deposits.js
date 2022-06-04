@@ -56,9 +56,6 @@ export default function Deposits({
       >
         Update Balance
       </Button>
-      <Button fullWidth variant="contained" onClick={generateChartData}>
-        Run Chart
-      </Button>
     </div>
   );
 }

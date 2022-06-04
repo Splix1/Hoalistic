@@ -13,7 +13,6 @@ import Title from './Title';
 import { Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
-import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 

@@ -17,7 +17,7 @@ import { setUser } from '../../Store/User';
 const theme = createTheme();
 
 function LandingPage() {
-  const { state, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
   const history = useHistory();
 
   const handleSubmit = async (event) => {

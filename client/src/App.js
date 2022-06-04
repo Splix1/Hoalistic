@@ -17,8 +17,8 @@ function App() {
     let user = supabase.auth.user();
     dispatch(setUser(user));
     if (location.hash.includes('type=recovery')) {
-      let firstSplit = location.hash.split('&')[0].slice(14);
-      dispatch(setUser({ ...state, access_token: firstSplit }));
+      let access_token = location.hash.split('&')[0].slice(14);
+      dispatch(setUser({ ...state, access_token: access_token }));
       history.push('/resetpassword');
     }
   }, []);

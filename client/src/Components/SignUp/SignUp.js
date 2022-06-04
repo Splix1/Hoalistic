@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from 'react';
+import React, { useContext } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -11,15 +11,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { NavLink, useHistory } from 'react-router-dom';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
-import user, { setUser } from '../../Store/User';
+import { setUser } from '../../Store/User';
 import { TextareaAutosize } from '@mui/material';
 
 const theme = createTheme();
 
-const initialState = {};
-
 export default function SignUp() {
-  const { state, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
   const history = useHistory();
 
   const handleSubmit = async (event) => {
