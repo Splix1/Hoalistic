@@ -45,7 +45,6 @@ function App() {
   return (
     <ThemeProvider theme={state?.mdTheme}>
       <div className="App">
-        <CssBaseline />
         {state?.id ? <NavBar id="navbar" /> : null}
         <Routes />
       </div>

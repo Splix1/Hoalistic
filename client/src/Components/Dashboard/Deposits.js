@@ -6,7 +6,7 @@ import CurrencyInput from 'react-currency-input-field';
 import { setUser } from '../../Store/User';
 import { Context } from '../ContextProvider';
 import supabase from '../../client';
-import FutureProjections from './Chart';
+import CssBaseline from '@mui/material/CssBaseline';
 
 export default function Deposits({
   generateChartData,
@@ -32,6 +32,7 @@ export default function Deposits({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <CssBaseline />
       <div>
         <Title>Current HOA Balance</Title>
         <Typography component="h1" variant="h5">

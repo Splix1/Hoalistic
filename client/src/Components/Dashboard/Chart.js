@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Paper } from '@mui/material';
+import { CssBaseline, Paper } from '@mui/material';
 import Title from './Title';
 import {
   ArgumentAxis,
@@ -13,6 +13,7 @@ import { EventTracker } from '@devexpress/dx-react-chart';
 export default function FutureProjections({ data }) {
   return (
     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
+      <CssBaseline />
       <Title>Future Projections</Title>
       <Chart data={data}>
         <ArgumentAxis />
