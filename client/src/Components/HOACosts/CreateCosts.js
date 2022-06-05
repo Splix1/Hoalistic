@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -9,11 +9,14 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import supabase from '../../client';
 import CurrencyInput from 'react-currency-input-field';
-import LightOrDark from '../LightOrDark';
+import { Context } from '../ContextProvider';
+
+const mdTheme = createTheme();
 
 export default function CreateCosts({ setCreatingCost, newCost }) {
   let [cost, setCost] = useState(0);
   let [costName, setCostName] = useState('');
+  let { state } = useContext(Context);
 
   async function createCost() {
     if (cost < 0) {
@@ -33,9 +36,9 @@ export default function CreateCosts({ setCreatingCost, newCost }) {
   }
 
   return (
-    <ThemeProvider theme={LightOrDark()}>
+    <ThemeProvider theme={state?.mdTheme}>
       <CssBaseline />
-      <Typography component="h1" variant="h4">
+      <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
         Create Cost
       </Typography>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -74,14 +77,8 @@ export default function CreateCosts({ setCreatingCost, newCost }) {
                     style={{
                       height: '3rem',
                       fontSize: '1rem',
-                      color:
-                        LightOrDark().palette.mode === 'dark'
-                          ? 'white'
-                          : '#121212',
-                      backgroundColor:
-                        LightOrDark().palette.mode === 'dark'
-                          ? '#121212'
-                          : 'white',
+                      backgroundColor: '#121212',
+                      color: 'white',
                     }}
                     onValueChange={(value) => setCost(value)}
                   />

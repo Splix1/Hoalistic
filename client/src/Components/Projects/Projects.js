@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import supabase from '../../client';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,13 +8,14 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import SingleProject from './SingleProject';
 import CreateProjects from './CreateProjects';
-import LightOrDark from '../LightOrDark';
+import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [user, setUser] = useState({});
   const [creatingProject, setCreatingProject] = useState(false);
+  let { state } = useContext(Context);
 
   useEffect(() => {
     async function fetchProjects() {
@@ -38,7 +39,7 @@ export default function Projects() {
   }
 
   return (
-    <ThemeProvider theme={LightOrDark()}>
+    <ThemeProvider theme={state?.mdTheme}>
       <CssBaseline />
       <Box
         component="main"
@@ -49,7 +50,7 @@ export default function Projects() {
         }}
       >
         <br />
-        <Typography component="h1" variant="h4">
+        <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
           Projects
         </Typography>
         {creatingProject ? (

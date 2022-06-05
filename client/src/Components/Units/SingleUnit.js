@@ -6,7 +6,9 @@ import './Units.css';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import DeletingUnit from './DeletingUnit';
-import LightOrDark from '../LightOrDark';
+import { Context } from '../ContextProvider';
+
+const mdTheme = createTheme();
 
 function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
   let { dateMovedIn, monthly_assessment, tenant_name, unitID } = theUnit;
@@ -17,10 +19,7 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
   let [editingUnit, setEditingUnit] = useState(false);
   let [unit, setUnit] = useState(theUnit);
   let [deletingUnit, setDeletingUnit] = useState(false);
-
-  function col() {
-    return creatingUnit ? 'black' : 'white';
-  }
+  let { state } = useContext(Context);
 
   async function updateUnit() {
     if (!newUnitID || !monthlyAssessment || !tenantName || !movedIn) {
@@ -51,7 +50,7 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
   }
 
   return (
-    <ThemeProvider theme={LightOrDark()}>
+    <ThemeProvider theme={state?.mdTheme}>
       <Paper
         sx={{
           p: 2,

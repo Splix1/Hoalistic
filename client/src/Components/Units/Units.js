@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -10,13 +10,14 @@ import './Units.css';
 import CreateUnits from './CreateUnit';
 import SingleUnit from './SingleUnit';
 import supabase from '../../client';
-import LightOrDark from '../LightOrDark';
+import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 
 function Units() {
   const [creatingUnit, setCreatingUnit] = useState(false);
   const [units, setUnits] = useState([]);
+  let { state } = useContext(Context);
 
   useEffect(() => {
     async function fetchUnits() {
@@ -40,7 +41,7 @@ function Units() {
   }
 
   return (
-    <ThemeProvider theme={LightOrDark()}>
+    <ThemeProvider theme={state?.mdTheme}>
       <CssBaseline />
       <Box
         component="main"

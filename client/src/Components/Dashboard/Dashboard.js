@@ -13,6 +13,7 @@ import Title from './Title';
 import { Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
+import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme({
   palette: {
@@ -39,6 +40,7 @@ function DashboardContent() {
   let [unitMovedIn, setUnitMovedIn] = React.useState('');
   let [unitTenantName, setUnitTenantName] = React.useState('');
   let [HOABalance, setHOABalance] = React.useState(0);
+  let { state } = React.useContext(Context);
 
   React.useEffect(() => {
     async function fetchBudgets() {
@@ -237,7 +239,7 @@ function DashboardContent() {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={state?.mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <Box

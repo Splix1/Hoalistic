@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Typography, TextField, Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import DeletingProject from './DeletingProject';
-import LightOrDark from '../LightOrDark';
+import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 
@@ -22,10 +22,7 @@ export default function SingleProject({
   let [editingProject, setEditingProject] = useState(false);
   let [project, setProject] = useState(theProject);
   let [deletingProject, setDeletingProject] = useState(false);
-
-  function col() {
-    return creatingProject ? 'black' : 'white';
-  }
+  let { state } = useContext(Context);
 
   async function updateProject() {
     if (!newName || !newCost || !newBeginDate) {
@@ -62,7 +59,7 @@ export default function SingleProject({
   }
 
   return (
-    <ThemeProvider theme={LightOrDark()}>
+    <ThemeProvider theme={state?.mdTheme}>
       <Paper
         sx={{
           p: 2,

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Typography, TextField, Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import DeletingCost from './DeletingCost';
-import LightOrDark from '../LightOrDark';
+import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 
@@ -16,10 +16,7 @@ export default function SingleCost({ creatingCost, theCost, costs, setCosts }) {
   let [editingCost, setEditingCost] = useState(false);
   let [currentCost, setCost] = useState(theCost);
   let [deletingCost, setDeletingCost] = useState(false);
-
-  function col() {
-    return creatingCost ? 'black' : 'white';
-  }
+  let { state } = useContext(Context);
 
   async function updateCost() {
     if (!newName || !newCost) {
@@ -55,7 +52,7 @@ export default function SingleCost({ creatingCost, theCost, costs, setCosts }) {
   }
 
   return (
-    <ThemeProvider theme={LightOrDark()}>
+    <ThemeProvider theme={state?.mdTheme}>
       <Paper
         sx={{
           p: 2,
