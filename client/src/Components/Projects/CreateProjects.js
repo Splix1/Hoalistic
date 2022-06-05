@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import supabase from '../../client';
 import CurrencyInput from 'react-currency-input-field';
+import LightOrDark from '../LightOrDark';
 
 const mdTheme = createTheme();
 
@@ -41,7 +42,7 @@ function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={LightOrDark()}>
       <CssBaseline />
       <Box
         component="form"
@@ -88,7 +89,18 @@ function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
                       placeholder="Project Cost"
                       defaultValue={0}
                       decimalsLimit={2}
-                      style={{ height: '3rem', fontSize: '1rem' }}
+                      style={{
+                        height: '3rem',
+                        fontSize: '1rem',
+                        color:
+                          LightOrDark().palette.mode === 'dark'
+                            ? 'white'
+                            : '#121212',
+                        backgroundColor:
+                          LightOrDark().palette.mode === 'dark'
+                            ? '#121212'
+                            : 'white',
+                      }}
                       onValueChange={(value) => setProjectCost(value)}
                     />
                   </Grid>

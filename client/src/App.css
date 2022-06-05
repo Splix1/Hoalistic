@@ -1,6 +1,5 @@
 body {
   background-color: #0b0c10;
-  color: #c5c6c7;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -44,9 +43,7 @@ body::-webkit-scrollbar {
   align-items: flex-start;
 }
 
-.editing-unit, .editing-project, .editing-cost {
-  background-color: white;
-}
+
 
 #deleting-unit, #deleting-project, #deleting-cost {
     background-color: none;

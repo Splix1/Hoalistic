@@ -8,10 +8,10 @@ import IconButton from '@mui/material/IconButton';
 import { useHistory } from 'react-router-dom';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
-import User, { setUser } from '../../Store/User';
+import { setUser } from '../../Store/User';
 import BasicMenu from '../DropdownMenu/DropdownMenu';
-
-const initialState = {};
+import LightOrDark from '../LightOrDark';
+import { ThemeProvider } from '@mui/material/styles';
 
 export default function NavBar() {
   const history = useHistory();
@@ -23,38 +23,49 @@ export default function NavBar() {
     history.push('/');
   };
 
+  console.log(LightOrDark());
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="sticky">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <BasicMenu />
-          </IconButton>
-          <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-            Hoalistic
-          </Typography>
-          {!state?.id ? (
-            <div>
-              <Button color="inherit" onClick={() => history.push('/')}>
-                Login
-              </Button>
-              <Button color="inherit" onClick={() => history.push('/signup')}>
-                Sign Up
-              </Button>
-            </div>
-          ) : (
-            <Button color="inherit" onClick={signOut}>
-              Sign Out
-            </Button>
-          )}
-        </Toolbar>
-      </AppBar>
-    </Box>
+    <ThemeProvider theme={LightOrDark()}>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="sticky">
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            >
+              <BasicMenu />
+            </IconButton>
+            <Typography
+              variant="h4"
+              component="div"
+              sx={{ flexGrow: 1, color: '#90caf9' }}
+            >
+              Hoalistic
+            </Typography>
+            {!state?.id ? (
+              <div>
+                <Button color="inherit" onClick={() => history.push('/')}>
+                  Login
+                </Button>
+                <Button color="inherit" onClick={() => history.push('/signup')}>
+                  Sign Up
+                </Button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <h5>Hello, {state?.name}</h5>
+                <Button color="inherit" onClick={signOut}>
+                  Sign Out
+                </Button>
+              </div>
+            )}
+          </Toolbar>
+        </AppBar>
+      </Box>
+    </ThemeProvider>
   );
 }

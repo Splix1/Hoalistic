@@ -33,7 +33,8 @@ function LandingPage() {
     if (error) {
       alert('There was a problem signing in.');
     } else {
-      dispatch(setUser(user));
+      let { data } = await supabase.from('HOAs').select('*').eq('email', email);
+      dispatch(setUser(data[0]));
       history.push('/dashboard');
     }
   };

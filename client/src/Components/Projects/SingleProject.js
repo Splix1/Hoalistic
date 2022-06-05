@@ -5,6 +5,7 @@ import { Typography, TextField, Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import DeletingProject from './DeletingProject';
+import LightOrDark from '../LightOrDark';
 
 const mdTheme = createTheme();
 
@@ -61,7 +62,7 @@ export default function SingleProject({
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={LightOrDark()}>
       <Paper
         sx={{
           p: 2,
@@ -70,18 +71,17 @@ export default function SingleProject({
           alignItems: 'flex-start',
           height: 'fit-content',
           justifyContent: 'flex-start',
-          backgroundColor: creatingProject ? 'white' : 'gray',
         }}
       >
         {!editingProject ? (
           <div className="single-project">
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Name: {project?.name}
             </Typography>
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Cost: ${numberWithCommas(project?.cost)}
             </Typography>
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Begin Date: {project?.begin_date}
             </Typography>
 

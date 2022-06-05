@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import SingleCost from './SingleCost';
 import CreateCosts from './CreateCosts';
+import LightOrDark from '../LightOrDark';
 
 const mdTheme = createTheme();
 export default function HOACosts() {
@@ -37,7 +38,7 @@ export default function HOACosts() {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={LightOrDark()}>
       <CssBaseline />
       <Box
         component="main"
@@ -45,11 +46,10 @@ export default function HOACosts() {
           flexGrow: 1,
           height: '100vh',
           overflow: 'auto',
-          backgroundColor: creatingCost ? 'gray' : 'white',
         }}
       >
         <br />
-        <Typography component="h1" variant="h4" sx={{ color: 'black' }}>
+        <Typography component="h1" variant="h4">
           Costs
         </Typography>
         {creatingCost ? (
