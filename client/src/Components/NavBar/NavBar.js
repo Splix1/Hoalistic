@@ -10,8 +10,9 @@ import supabase from '../../client';
 import { Context } from '../ContextProvider';
 import User, { setUser } from '../../Store/User';
 import BasicMenu from '../DropdownMenu/DropdownMenu';
-
-const initialState = {};
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { createTheme } from '@mui/material/styles';
 
 export default function NavBar() {
   const history = useHistory();
@@ -22,6 +23,26 @@ export default function NavBar() {
     dispatch(setUser({}));
     history.push('/');
   };
+
+  async function updateTheme() {
+    let newTheme = state.theme === 'light' ? 'dark' : 'light';
+    let { data, error } = await supabase
+      .from('HOAs')
+      .update({ theme: newTheme })
+      .eq('email', state.email);
+    dispatch(
+      setUser({
+        ...state,
+        theme: newTheme,
+        mdTheme: createTheme({ palette: { mode: newTheme } }),
+      })
+    );
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(`DATA`, data);
+    }
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -35,6 +56,9 @@ export default function NavBar() {
             sx={{ mr: 2 }}
           >
             <BasicMenu />
+          </IconButton>
+          <IconButton sx={{ ml: 1 }} onClick={updateTheme} color="inherit">
+            {state.theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
           <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
             Hoalistic
