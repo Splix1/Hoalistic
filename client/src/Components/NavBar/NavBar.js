@@ -26,7 +26,7 @@ export default function NavBar() {
 
   async function updateTheme() {
     let newTheme = state.theme === 'light' ? 'dark' : 'light';
-    let { data, error } = await supabase
+    await supabase
       .from('HOAs')
       .update({ theme: newTheme })
       .eq('email', state.email);
@@ -37,11 +37,6 @@ export default function NavBar() {
         mdTheme: createTheme({ palette: { mode: newTheme } }),
       })
     );
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(`DATA`, data);
-    }
   }
 
   return (
@@ -60,7 +55,11 @@ export default function NavBar() {
           <IconButton sx={{ ml: 1 }} onClick={updateTheme} color="inherit">
             {state.theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
-          <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h4"
+            component="div"
+            sx={{ flexGrow: 1, color: '#90caf9' }}
+          >
             Hoalistic
           </Typography>
           {!state?.id ? (

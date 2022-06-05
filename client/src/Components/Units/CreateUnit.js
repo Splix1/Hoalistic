@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -12,11 +12,13 @@ import Button from '@mui/material/Button';
 import './Units.css';
 import supabase from '../../client';
 import CurrencyInput from 'react-currency-input-field';
+import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 
 function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
   let [monthlyAssessment, setMonthlyAssessment] = useState(0);
+  let { state } = useContext(Context);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -44,20 +46,19 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={state?.mdTheme}>
       <CssBaseline />
       <Box
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          backgroundColor: creatingUnit ? 'gray' : 'white',
           flexGrow: 1,
           height: '100vh',
           overflow: 'auto',
         }}
       >
         <Toolbar />
-        <Typography component="h1" variant="h4" sx={{ color: 'white' }}>
+        <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
           Create Unit
         </Typography>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -92,7 +93,12 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
                       placeholder="Monthly Assessment"
                       defaultValue={0}
                       decimalsLimit={2}
-                      style={{ height: '3rem', fontSize: '1rem' }}
+                      style={{
+                        height: '3rem',
+                        fontSize: '1rem',
+                        backgroundColor: '#121212',
+                        color: 'white',
+                      }}
                       onValueChange={(value) => setMonthlyAssessment(value)}
                     />
                   </Grid>

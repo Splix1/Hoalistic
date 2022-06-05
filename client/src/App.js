@@ -6,7 +6,7 @@ import supabase from './client';
 import { setUser } from './Store/User';
 import { Context } from './Components/ContextProvider';
 import { useLocation, useHistory, useParams } from 'react-router-dom';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function App() {
   const { state, dispatch } = useContext(Context);
@@ -43,10 +43,12 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <NavBar id="navbar" />
-      <Routes />
-    </div>
+    <ThemeProvider theme={state?.mdTheme}>
+      <div className="App">
+        {state?.id ? <NavBar id="navbar" /> : null}
+        <Routes />
+      </div>
+    </ThemeProvider>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -10,12 +10,14 @@ import './Units.css';
 import CreateUnits from './CreateUnit';
 import SingleUnit from './SingleUnit';
 import supabase from '../../client';
+import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 
 function Units() {
   const [creatingUnit, setCreatingUnit] = useState(false);
   const [units, setUnits] = useState([]);
+  let { state } = useContext(Context);
 
   useEffect(() => {
     async function fetchUnits() {
@@ -39,7 +41,7 @@ function Units() {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={state?.mdTheme}>
       <CssBaseline />
       <Box
         component="main"
@@ -47,11 +49,10 @@ function Units() {
           flexGrow: 1,
           height: '100vh',
           overflow: 'auto',
-          backgroundColor: creatingUnit ? 'gray' : 'white',
         }}
       >
         <br />
-        <Typography component="h1" variant="h4" sx={{ color: 'black' }}>
+        <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
           Units
         </Typography>
         {creatingUnit ? (

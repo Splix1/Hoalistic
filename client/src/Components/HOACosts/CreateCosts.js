@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -9,16 +9,14 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import supabase from '../../client';
 import CurrencyInput from 'react-currency-input-field';
+import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 
-export default function CreateCosts({
-  setCreatingCost,
-
-  newCost,
-}) {
+export default function CreateCosts({ setCreatingCost, newCost }) {
   let [cost, setCost] = useState(0);
   let [costName, setCostName] = useState('');
+  let { state } = useContext(Context);
 
   async function createCost() {
     if (cost < 0) {
@@ -38,9 +36,9 @@ export default function CreateCosts({
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={state?.mdTheme}>
       <CssBaseline />
-      <Typography component="h1" variant="h4" sx={{ color: 'white' }}>
+      <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
         Create Cost
       </Typography>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -76,7 +74,12 @@ export default function CreateCosts({
                     placeholder="Project Cost"
                     defaultValue={0}
                     decimalsLimit={2}
-                    style={{ height: '3rem', fontSize: '1rem' }}
+                    style={{
+                      height: '3rem',
+                      fontSize: '1rem',
+                      backgroundColor: '#121212',
+                      color: 'white',
+                    }}
                     onValueChange={(value) => setCost(value)}
                   />
                 </Grid>

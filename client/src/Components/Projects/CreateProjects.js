@@ -11,11 +11,13 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import supabase from '../../client';
 import CurrencyInput from 'react-currency-input-field';
+import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 
 function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
   let [projectCost, setProjectCost] = useState(0);
+  let { state } = useContext(Context);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -41,7 +43,7 @@ function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={state?.mdTheme}>
       <CssBaseline />
       <Box
         component="form"
@@ -53,7 +55,7 @@ function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
         }}
       >
         <Toolbar />
-        <Typography component="h1" variant="h4" sx={{ color: 'white' }}>
+        <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
           Create Unit
         </Typography>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -88,7 +90,12 @@ function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
                       placeholder="Project Cost"
                       defaultValue={0}
                       decimalsLimit={2}
-                      style={{ height: '3rem', fontSize: '1rem' }}
+                      style={{
+                        height: '3rem',
+                        fontSize: '1rem',
+                        backgroundColor: '#121212',
+                        color: 'white',
+                      }}
                       onValueChange={(value) => setProjectCost(value)}
                     />
                   </Grid>

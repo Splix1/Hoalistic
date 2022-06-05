@@ -6,6 +6,7 @@ import './Units.css';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import DeletingUnit from './DeletingUnit';
+import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 
@@ -18,10 +19,7 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
   let [editingUnit, setEditingUnit] = useState(false);
   let [unit, setUnit] = useState(theUnit);
   let [deletingUnit, setDeletingUnit] = useState(false);
-
-  function col() {
-    return creatingUnit ? 'black' : 'white';
-  }
+  let { state } = useContext(Context);
 
   async function updateUnit() {
     if (!newUnitID || !monthlyAssessment || !tenantName || !movedIn) {
@@ -52,7 +50,7 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={state?.mdTheme}>
       <Paper
         sx={{
           p: 2,
@@ -61,21 +59,20 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
           alignItems: 'flex-start',
           height: 'fit-content',
           justifyContent: 'flex-start',
-          backgroundColor: creatingUnit ? 'white' : 'gray',
         }}
       >
         {!editingUnit ? (
           <div className="single-unit">
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Unit: {unit?.unitID}
             </Typography>
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Tenant Name: {unit?.tenant_name}
             </Typography>
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Monthly Assessment: ${unit?.monthly_assessment}
             </Typography>
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Date moved in: {unit?.dateMovedIn}
             </Typography>
             <div className="display-row">

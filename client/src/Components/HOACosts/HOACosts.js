@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import supabase from '../../client';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,12 +8,14 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import SingleCost from './SingleCost';
 import CreateCosts from './CreateCosts';
+import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 export default function HOACosts() {
   const [costs, setCosts] = useState([]);
   const [user, setUser] = useState({});
   const [creatingCost, setCreatingCost] = useState(false);
+  let { state } = useContext(Context);
 
   useEffect(() => {
     async function fetchCosts() {
@@ -37,7 +39,7 @@ export default function HOACosts() {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={state?.mdTheme}>
       <CssBaseline />
       <Box
         component="main"
@@ -45,11 +47,10 @@ export default function HOACosts() {
           flexGrow: 1,
           height: '100vh',
           overflow: 'auto',
-          backgroundColor: creatingCost ? 'gray' : 'white',
         }}
       >
         <br />
-        <Typography component="h1" variant="h4" sx={{ color: 'black' }}>
+        <Typography component="h1" variant="h4" sx={{ color: '90caf9' }}>
           Costs
         </Typography>
         {creatingCost ? (
