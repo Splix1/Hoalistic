@@ -63,7 +63,12 @@ export default function SignUp() {
         alert('There was a problem signing up.');
         return;
       }
-      dispatch(setUser(user));
+      dispatch(
+        setUser({
+          ...user,
+          mdTheme: createTheme({ palette: { mode: user.theme } }),
+        })
+      );
       history.push('/dashboard');
     }
   };
