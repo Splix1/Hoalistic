@@ -115,7 +115,12 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
               placeholder="Monthly Assessment"
               defaultValue={unit?.monthly_assessment}
               decimalsLimit={2}
-              style={{ height: '3rem', fontSize: '1rem' }}
+              style={{
+                height: '3rem',
+                fontSize: '1rem',
+                backgroundColor: '#121212',
+                color: 'white',
+              }}
               onValueChange={(value) => setMonthlyAssessment(value)}
               className="editing-unit"
             />

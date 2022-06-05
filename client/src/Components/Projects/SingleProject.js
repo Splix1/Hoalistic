@@ -118,7 +118,12 @@ export default function SingleProject({
               placeholder="Project Cost"
               defaultValue={project?.cost}
               decimalsLimit={2}
-              style={{ height: '3rem', fontSize: '1rem' }}
+              style={{
+                height: '3rem',
+                fontSize: '1rem',
+                backgroundColor: '#121212',
+                color: 'white',
+              }}
               onValueChange={(value) => setNewCost(value)}
               className="editing-project"
             />

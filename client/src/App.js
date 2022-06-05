@@ -13,11 +13,6 @@ function App() {
   const location = useLocation();
   const history = useHistory();
 
-  async function fetchUser(email) {
-    let { data } = await supabase.from('HOAs').select('*').eq('email', email);
-    dispatch(setUser(data[0]));
-  }
-
   useEffect(() => {
     const user = supabase.auth.session();
     const curUser = supabase.auth.user();
