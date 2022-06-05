@@ -14,7 +14,11 @@ import { Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 
-const mdTheme = createTheme();
+const mdTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function DashboardContent() {
   let [creatingCost, setCreatingCost] = React.useState(false);

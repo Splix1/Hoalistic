@@ -16,6 +16,19 @@ const initialState = {};
 export default function NavBar() {
   const history = useHistory();
   const { state, dispatch } = useContext(Context);
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    let user = supabase.auth.user();
+    async function fetchUser() {
+      let { data } = await supabase
+        .from('HOAs')
+        .select('*')
+        .eq('email', user?.email);
+      setCurrentUser(data[0]);
+    }
+    fetchUser();
+  }, []);
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -49,9 +62,12 @@ export default function NavBar() {
               </Button>
             </div>
           ) : (
-            <Button color="inherit" onClick={signOut}>
-              Sign Out
-            </Button>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <h5>Hello, {currentUser?.name}</h5>
+              <Button color="inherit" onClick={signOut}>
+                Sign Out
+              </Button>
+            </div>
           )}
         </Toolbar>
       </AppBar>
