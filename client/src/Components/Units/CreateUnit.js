@@ -12,11 +12,7 @@ import Button from '@mui/material/Button';
 import './Units.css';
 import supabase from '../../client';
 import CurrencyInput from 'react-currency-input-field';
-<<<<<<< HEAD
 import { Context } from '../ContextProvider';
-=======
-import LightOrDark from '../LightOrDark';
->>>>>>> e678c840cb48ae23b77bce644af440758feeffb4
 
 const mdTheme = createTheme();
 
