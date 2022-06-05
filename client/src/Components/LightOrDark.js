@@ -1,9 +1,12 @@
 import { createTheme } from '@mui/material/styles';
-import supabase from '../client';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Context } from './ContextProvider';
 
 export default function LightOrDark() {
   const { state } = useContext(Context);
-  //
+  return createTheme({
+    palette: {
+      mode: state.theme,
+    },
+  });
 }

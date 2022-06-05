@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import './Units.css';
 import supabase from '../../client';
 import CurrencyInput from 'react-currency-input-field';
+import LightOrDark from '../LightOrDark';
 
 const mdTheme = createTheme();
 
@@ -44,20 +45,19 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={LightOrDark()}>
       <CssBaseline />
       <Box
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          backgroundColor: creatingUnit ? 'gray' : 'white',
           flexGrow: 1,
           height: '100vh',
           overflow: 'auto',
         }}
       >
         <Toolbar />
-        <Typography component="h1" variant="h4" sx={{ color: 'white' }}>
+        <Typography component="h1" variant="h4">
           Create Unit
         </Typography>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>

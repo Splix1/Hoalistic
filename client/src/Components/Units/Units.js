@@ -10,6 +10,7 @@ import './Units.css';
 import CreateUnits from './CreateUnit';
 import SingleUnit from './SingleUnit';
 import supabase from '../../client';
+import LightOrDark from '../LightOrDark';
 
 const mdTheme = createTheme();
 
@@ -39,7 +40,7 @@ function Units() {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={LightOrDark()}>
       <CssBaseline />
       <Box
         component="main"
@@ -47,11 +48,10 @@ function Units() {
           flexGrow: 1,
           height: '100vh',
           overflow: 'auto',
-          backgroundColor: creatingUnit ? 'gray' : 'white',
         }}
       >
         <br />
-        <Typography component="h1" variant="h4" sx={{ color: 'black' }}>
+        <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
           Units
         </Typography>
         {creatingUnit ? (

@@ -6,8 +6,7 @@ import './Units.css';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import DeletingUnit from './DeletingUnit';
-
-const mdTheme = createTheme();
+import LightOrDark from '../LightOrDark';
 
 function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
   let { dateMovedIn, monthly_assessment, tenant_name, unitID } = theUnit;
@@ -52,7 +51,7 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={LightOrDark()}>
       <Paper
         sx={{
           p: 2,
@@ -61,21 +60,20 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
           alignItems: 'flex-start',
           height: 'fit-content',
           justifyContent: 'flex-start',
-          backgroundColor: creatingUnit ? 'white' : 'gray',
         }}
       >
         {!editingUnit ? (
           <div className="single-unit">
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Unit: {unit?.unitID}
             </Typography>
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Tenant Name: {unit?.tenant_name}
             </Typography>
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Monthly Assessment: ${unit?.monthly_assessment}
             </Typography>
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Date moved in: {unit?.dateMovedIn}
             </Typography>
             <div className="display-row">
