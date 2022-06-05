@@ -7,6 +7,7 @@ import { setUser } from './Store/User';
 import { Context } from './Components/ContextProvider';
 import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 function App() {
   const { state, dispatch } = useContext(Context);
@@ -44,6 +45,7 @@ function App() {
   return (
     <ThemeProvider theme={state?.mdTheme}>
       <div className="App">
+        <CssBaseline />
         {state?.id ? <NavBar id="navbar" /> : null}
         <Routes />
       </div>
