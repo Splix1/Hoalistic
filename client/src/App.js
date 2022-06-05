@@ -22,7 +22,7 @@ function App() {
   useEffect(() => {
     const user = supabase.auth.session();
     const curUser = supabase.auth.user();
-    if (user.access_token) {
+    if (user?.access_token) {
       fetchUser(curUser.email);
     }
     const searchParams = new URLSearchParams(location.hash.replace('#', ''));
@@ -36,7 +36,7 @@ function App() {
   return (
     <ThemeProvider theme={LightOrDark()}>
       <div className="App">
-        <NavBar id="navbar" />
+        {state?.id ? <NavBar id="navbar" /> : null}
         <Routes />
       </div>
     </ThemeProvider>

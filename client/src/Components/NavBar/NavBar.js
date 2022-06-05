@@ -23,6 +23,8 @@ export default function NavBar() {
     history.push('/');
   };
 
+  console.log(LightOrDark());
+
   return (
     <ThemeProvider theme={LightOrDark()}>
       <Box sx={{ flexGrow: 1 }}>
