@@ -17,7 +17,7 @@ function App() {
     const user = supabase.auth.session();
     const curUser = supabase.auth.user();
 
-    if (user.access_token) {
+    if (user?.access_token) {
       async function fetchUser() {
         let { data } = await supabase
           .from('HOAs')
