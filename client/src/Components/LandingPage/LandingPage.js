@@ -34,7 +34,12 @@ function LandingPage() {
       alert('There was a problem signing in.');
     } else {
       let { data } = await supabase.from('HOAs').select('*').eq('email', email);
-      dispatch(setUser(data[0]));
+      dispatch(
+        setUser({
+          ...data[0],
+          mdTheme: createTheme({ palette: { mode: data[0].theme } }),
+        })
+      );
       history.push('/dashboard');
     }
   };

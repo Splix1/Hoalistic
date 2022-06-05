@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CssBaseline, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 import Title from './Title';
 import {
   ArgumentAxis,
@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from '@devexpress/dx-react-chart-material-ui';
 import { EventTracker } from '@devexpress/dx-react-chart';
+import CssBaseline from '@mui/material/CssBaseline';
 
 export default function FutureProjections({ data }) {
   return (
