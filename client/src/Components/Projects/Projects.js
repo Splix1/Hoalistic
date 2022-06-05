@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import SingleProject from './SingleProject';
 import CreateProjects from './CreateProjects';
+import LightOrDark from '../LightOrDark';
 
 const mdTheme = createTheme();
 export default function Projects() {
@@ -37,7 +38,7 @@ export default function Projects() {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={LightOrDark()}>
       <CssBaseline />
       <Box
         component="main"
@@ -45,11 +46,10 @@ export default function Projects() {
           flexGrow: 1,
           height: '100vh',
           overflow: 'auto',
-          backgroundColor: creatingProject ? 'gray' : 'white',
         }}
       >
         <br />
-        <Typography component="h1" variant="h4" sx={{ color: 'black' }}>
+        <Typography component="h1" variant="h4">
           Projects
         </Typography>
         {creatingProject ? (

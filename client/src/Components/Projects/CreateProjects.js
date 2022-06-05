@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import supabase from '../../client';
 import CurrencyInput from 'react-currency-input-field';
+import LightOrDark from '../LightOrDark';
 
 const mdTheme = createTheme();
 
@@ -41,7 +42,7 @@ function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={LightOrDark()}>
       <CssBaseline />
       <Box
         component="form"
