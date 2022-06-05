@@ -43,7 +43,12 @@ export default function Deposits({
           prefix="$"
           placeholder="Please enter a number"
           decimalsLimit={2}
-          style={{ height: '2rem', fontSize: '1rem' }}
+          style={{
+            height: '2rem',
+            fontSize: '1rem',
+            backgroundColor: '#121212',
+            color: 'white',
+          }}
           onValueChange={(value) => setHOABalanceField(value)}
         />
         <Button

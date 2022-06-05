@@ -307,7 +307,12 @@ function DashboardContent() {
                           placeholder="Please enter a number"
                           defaultValue={0}
                           decimalsLimit={2}
-                          style={{ height: '3rem', fontSize: '1rem' }}
+                          style={{
+                            height: '3rem',
+                            fontSize: '1rem',
+                            backgroundColor: '#121212',
+                            color: 'white',
+                          }}
                           onValueChange={(value) => setCostPrice(value)}
                         />
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -372,7 +377,12 @@ function DashboardContent() {
                           placeholder="Please enter a number"
                           defaultValue={0}
                           decimalsLimit={2}
-                          style={{ height: '3rem', fontSize: '1rem' }}
+                          style={{
+                            height: '3rem',
+                            fontSize: '1rem',
+                            backgroundColor: '#121212',
+                            color: 'white',
+                          }}
                           onValueChange={(value) => setProjectCost(value)}
                         />
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -432,7 +442,12 @@ function DashboardContent() {
                           placeholder="Please enter a number"
                           defaultValue={0}
                           decimalsLimit={2}
-                          style={{ height: '3rem', fontSize: '1rem' }}
+                          style={{
+                            height: '3rem',
+                            fontSize: '1rem',
+                            backgroundColor: '#121212',
+                            color: 'white',
+                          }}
                           onValueChange={(value) => setUnitAssessment(value)}
                         />
                         <TextField
