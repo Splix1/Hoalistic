@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import { useHistory } from 'react-router-dom';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
-import User, { setUser } from '../../Store/User';
+import { setUser } from '../../Store/User';
 import BasicMenu from '../DropdownMenu/DropdownMenu';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';

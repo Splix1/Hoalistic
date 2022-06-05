@@ -6,6 +6,7 @@ import CurrencyInput from 'react-currency-input-field';
 import { setUser } from '../../Store/User';
 import { Context } from '../ContextProvider';
 import supabase from '../../client';
+import FutureProjections from './Chart';
 
 export default function Deposits({
   generateChartData,
@@ -30,32 +31,34 @@ export default function Deposits({
   }
 
   return (
-    <div>
-      <Title>Current HOA Balance</Title>
-      <Typography component="h1" variant="h5">
-        ${HOABalance}
-      </Typography>
-      <CurrencyInput
-        id="input-example"
-        name="input-name"
-        prefix="$"
-        placeholder="Please enter a number"
-        decimalsLimit={2}
-        style={{ height: '2rem', fontSize: '1rem' }}
-        onValueChange={(value) => setHOABalanceField(value)}
-      />
-      <Button
-        fullWidth
-        variant="contained"
-        sx={{ mt: 3, mb: 2 }}
-        onClick={() => {
-          setHOABalance(numberWithCommas(HOABalanceField));
-          dispatch(setUser({ ...state, HOABalance: HOABalanceField }));
-          updateBalance(HOABalanceField);
-        }}
-      >
-        Update Balance
-      </Button>
+    <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div>
+        <Title>Current HOA Balance</Title>
+        <Typography component="h1" variant="h5">
+          ${HOABalance}
+        </Typography>
+        <CurrencyInput
+          id="input-example"
+          name="input-name"
+          prefix="$"
+          placeholder="Please enter a number"
+          decimalsLimit={2}
+          style={{ height: '2rem', fontSize: '1rem' }}
+          onValueChange={(value) => setHOABalanceField(value)}
+        />
+        <Button
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          onClick={() => {
+            setHOABalance(numberWithCommas(HOABalanceField));
+            dispatch(setUser({ ...state, HOABalance: HOABalanceField }));
+            updateBalance(HOABalanceField);
+          }}
+        >
+          Update Balance
+        </Button>
+      </div>
     </div>
   );
 }

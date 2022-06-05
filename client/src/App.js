@@ -13,6 +13,11 @@ function App() {
   const location = useLocation();
   const history = useHistory();
 
+  async function fetchUser(email) {
+    let { data } = await supabase.from('HOAs').select('*').eq('email', email);
+    dispatch(setUser(data[0]));
+  }
+
   useEffect(() => {
     const user = supabase.auth.session();
     const curUser = supabase.auth.user();
@@ -35,8 +40,7 @@ function App() {
 
     const searchParams = new URLSearchParams(location.hash);
     if (searchParams.getAll('type').includes('recovery')) {
-      const access_token =
-        searchParams.get('#access_token') || searchParams.get('access_token');
+      const access_token = searchParams.get('access_token');
       dispatch(setUser({ ...state, access_token: access_token }));
       history.push('/resetpassword');
     }
