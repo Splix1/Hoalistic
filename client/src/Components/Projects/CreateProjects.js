@@ -89,7 +89,18 @@ function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
                       placeholder="Project Cost"
                       defaultValue={0}
                       decimalsLimit={2}
-                      style={{ height: '3rem', fontSize: '1rem' }}
+                      style={{
+                        height: '3rem',
+                        fontSize: '1rem',
+                        color:
+                          LightOrDark().palette.mode === 'dark'
+                            ? 'white'
+                            : '#121212',
+                        backgroundColor:
+                          LightOrDark().palette.mode === 'dark'
+                            ? '#121212'
+                            : 'white',
+                      }}
                       onValueChange={(value) => setProjectCost(value)}
                     />
                   </Grid>

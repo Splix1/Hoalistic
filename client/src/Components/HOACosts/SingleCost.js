@@ -5,6 +5,7 @@ import { Typography, TextField, Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import DeletingCost from './DeletingCost';
+import LightOrDark from '../LightOrDark';
 
 const mdTheme = createTheme();
 
@@ -54,7 +55,7 @@ export default function SingleCost({ creatingCost, theCost, costs, setCosts }) {
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={LightOrDark()}>
       <Paper
         sx={{
           p: 2,
@@ -63,15 +64,14 @@ export default function SingleCost({ creatingCost, theCost, costs, setCosts }) {
           alignItems: 'flex-start',
           height: 'fit-content',
           justifyContent: 'flex-start',
-          backgroundColor: creatingCost ? 'white' : 'gray',
         }}
       >
         {!editingCost ? (
           <div className="single-cost">
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Name: {currentCost?.name}
             </Typography>
-            <Typography sx={{ color: col(), fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
               Cost: ${numberWithCommas(currentCost?.cost)}
             </Typography>
 

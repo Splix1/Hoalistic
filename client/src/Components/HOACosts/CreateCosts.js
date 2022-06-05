@@ -9,14 +9,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import supabase from '../../client';
 import CurrencyInput from 'react-currency-input-field';
+import LightOrDark from '../LightOrDark';
 
-const mdTheme = createTheme();
-
-export default function CreateCosts({
-  setCreatingCost,
-
-  newCost,
-}) {
+export default function CreateCosts({ setCreatingCost, newCost }) {
   let [cost, setCost] = useState(0);
   let [costName, setCostName] = useState('');
 
@@ -38,9 +33,9 @@ export default function CreateCosts({
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
+    <ThemeProvider theme={LightOrDark()}>
       <CssBaseline />
-      <Typography component="h1" variant="h4" sx={{ color: 'white' }}>
+      <Typography component="h1" variant="h4">
         Create Cost
       </Typography>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -76,7 +71,18 @@ export default function CreateCosts({
                     placeholder="Project Cost"
                     defaultValue={0}
                     decimalsLimit={2}
-                    style={{ height: '3rem', fontSize: '1rem' }}
+                    style={{
+                      height: '3rem',
+                      fontSize: '1rem',
+                      color:
+                        LightOrDark().palette.mode === 'dark'
+                          ? 'white'
+                          : '#121212',
+                      backgroundColor:
+                        LightOrDark().palette.mode === 'dark'
+                          ? '#121212'
+                          : 'white',
+                    }}
                     onValueChange={(value) => setCost(value)}
                   />
                 </Grid>

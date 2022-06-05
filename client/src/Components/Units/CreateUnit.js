@@ -92,7 +92,18 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
                       placeholder="Monthly Assessment"
                       defaultValue={0}
                       decimalsLimit={2}
-                      style={{ height: '3rem', fontSize: '1rem' }}
+                      style={{
+                        height: '3rem',
+                        fontSize: '1rem',
+                        color:
+                          LightOrDark().palette.mode === 'dark'
+                            ? 'white'
+                            : '#121212',
+                        backgroundColor:
+                          LightOrDark().palette.mode === 'dark'
+                            ? '#121212'
+                            : 'white',
+                      }}
                       onValueChange={(value) => setMonthlyAssessment(value)}
                     />
                   </Grid>
