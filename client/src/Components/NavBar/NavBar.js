@@ -72,9 +72,12 @@ export default function NavBar() {
               </Button>
             </div>
           ) : (
-            <Button color="inherit" onClick={signOut}>
-              Sign Out
-            </Button>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <h4>Hello, {state?.name.split(' ')[0]}</h4>
+              <Button color="inherit" onClick={signOut}>
+                Sign Out
+              </Button>
+            </div>
           )}
         </Toolbar>
       </AppBar>
