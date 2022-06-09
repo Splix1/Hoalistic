@@ -47,7 +47,7 @@ export default function SignUp() {
     if (error) {
       alert('There was a problem signing up.');
     } else {
-      let { error } = await supabase.from('HOAs').insert([
+      let { data: newUser, error } = await supabase.from('HOAs').insert([
         {
           name: `${firstName} ${lastName}`,
           address,
@@ -65,10 +65,11 @@ export default function SignUp() {
       }
       dispatch(
         setUser({
-          ...user,
-          mdTheme: createTheme({ palette: { mode: user.theme } }),
+          ...newUser[0],
+          mdTheme: createTheme({ palette: { mode: newUser[0].theme } }),
         })
       );
+
       history.push('/dashboard');
     }
   };

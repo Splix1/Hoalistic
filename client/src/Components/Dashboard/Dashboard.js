@@ -15,12 +15,6 @@ import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
 
-const mdTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
-
 function DashboardContent() {
   let [creatingCost, setCreatingCost] = React.useState(false);
   let [costName, setCostName] = React.useState('');

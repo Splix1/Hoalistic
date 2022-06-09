@@ -73,7 +73,7 @@ export default function NavBar() {
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <h4>Hello, {state?.name.split(' ')[0]}</h4>
+              <h4>Hello, {state?.name?.split(' ')[0]}</h4>
               <Button color="inherit" onClick={signOut}>
                 Sign Out
               </Button>
