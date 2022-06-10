@@ -10,6 +10,8 @@ import { Context } from '../ContextProvider';
 import Title from '../Dashboard/Title';
 import { Typography } from '@mui/material';
 import BasicInfo from './BasicInfo';
+import EditIcon from '@mui/icons-material/Edit';
+import MissionStatement from './MissionStatement';
 
 function UserProfileContent() {
   let { state } = React.useContext(Context);
@@ -36,36 +38,10 @@ function UserProfileContent() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6} lg={6}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 500,
-                  }}
-                >
-                  {!editingProfile ? <BasicInfo /> : null}
-                </Paper>
+                {!editingProfile ? <BasicInfo /> : null}
               </Grid>
               <Grid item xs={12} md={6} lg={6}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 500,
-                  }}
-                >
-                  <Title>
-                    <Typography sx={{ fontSize: '2rem' }}>
-                      Mission Statement
-                    </Typography>
-                  </Title>
-                  <Typography sx={{ fontSize: '1.5rem' }}>
-                    {state?.missionStatement ||
-                      'You have no mission statement yet.'}
-                  </Typography>
-                </Paper>
+                {!editingProfile ? <MissionStatement /> : null}
               </Grid>
             </Grid>
           </Container>
