@@ -13,7 +13,7 @@ import BasicInfo from './BasicInfo';
 
 function UserProfileContent() {
   let { state } = React.useContext(Context);
-  let [editingInfo, setEditingInfo] = React.useState(false);
+  let [editingProfile, setEditingProfile] = React.useState(false);
 
   console.log(state);
   return (
@@ -44,7 +44,7 @@ function UserProfileContent() {
                     height: 500,
                   }}
                 >
-                  {!editingInfo ? <BasicInfo /> : null}
+                  {!editingProfile ? <BasicInfo /> : null}
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6} lg={6}>

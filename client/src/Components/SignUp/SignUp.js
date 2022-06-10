@@ -182,6 +182,7 @@ export default function SignUp() {
                   fullWidth
                   placeholder="Mission Statement"
                   minRows={3}
+                  maxLength={300}
                   style={{ width: 394, height: 100 }}
                   id="missionStatement"
                   label="Mission Statement"
