@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import { useHistory } from 'react-router-dom';
+import { useHistory, NavLink } from 'react-router-dom';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
 import { setUser } from '../../Store/User';
@@ -73,7 +73,14 @@ export default function NavBar() {
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <h4>Hello, {state?.name?.split(' ')[0]}</h4>
+              <h4>
+                <NavLink
+                  to="/profile"
+                  style={{ color: 'inherit', textDecoration: 'inherit' }}
+                >
+                  Hello, {state?.name?.split(' ')[0]}
+                </NavLink>
+              </h4>
               <Button color="inherit" onClick={signOut}>
                 Sign Out
               </Button>
