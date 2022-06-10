@@ -18,6 +18,12 @@ function App() {
     const curUser = supabase.auth.user();
 
     if (user?.access_token) {
+      dispatch(
+        setUser({
+          id: 123,
+          mdTheme: createTheme({ palette: { mode: 'light' } }),
+        })
+      );
       async function fetchUser() {
         let { data } = await supabase
           .from('HOAs')

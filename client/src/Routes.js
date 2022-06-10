@@ -11,6 +11,7 @@ import Projects from './Components/Projects/Projects';
 import HOACosts from './Components/HOACosts/HOACosts';
 import ForgotPassword from './Components/ForgotPassword/ForgotPassword';
 import ResetPassword from './Components/ForgotPassword/ResetPassword';
+import UserProfile from './Components/UserProfile/UserProfile';
 
 function Routes() {
   const { state, dispatch } = useContext(Context);
@@ -23,6 +24,7 @@ function Routes() {
           <Route path="/units" component={Units} />
           <Route path="/projects" component={Projects} />
           <Route path="/costs" component={HOACosts} />
+          <Route path="/profile" component={UserProfile} />
           <Route path="*" component={Dashboard} />
         </Switch>
       ) : (
