@@ -2,20 +2,16 @@ import * as React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import { Context } from '../ContextProvider';
-import Title from '../Dashboard/Title';
-import { Typography } from '@mui/material';
 import BasicInfo from './BasicInfo';
-import EditIcon from '@mui/icons-material/Edit';
 import MissionStatement from './MissionStatement';
 import Button from '@mui/material/Button';
 import EditingMissionStatement from './EditingMissionStatement';
 import supabase from '../../client';
 import { setUser } from '../../Store/User';
+import EditingBasicInfo from './EditingBasicInfo';
 
 function UserProfileContent() {
   let { state, dispatch } = React.useContext(Context);
@@ -74,7 +70,11 @@ function UserProfileContent() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6} lg={6}>
-                {!editingProfile ? <BasicInfo /> : null}
+                {!editingProfile ? (
+                  <BasicInfo />
+                ) : (
+                  <EditingBasicInfo newInfo={newInfo} setNewInfo={setNewInfo} />
+                )}
               </Grid>
               <Grid item xs={12} md={6} lg={6}>
                 {!editingProfile ? (
