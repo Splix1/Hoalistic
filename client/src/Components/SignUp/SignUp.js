@@ -20,6 +20,10 @@ export default function SignUp() {
   const { dispatch } = useContext(Context);
   const history = useHistory();
 
+  function verifyEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -36,6 +40,22 @@ export default function SignUp() {
     const missionStatement = data.get('missionStatement');
     if (password !== confirmPassword) {
       alert('Passwords do not match!');
+      return;
+    }
+    if (verifyEmail(email) === false) {
+      alert('Please provide a valid email.');
+    }
+    if (
+      !password ||
+      !firstName ||
+      !lastName ||
+      !address ||
+      !city ||
+      !state ||
+      !zip ||
+      !estYearBuilt
+    ) {
+      alert('All fields except mission statement are required.');
       return;
     }
     const { user, session, error } = await supabase.auth.signUp({
