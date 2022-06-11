@@ -65,7 +65,8 @@ export default function SignUp() {
       lastName: lastName,
     });
     if (error) {
-      alert('There was a problem signing up.');
+      if (error.message === 'User already registered')
+        alert('This email has already been registered.');
     } else {
       let { data: newUser, error } = await supabase.from('HOAs').insert([
         {
