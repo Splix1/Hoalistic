@@ -13,7 +13,7 @@ export default function BasicInfo() {
         p: 2,
         display: 'flex',
         flexDirection: 'column',
-        height: 450,
+        height: 550,
       }}
     >
       <div style={{ marginTop: '2rem' }}>

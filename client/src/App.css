@@ -56,3 +56,6 @@ body::-webkit-scrollbar {
     border-radius: 8px;
 }
 
+.form-spacing {
+  margin-bottom: 1rem;
+}
