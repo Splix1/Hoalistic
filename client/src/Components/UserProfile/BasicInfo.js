@@ -19,18 +19,22 @@ export default function BasicInfo() {
       <div style={{ marginTop: '2rem' }}>
         {' '}
         <Title>
-          <Typography sx={{ fontSize: '2rem' }}>{state?.name}</Typography>
+          <Typography sx={{ fontSize: '2rem', marginBottom: '1rem' }}>
+            {state?.name}
+          </Typography>
         </Title>
         <div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography sx={{ fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
               Built in {state?.estYearBuilt}
             </Typography>
-            <Typography sx={{ fontSize: '1.5rem' }}>{state?.email}</Typography>
-            <Typography sx={{ fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
+              {state?.email}
+            </Typography>
+            <Typography sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
               {state?.address}
             </Typography>
-            <Typography sx={{ fontSize: '1.5rem' }}>
+            <Typography sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
               {state?.city}, {state?.state} {state?.zip}
             </Typography>
           </div>
