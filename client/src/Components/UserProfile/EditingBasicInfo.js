@@ -18,10 +18,20 @@ export default function EditingBasicInfo({ newInfo, setNewInfo }) {
     >
       <div style={{ marginTop: '2rem' }}>
         {' '}
-        <Title>
-          <Typography sx={{ fontSize: '2rem' }}>{state?.name}</Typography>
-        </Title>
         <div>
+          <TextField
+            required
+            fullWidth
+            id="name"
+            label="Name"
+            name="name"
+            defaultValue={state?.name}
+            autoComplete="Jimmie"
+            className="editing-unit"
+            onChange={(evt) =>
+              setNewInfo({ ...newInfo, name: evt.target.value })
+            }
+          />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TextField
               required
