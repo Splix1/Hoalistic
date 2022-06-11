@@ -13,15 +13,17 @@ export default function MissionStatement() {
         p: 2,
         display: 'flex',
         flexDirection: 'column',
-        height: 500,
+        height: 450,
       }}
     >
-      <Title>
-        <Typography sx={{ fontSize: '2rem' }}>Mission Statement</Typography>
-      </Title>
-      <Typography sx={{ fontSize: '1.5rem' }}>
-        {state?.missionStatement || 'You have no mission statement yet.'}
-      </Typography>
+      <div style={{ marginTop: '2rem' }}>
+        <Title>
+          <Typography sx={{ fontSize: '2rem' }}>Mission Statement</Typography>
+        </Title>
+        <Typography sx={{ fontSize: '1.5rem' }}>
+          {state?.missionStatement || 'You have no mission statement yet.'}
+        </Typography>
+      </div>
     </Paper>
   );
 }

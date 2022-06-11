@@ -13,23 +13,27 @@ export default function BasicInfo() {
         p: 2,
         display: 'flex',
         flexDirection: 'column',
-        height: 500,
+        height: 450,
       }}
     >
-      {' '}
-      <Title>
-        <Typography sx={{ fontSize: '2rem' }}>{state?.name}</Typography>
-      </Title>
-      <div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <Typography sx={{ fontSize: '1.5rem' }}>
-            Built in {state?.estYearBuilt}
-          </Typography>
-          <Typography sx={{ fontSize: '1.5rem' }}>{state?.email}</Typography>
-          <Typography sx={{ fontSize: '1.5rem' }}>{state?.address}</Typography>
-          <Typography sx={{ fontSize: '1.5rem' }}>
-            {state?.city}, {state?.state} {state?.zip}
-          </Typography>
+      <div style={{ marginTop: '2rem' }}>
+        {' '}
+        <Title>
+          <Typography sx={{ fontSize: '2rem' }}>{state?.name}</Typography>
+        </Title>
+        <div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography sx={{ fontSize: '1.5rem' }}>
+              Built in {state?.estYearBuilt}
+            </Typography>
+            <Typography sx={{ fontSize: '1.5rem' }}>{state?.email}</Typography>
+            <Typography sx={{ fontSize: '1.5rem' }}>
+              {state?.address}
+            </Typography>
+            <Typography sx={{ fontSize: '1.5rem' }}>
+              {state?.city}, {state?.state} {state?.zip}
+            </Typography>
+          </div>
         </div>
       </div>
     </Paper>

@@ -12,12 +12,28 @@ import { Typography } from '@mui/material';
 import BasicInfo from './BasicInfo';
 import EditIcon from '@mui/icons-material/Edit';
 import MissionStatement from './MissionStatement';
+import Button from '@mui/material/Button';
+import EditingMissionStatement from './EditingMissionStatement';
+import supabase from '../../client';
+import { setUser } from '../../Store/User';
 
 function UserProfileContent() {
-  let { state } = React.useContext(Context);
+  let { state, dispatch } = React.useContext(Context);
   let [editingProfile, setEditingProfile] = React.useState(false);
+  let [newInfo, setNewInfo] = React.useState({});
 
-  console.log(state);
+  async function updateProfile() {
+    let { data, error } = await supabase
+      .from('HOAs')
+      .update(newInfo)
+      .eq('id', state?.id);
+    if (error) {
+      console.log(error);
+    } else {
+      dispatch(setUser({ ...state, ...data[0] }));
+    }
+  }
+
   return (
     <ThemeProvider theme={state?.mdTheme}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -34,14 +50,41 @@ function UserProfileContent() {
             overflow: 'auto',
           }}
         >
-          <Toolbar />
+          {!editingProfile ? (
+            <Button
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={() => setEditingProfile(true)}
+            >
+              Edit Profile
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={() => {
+                updateProfile();
+                setEditingProfile(false);
+              }}
+            >
+              Update Profile
+            </Button>
+          )}
+
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6} lg={6}>
                 {!editingProfile ? <BasicInfo /> : null}
               </Grid>
               <Grid item xs={12} md={6} lg={6}>
-                {!editingProfile ? <MissionStatement /> : null}
+                {!editingProfile ? (
+                  <MissionStatement />
+                ) : (
+                  <EditingMissionStatement
+                    newInfo={newInfo}
+                    setNewInfo={setNewInfo}
+                  />
+                )}
               </Grid>
             </Grid>
           </Container>
