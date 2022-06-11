@@ -27,7 +27,7 @@ export default function SignUp() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get('email');
+    const email = data.get('email').toLowerCase();
     const password = data.get('password');
     const confirmPassword = data.get('confirmPassword');
     const firstName = data.get('firstName');

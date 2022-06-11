@@ -23,7 +23,7 @@ function LandingPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get('email');
+    const email = data.get('email').toLowerCase();
     const password = data.get('password');
 
     const { user, error } = await supabase.auth.signIn({
