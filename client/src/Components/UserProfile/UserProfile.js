@@ -19,6 +19,14 @@ function UserProfileContent() {
   let [newInfo, setNewInfo] = React.useState({});
 
   async function updateProfile() {
+    if (typeof newInfo?.estYearBuilt !== 'number') {
+      alert('Year built must be a number!');
+      return;
+    }
+    if (typeof newInfo?.zip !== 'number') {
+      alert('Zip must be a number!');
+      return;
+    }
     let { data, error } = await supabase
       .from('HOAs')
       .update(newInfo)
