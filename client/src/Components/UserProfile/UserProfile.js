@@ -55,16 +55,25 @@ function UserProfileContent() {
               Edit Profile
             </Button>
           ) : (
-            <Button
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={() => {
-                updateProfile();
-                setEditingProfile(false);
-              }}
-            >
-              Update Profile
-            </Button>
+            <div>
+              <Button
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={() => {
+                  updateProfile();
+                  setEditingProfile(false);
+                }}
+              >
+                Update Profile
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={() => setEditingProfile(false)}
+              >
+                Cancel
+              </Button>
+            </div>
           )}
 
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
