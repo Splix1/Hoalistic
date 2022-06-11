@@ -33,6 +33,10 @@ export default function EditingMissionStatement({ newInfo, setNewInfo }) {
             fontSize: '1.5rem',
             width: 394,
             height: 300,
+            maxHeight: 300,
+            maxWidth: 394,
+            minHeight: 300,
+            minWidth: 394,
             backgroundColor: '#121212',
             color: 'white',
           }}
@@ -40,6 +44,7 @@ export default function EditingMissionStatement({ newInfo, setNewInfo }) {
           {state?.missionStatement}
         </TextareaAutosize>
       </div>
+      Characters: {newInfo?.missionStatement.length}/300
     </Paper>
   );
 }
