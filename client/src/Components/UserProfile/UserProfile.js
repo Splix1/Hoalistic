@@ -18,13 +18,39 @@ function UserProfileContent() {
   let [editingProfile, setEditingProfile] = React.useState(false);
   let [newInfo, setNewInfo] = React.useState({});
 
+  React.useEffect(() => {
+    setNewInfo({
+      name: state?.name,
+      address: state?.address,
+      email: state?.email,
+      missionStatement: state?.missionStatement,
+      estYearBuilt: state?.estYearBuilt,
+      city: state?.city,
+      state: state?.state,
+      zip: state?.zip,
+    });
+  }, [state]);
+
+  function verifyEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
   async function updateProfile() {
-    if (typeof newInfo?.estYearBuilt !== 'number') {
-      alert('Year built must be a number!');
-      return;
+    if (newInfo?.email) {
+      if (verifyEmail(newInfo.email) === false) {
+        alert('Please provide a valid email.');
+        return;
+      }
     }
-    if (typeof newInfo?.zip !== 'number') {
-      alert('Zip must be a number!');
+    if (
+      !newInfo.name ||
+      !newInfo.address ||
+      !newInfo.estYearBuilt ||
+      !newInfo.city ||
+      !newInfo.state ||
+      !newInfo.zip
+    ) {
+      alert('All fields except mission statement must be filled.');
       return;
     }
     let { data, error } = await supabase
@@ -32,12 +58,14 @@ function UserProfileContent() {
       .update(newInfo)
       .eq('id', state?.id);
     if (error) {
-      console.log(error);
+      alert('All fields must be filled except mission statement.');
+      return;
     } else {
       dispatch(setUser({ ...state, ...data[0] }));
+      setEditingProfile(false);
     }
   }
-
+  console.log(newInfo);
   return (
     <ThemeProvider theme={state?.mdTheme}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -67,10 +95,7 @@ function UserProfileContent() {
               <Button
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={() => {
-                  updateProfile();
-                  setEditingProfile(false);
-                }}
+                onClick={() => updateProfile()}
               >
                 Update Profile
               </Button>

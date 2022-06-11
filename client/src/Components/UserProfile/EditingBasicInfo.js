@@ -43,7 +43,7 @@ export default function EditingBasicInfo({ newInfo, setNewInfo }) {
               autoComplete="1993"
               className="editing-unit"
               onChange={(evt) =>
-                setNewInfo({ ...newInfo, estYearBuilt: evt.target.value })
+                setNewInfo({ ...newInfo, estYearBuilt: +evt.target.value })
               }
             />
             <TextField
@@ -108,7 +108,7 @@ export default function EditingBasicInfo({ newInfo, setNewInfo }) {
               autoComplete="93543"
               className="editing-unit"
               onChange={(evt) =>
-                setNewInfo({ ...newInfo, zip: evt.target.value })
+                setNewInfo({ ...newInfo, zip: +evt.target.value })
               }
             />
           </div>
