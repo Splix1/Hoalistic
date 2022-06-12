@@ -31,7 +31,11 @@ function LandingPage() {
       password: password,
     });
     if (error) {
-      alert('There was a problem signing in.');
+      if (error.message === 'Invalid login credentials') {
+        alert('Email or password are incorrect.');
+      } else {
+        alert('There was a problem signing in.');
+      }
     } else {
       let { data } = await supabase.from('HOAs').select('*').eq('email', email);
       dispatch(
