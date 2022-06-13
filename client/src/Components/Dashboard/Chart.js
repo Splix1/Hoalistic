@@ -10,12 +10,15 @@ import {
 } from '@devexpress/dx-react-chart-material-ui';
 import { EventTracker } from '@devexpress/dx-react-chart';
 import CssBaseline from '@mui/material/CssBaseline';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export default function FutureProjections({ data }) {
   return (
     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
       <CssBaseline />
       <Title>Future Projections</Title>
+
       <Chart data={data}>
         <ArgumentAxis />
         <ValueAxis />
@@ -24,6 +27,20 @@ export default function FutureProjections({ data }) {
         <EventTracker />
         <Tooltip />
       </Chart>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div style={{ backgroundColor: '#90caf9' }}>
+          <ArrowBackIcon />
+        </div>
+        <div style={{ backgroundColor: '#90caf9' }}>
+          <ArrowForwardIcon />
+        </div>
+      </div>
     </Paper>
   );
 }

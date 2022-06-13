@@ -20,10 +20,6 @@ export default function SignUp() {
   const { dispatch } = useContext(Context);
   const history = useHistory();
 
-  function verifyEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -42,13 +38,11 @@ export default function SignUp() {
       alert('Passwords do not match!');
       return;
     }
-    if (verifyEmail(email) === false) {
-      alert('Please provide a valid email.');
-    }
     if (
       !password ||
       !firstName ||
       !lastName ||
+      !email ||
       !address ||
       !city ||
       !state ||
@@ -65,8 +59,15 @@ export default function SignUp() {
       lastName: lastName,
     });
     if (error) {
+      if (
+        error.message === 'Unable to validate email address: invalid format'
+      ) {
+        alert('Please provide a valid email.');
+        return;
+      }
       if (error.message === 'User already registered')
         alert('This email has already been registered.');
+      return;
     } else {
       let { data: newUser, error } = await supabase.from('HOAs').insert([
         {
@@ -140,6 +141,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  type="email"
                   required
                   fullWidth
                   id="email"

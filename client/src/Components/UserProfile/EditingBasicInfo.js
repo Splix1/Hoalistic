@@ -52,6 +52,7 @@ export default function EditingBasicInfo({ newInfo, setNewInfo }) {
         />
         <TextField
           required
+          type="email"
           fullWidth
           id="email"
           label="Email"
