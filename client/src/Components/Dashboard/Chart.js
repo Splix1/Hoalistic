@@ -31,21 +31,21 @@ export default function FutureProjections({ data }) {
         <LineSeries valueField="y" argumentField="x" />
         <EventTracker />
         <Tooltip />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div style={{ backgroundColor: '#90caf9' }}>
+            <ArrowBackIcon />
+          </div>
+          <div style={{ backgroundColor: '#90caf9' }}>
+            <ArrowForwardIcon />
+          </div>
+        </div>
       </Chart>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div style={{ backgroundColor: '#90caf9' }}>
-          <ArrowBackIcon />
-        </div>
-        <div style={{ backgroundColor: '#90caf9' }}>
-          <ArrowForwardIcon />
-        </div>
-      </div>
     </Paper>
   );
 }

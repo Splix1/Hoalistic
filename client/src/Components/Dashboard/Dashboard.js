@@ -219,7 +219,12 @@ function DashboardContent() {
         correctCostSum -
         projectsToSubtract;
 
-      data.push(createData(`${months[currentMonth + j]}`, HOABalance));
+      data.push(
+        createData(
+          `${months[currentMonth + j]}/${currentYear + yearCounter}`,
+          HOABalance
+        )
+      );
       j++;
     }
     setChartData(data);
