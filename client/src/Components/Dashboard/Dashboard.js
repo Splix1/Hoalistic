@@ -254,10 +254,10 @@ function DashboardContent() {
           <Container sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <div style={{ display: 'flex', flexDirection: 'row' }}></div>
-              <Grid item xs={12} md={8} lg={9}>
+              <Grid item xs={24} md={16} lg={18}>
                 <FutureProjections data={chartData} />
               </Grid>
-              <Grid item xs={12} md={4} lg={3}>
+              <Grid item xs={24} md={16} lg={18}>
                 <Paper
                   sx={{
                     p: 2,
