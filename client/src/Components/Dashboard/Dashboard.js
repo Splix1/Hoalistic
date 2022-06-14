@@ -221,13 +221,25 @@ function DashboardContent() {
 
       data.push(
         createData(
-          `${months[currentMonth + j]}/${currentYear + yearCounter}`,
+          mobileOrComputer(months[currentMonth + j], currentYear + yearCounter),
           HOABalance
         )
       );
       j++;
     }
     setChartData(data);
+  }
+
+  function mobileOrComputer(month, year) {
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      )
+    ) {
+      return `${month}`;
+    } else {
+      return `${month}/${year}`;
+    }
   }
 
   function numberWithCommas(x) {
