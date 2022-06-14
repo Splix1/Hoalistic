@@ -24,7 +24,7 @@ export default function FutureProjections({ data }) {
       <CssBaseline />
       <Title>Future Projections</Title>
 
-      <Chart data={data} xs={12} sm={8} md={5}>
+      <Chart data={data} height={240}>
         <ArgumentAxis />
         <ValueAxis />
 
