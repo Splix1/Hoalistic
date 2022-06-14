@@ -8,12 +8,7 @@ import { Context } from '../ContextProvider';
 import supabase from '../../client';
 import CssBaseline from '@mui/material/CssBaseline';
 
-export default function Deposits({
-  generateChartData,
-  HOABalance,
-  setHOABalance,
-  user,
-}) {
+export default function Deposits({ HOABalance, setHOABalance, user }) {
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
   let { state, dispatch } = React.useContext(Context);
 
@@ -23,11 +18,10 @@ export default function Deposits({
   }
 
   async function updateBalance(newBalance) {
-    let { data: updatedBalance } = await supabase
+    await supabase
       .from('HOAs')
       .update([{ balance: +newBalance }])
       .eq('id', user?.id);
-    generateChartData(updatedBalance[0]);
   }
 
   return (

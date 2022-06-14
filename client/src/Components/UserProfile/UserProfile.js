@@ -65,7 +65,7 @@ function UserProfileContent() {
       setEditingProfile(false);
     }
   }
-  console.log(newInfo);
+
   return (
     <ThemeProvider theme={state?.mdTheme}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>

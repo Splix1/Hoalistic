@@ -83,12 +83,13 @@ function DashboardContent() {
 
       //update balance
       setHOABalance(userData[0].balance);
-
-      //run chart
-      generateChartData(userData[0]);
     }
     fetchBudgets();
   }, []);
+
+  React.useEffect(() => {
+    generateChartData(state);
+  }, [HOABalance]);
 
   async function createCost() {
     if (costName === '' || costPrice === 0) {
@@ -211,6 +212,7 @@ function DashboardContent() {
 
       let correctAssSum = sumOfAssessments * monthCounter;
       let correctCostSum = sumOfCosts * monthCounter;
+
       let HOABalance =
         +currentUser.balance +
         correctAssSum -
@@ -264,7 +266,6 @@ function DashboardContent() {
                   }}
                 >
                   <Deposits
-                    generateChartData={generateChartData}
                     HOABalance={HOABalance}
                     setHOABalance={setHOABalance}
                     user={user}
