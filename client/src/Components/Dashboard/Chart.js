@@ -17,14 +17,14 @@ export default function FutureProjections({ data }) {
   return (
     <Paper
       sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}
-      xs={12}
-      sm={8}
-      md={5}
+      xs={24}
+      sm={16}
+      md={10}
     >
       <CssBaseline />
       <Title>Future Projections</Title>
 
-      <Chart data={data} height={240}>
+      <Chart data={data} height={240} xs={24} sm={16} md={10}>
         <ArgumentAxis />
         <ValueAxis />
 

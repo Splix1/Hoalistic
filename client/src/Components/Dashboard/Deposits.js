@@ -8,7 +8,12 @@ import { Context } from '../ContextProvider';
 import supabase from '../../client';
 import CssBaseline from '@mui/material/CssBaseline';
 
-export default function Deposits({ HOABalance, setHOABalance, user }) {
+export default function Deposits({
+  generateChartData,
+  HOABalance,
+  setHOABalance,
+  user,
+}) {
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
   let { state, dispatch } = React.useContext(Context);
 
@@ -18,19 +23,15 @@ export default function Deposits({ HOABalance, setHOABalance, user }) {
   }
 
   async function updateBalance(newBalance) {
-    await supabase
+    let { data: updatedBalance } = await supabase
       .from('HOAs')
       .update([{ balance: +newBalance }])
       .eq('id', user?.id);
+    generateChartData(updatedBalance[0]);
   }
 
   return (
-    <div
-      style={{ display: 'flex', flexDirection: 'row' }}
-      xs={12}
-      sm={8}
-      md={5}
-    >
+    <div style={{ display: 'flex', flexDirection: 'row' }}>
       <CssBaseline />
       <div>
         <Title>Current HOA Balance</Title>

@@ -267,6 +267,7 @@ function DashboardContent() {
                   }}
                 >
                   <Deposits
+                    generateChartData={generateChartData}
                     HOABalance={HOABalance}
                     setHOABalance={setHOABalance}
                     user={user}
