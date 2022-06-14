@@ -25,7 +25,12 @@ export default function Deposits({ HOABalance, setHOABalance, user }) {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div
+      style={{ display: 'flex', flexDirection: 'row' }}
+      xs={12}
+      sm={8}
+      md={5}
+    >
       <CssBaseline />
       <div>
         <Title>Current HOA Balance</Title>
