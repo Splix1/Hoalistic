@@ -16,7 +16,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 export default function FutureProjections({ data }) {
   return (
     <Paper
-      sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}
+      sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 300 }}
       xs={24}
       sm={16}
       md={10}
