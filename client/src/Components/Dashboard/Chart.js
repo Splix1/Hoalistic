@@ -15,7 +15,12 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export default function FutureProjections({ data }) {
   return (
-    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
+    <Paper
+      sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}
+      xs={12}
+      sm={8}
+      md={5}
+    >
       <CssBaseline />
       <Title>Future Projections</Title>
 
