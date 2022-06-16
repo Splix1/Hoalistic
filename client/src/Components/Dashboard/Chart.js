@@ -31,7 +31,7 @@ export default function FutureProjections({ data }) {
         <LineSeries valueField="y" argumentField="x" />
         <EventTracker />
         <Tooltip />
-        <div
+        {/* <div
           style={{
             display: 'flex',
             flexDirection: 'row',
@@ -44,7 +44,7 @@ export default function FutureProjections({ data }) {
           <div style={{ backgroundColor: '#90caf9' }}>
             <ArrowForwardIcon />
           </div>
-        </div>
+        </div> */}
       </Chart>
     </Paper>
   );
