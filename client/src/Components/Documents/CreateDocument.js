@@ -51,34 +51,44 @@ export default function CreateDocument({ setCreatingDocument, newDocument }) {
               }}
             >
               <div id="form-inputs">
-                <Grid item xs={12} sm={6}>
-                  <Button variant="contained" component="label">
-                    Upload File{' '}
-                    <input
-                      type="file"
-                      accept=".jpg, .png, .pdf, .doc"
-                      hidden
-                      onChange={(evt) => setFile(evt.target.files[0])}
+                <div className="display-column">
+                  <div className="display-row">
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="documentName"
+                        label="Document Name"
+                        name="documentName"
+                        autoComplete="1A"
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      {!file ? (
+                        <Button variant="contained" component="label">
+                          Upload File{' '}
+                          <input
+                            type="file"
+                            accept=".jpg, .png, .pdf, .doc"
+                            hidden
+                            onChange={(evt) => setFile(evt.target.files[0])}
+                          />
+                        </Button>
+                      ) : (
+                        <Typography>{`${file?.name} - ${file?.type}`}</Typography>
+                      )}
+                    </Grid>
+                  </div>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Description"
+                      id="beginDate"
+                      name="beginDate"
+                      autoComplete="Jimmy"
                     />
-                  </Button>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <CurrencyInput
-                    id="projectCost"
-                    name="projectCost"
-                    prefix="$"
-                    placeholder="Project Cost"
-                    defaultValue={0}
-                    decimalsLimit={2}
-                    style={{
-                      height: '3rem',
-                      fontSize: '1rem',
-                      backgroundColor: '#121212',
-                      color: 'white',
-                    }}
-                    onValueChange={(value) => setCost(value)}
-                  />
-                </Grid>
+                  </Grid>
+                </div>
               </div>
             </Paper>
             <div id="form-input">

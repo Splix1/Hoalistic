@@ -36,6 +36,11 @@ body::-webkit-scrollbar {
   flex-direction: row;
 }
 
+.display-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .single-unit, .single-project, .single-cost {
   display: flex;
   flex-direction: column;
