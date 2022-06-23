@@ -8,45 +8,25 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { Context } from '../ContextProvider';
 import CreateDocument from './CreateDocument';
+import SingleDocument from './SingleDocument';
 
-const mdTheme = createTheme();
 export default function Documents() {
   const [costs, setCosts] = useState([]);
-  const [user, setUser] = useState({});
   const [creatingDocument, setCreatingDocument] = useState(false);
-  const [bucket, setBucket] = useState();
   let { state } = useContext(Context);
-
-  const [urls, setUrls] = useState(null);
+  const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
     async function fetchDocuments() {
-      let { data, error } = await storage.storage.from(`${state?.id}`).list();
-      if (error) {
-        alert('Unable to retrieve documents.');
-        return;
-      }
+      let { data, error } = await supabase
+        .from('Documents')
+        .select('*')
+        .eq('HOA', state?.id);
 
-      let bucketUrls = [];
-      for (let i = 0; i < data.length; i++) {
-        let { publicURL, error: publicURLError } = supabase.storage
-          .from(`${state?.id}`)
-          .getPublicUrl(`${data[i].name}`);
-        if (publicURLError) {
-          alert(`Unable to retrieve URL for ${data[i].name}`);
-          continue;
-        }
-        bucketUrls.push(publicURL);
-      }
-
-      setUrls(bucketUrls);
+      setDocuments(data);
     }
     fetchDocuments();
   }, []);
-
-  function newDocument(cost) {
-    setCosts([...costs, cost]);
-  }
 
   return (
     <ThemeProvider theme={state?.mdTheme}>
@@ -67,8 +47,9 @@ export default function Documents() {
         {creatingDocument ? (
           <CreateDocument
             setCreatingDocument={setCreatingDocument}
-            creatingcost={creatingDocument}
-            newDocument={newDocument}
+            creatingDocument={creatingDocument}
+            setDocuments={setDocuments}
+            documents={documents}
           />
         ) : null}
         {!creatingDocument ? (
@@ -84,18 +65,18 @@ export default function Documents() {
         <br />
         <br />
 
-        {costs.length > 0 ? (
+        {documents.length > 0 ? (
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>
-                {costs.map((cost) => (
-                  <div key={cost.id}>
-                    {/* <SingleCost
-                      theCost={cost}
+                {documents.map((document, i) => (
+                  <div key={document.id}>
+                    <SingleDocument
+                      theDocument={document}
                       creatingDocument={creatingDocument}
-                      costs={costs}
-                      setCosts={setCosts}
-                    /> */}
+                      documents={documents}
+                      setDocuments={setDocuments}
+                    />
                     <br />
                   </div>
                 ))}

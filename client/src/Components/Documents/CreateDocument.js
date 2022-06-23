@@ -10,11 +10,20 @@ import Button from '@mui/material/Button';
 import supabase, { storage } from '../../client';
 import { Context } from '../ContextProvider';
 
-export default function CreateDocument({ setCreatingDocument, newDocument }) {
+export default function CreateDocument({
+  setCreatingDocument,
+  newDocument,
+  storageData,
+  setStorageData,
+  documents,
+  setDocuments,
+}) {
   let [documentName, setDocumentName] = useState('');
   let { state } = useContext(Context);
   let [file, setFile] = useState(null);
   let [description, setDescription] = useState('');
+  let [project, setProject] = useState(null);
+  let [relatedToProject, setRelatedToProject] = useState(false);
 
   async function createDocument() {
     if (!file) {
@@ -25,10 +34,20 @@ export default function CreateDocument({ setCreatingDocument, newDocument }) {
       alert('Document name is required!');
       return;
     }
-
+    const { data: documentData, error: documentError } = await supabase
+      .from('Documents')
+      .insert({
+        name: documentName,
+        description: description,
+        project: project,
+        relatedToProject: relatedToProject,
+        HOA: state?.id,
+      });
     const { data, error } = await supabase.storage
       .from(`${state?.id}`)
       .upload(`${documentName}`, file);
+
+    setDocuments([...documents, documentData[0]]);
 
     setCreatingDocument(false);
   }
