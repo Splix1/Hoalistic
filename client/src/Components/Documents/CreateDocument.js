@@ -7,30 +7,37 @@ import Container from '@mui/material/Container';
 import { Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import supabase from '../../client';
+import supabase, { storage } from '../../client';
 import CurrencyInput from 'react-currency-input-field';
 import { Context } from '../ContextProvider';
 
 const mdTheme = createTheme();
 
 export default function CreateDocument({ setCreatingDocument, newDocument }) {
-  let [cost, setCost] = useState(0);
-  let [costName, setCostName] = useState('');
+  let [documentName, setDocumentName] = useState('');
   let { state } = useContext(Context);
   let [file, setFile] = useState(null);
+  let [description, setDescription] = useState('');
+
+  console.log(state);
 
   async function createDocument() {
-    if (cost < 0) {
-      alert('Cost cannot be negative!');
+    if (!file) {
+      alert('File is required!');
+      return;
+    }
+    if (!documentName) {
+      alert('Document name is required!');
       return;
     }
 
-    let { email } = supabase.auth.user();
-    const user = await supabase.from('HOAs').select('*').eq('email', email);
+    const { data, error } = await supabase.storage
+      .from('hoa-documents')
+      .upload(`${state?.name}/${documentName}`, file);
 
     setCreatingDocument(false);
   }
-  console.log(file);
+
   return (
     <ThemeProvider theme={state?.mdTheme}>
       <CssBaseline />
@@ -61,6 +68,7 @@ export default function CreateDocument({ setCreatingDocument, newDocument }) {
                         label="Document Name"
                         name="documentName"
                         autoComplete="1A"
+                        onChange={(evt) => setDocumentName(evt.target.value)}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -86,6 +94,7 @@ export default function CreateDocument({ setCreatingDocument, newDocument }) {
                       id="beginDate"
                       name="beginDate"
                       autoComplete="Jimmy"
+                      onChange={(evt) => setDescription(evt.target.value)}
                     />
                   </Grid>
                 </div>

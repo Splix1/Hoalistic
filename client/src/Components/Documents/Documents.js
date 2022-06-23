@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import supabase from '../../client';
+import supabase, { storage } from '../../client';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Typography, Button } from '@mui/material';
@@ -14,24 +14,25 @@ export default function Documents() {
   const [costs, setCosts] = useState([]);
   const [user, setUser] = useState({});
   const [creatingDocument, setCreatingDocument] = useState(false);
+  const [bucket, setBucket] = useState();
   let { state } = useContext(Context);
 
-  useEffect(() => {
-    async function fetchCosts() {
-      let { email } = supabase.auth.user();
-      let { data: userData } = await supabase
-        .from('HOAs')
-        .select('*')
-        .eq('email', email);
-      setUser(userData[0]);
-      let { data: CostsData, error } = await supabase
-        .from('HOA_costs')
-        .select('*')
-        .eq('HOA', userData[0].id);
-      setCosts(CostsData);
-    }
-    fetchCosts();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchCosts() {
+  //     let { email } = supabase.auth.user();
+  //     let { data: userData } = await supabase
+  //       .from('HOAs')
+  //       .select('*')
+  //       .eq('email', email);
+  //     setUser(userData[0]);
+  //     let { data: CostsData, error } = await supabase
+  //       .from('HOA_costs')
+  //       .select('*')
+  //       .eq('HOA', userData[0].id);
+  //     setCosts(CostsData);
+  //   }
+  //   fetchCosts();
+  // }, []);
 
   function newDocument(cost) {
     setCosts([...costs, cost]);
