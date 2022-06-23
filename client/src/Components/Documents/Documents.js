@@ -17,22 +17,32 @@ export default function Documents() {
   const [bucket, setBucket] = useState();
   let { state } = useContext(Context);
 
-  // useEffect(() => {
-  //   async function fetchCosts() {
-  //     let { email } = supabase.auth.user();
-  //     let { data: userData } = await supabase
-  //       .from('HOAs')
-  //       .select('*')
-  //       .eq('email', email);
-  //     setUser(userData[0]);
-  //     let { data: CostsData, error } = await supabase
-  //       .from('HOA_costs')
-  //       .select('*')
-  //       .eq('HOA', userData[0].id);
-  //     setCosts(CostsData);
-  //   }
-  //   fetchCosts();
-  // }, []);
+  const [urls, setUrls] = useState(null);
+
+  useEffect(() => {
+    async function fetchDocuments() {
+      let { data, error } = await storage.storage.from(`${state?.id}`).list();
+      if (error) {
+        alert('Unable to retrieve documents.');
+        return;
+      }
+
+      let bucketUrls = [];
+      for (let i = 0; i < data.length; i++) {
+        let { publicURL, error: publicURLError } = supabase.storage
+          .from(`${state?.id}`)
+          .getPublicUrl(`${data[i].name}`);
+        if (publicURLError) {
+          alert(`Unable to retrieve URL for ${data[i].name}`);
+          continue;
+        }
+        bucketUrls.push(publicURL);
+      }
+
+      setUrls(bucketUrls);
+    }
+    fetchDocuments();
+  }, []);
 
   function newDocument(cost) {
     setCosts([...costs, cost]);
@@ -53,6 +63,7 @@ export default function Documents() {
         <Typography component="h1" variant="h4" sx={{ color: '90caf9' }}>
           Documents
         </Typography>
+
         {creatingDocument ? (
           <CreateDocument
             setCreatingDocument={setCreatingDocument}

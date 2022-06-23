@@ -8,18 +8,13 @@ import { Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import supabase, { storage } from '../../client';
-import CurrencyInput from 'react-currency-input-field';
 import { Context } from '../ContextProvider';
-
-const mdTheme = createTheme();
 
 export default function CreateDocument({ setCreatingDocument, newDocument }) {
   let [documentName, setDocumentName] = useState('');
   let { state } = useContext(Context);
   let [file, setFile] = useState(null);
   let [description, setDescription] = useState('');
-
-  console.log(state);
 
   async function createDocument() {
     if (!file) {
@@ -32,8 +27,8 @@ export default function CreateDocument({ setCreatingDocument, newDocument }) {
     }
 
     const { data, error } = await supabase.storage
-      .from('hoa-documents')
-      .upload(`${state?.name}/${documentName}`, file);
+      .from(`${state?.id}`)
+      .upload(`${documentName}`, file);
 
     setCreatingDocument(false);
   }
