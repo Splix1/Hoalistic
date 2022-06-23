@@ -36,10 +36,11 @@ export default function BasicMenu() {
         }}
       >
         <MenuItem onClick={() => handleClose('/dashboard')}>Dashboard</MenuItem>
+        <MenuItem onClick={() => handleClose('/profile')}>Profile</MenuItem>
         <MenuItem onClick={() => handleClose('/units')}>Units</MenuItem>
         <MenuItem onClick={() => handleClose('/projects')}>Projects</MenuItem>
         <MenuItem onClick={() => handleClose('/costs')}>Costs</MenuItem>
-        <MenuItem onClick={() => handleClose('/profile')}>Profile</MenuItem>
+        <MenuItem onClick={() => handleClose('/documents')}>Documents</MenuItem>
       </Menu>
     </div>
   );
