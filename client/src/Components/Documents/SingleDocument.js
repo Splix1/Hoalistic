@@ -5,6 +5,7 @@ import { Typography, TextField, Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import supabase, { storage } from '../../client';
 import { Context } from '../ContextProvider';
+import { NavLink } from 'react-router-dom';
 
 const mdTheme = createTheme();
 
@@ -23,13 +24,24 @@ export default function SingleDocument({
   let [deletingDocument, setDeletingDocument] = useState(false);
   let { state } = useContext(Context);
   let [url, setUrl] = useState('');
+  let [project, setProject] = useState(null);
 
   useEffect(() => {
+    async function fetchProject() {
+      let { data } = await supabase
+        .from('Projects')
+        .select('*')
+        .eq('id', theDocument?.project);
+      setProject(data[0]);
+    }
+    if (theDocument?.project) fetchProject();
     const { publicURL } = storage.storage
       .from(`${state?.id}`)
       .getPublicUrl(theDocument?.name);
     setUrl(publicURL);
   }, []);
+  console.log(theDocument);
+  console.log(project);
 
   //   async function updateCost() {
   //     if (!newName || !newCost) {
@@ -69,22 +81,24 @@ export default function SingleDocument({
           flexDirection: 'column',
           alignItems: 'flex-start',
           height: 'fit-content',
-          justifyContent: 'flex-start',
         }}
       >
         {!editingDocument ? (
           <div className="single-cost">
             <Typography sx={{ fontSize: '1.5rem' }}>
-              {currentDocument?.name}
-            </Typography>
-            <Typography sx={{ fontSize: '1.5rem' }}>
-              {currentDocument?.description}
-            </Typography>
-            <Typography sx={{ fontSize: '1.5rem' }}>
+              {currentDocument?.name} -{' '}
               <a href={url} target="_blank">
                 Open file
               </a>
             </Typography>
+            <Typography sx={{ fontSize: '1.5rem' }}>
+              Description: {currentDocument?.description}
+            </Typography>
+            {project ? (
+              <Typography sx={{ fontSize: '1.5rem' }}>
+                Project: {project?.name}
+              </Typography>
+            ) : null}
 
             <div className="display-row">
               <Button

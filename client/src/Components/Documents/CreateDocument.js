@@ -83,7 +83,7 @@ export default function CreateDocument({
               }}
             >
               <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
-                Create Document
+                Add Document
               </Typography>
               <div id="form-inputs">
                 <div className="display-column">

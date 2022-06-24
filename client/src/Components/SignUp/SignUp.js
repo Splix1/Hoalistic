@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { NavLink, useHistory } from 'react-router-dom';
-import supabase from '../../client';
+import supabase, { storage } from '../../client';
 import { Context } from '../ContextProvider';
 import { setUser } from '../../Store/User';
 import { TextareaAutosize } from '@mui/material';
@@ -91,7 +91,10 @@ export default function SignUp() {
           mdTheme: createTheme({ palette: { mode: newUser[0].theme } }),
         })
       );
-
+      const { data: storageData } = await supabase.storage.createBucket(
+        `${newUser[0]?.id}`,
+        { public: true }
+      );
       history.push('/dashboard');
     }
   };

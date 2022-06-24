@@ -58,7 +58,7 @@ export default function Documents() {
             sx={{ top: 50 }}
             onClick={() => setCreatingDocument(!creatingDocument)}
           >
-            Create Document
+            Add Document
           </Button>
         ) : null}
         <br />
