@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -9,12 +9,10 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import supabase, { storage } from '../../client';
 import { Context } from '../ContextProvider';
+import ProjectList from './ProjectList';
 
 export default function CreateDocument({
   setCreatingDocument,
-  newDocument,
-  storageData,
-  setStorageData,
   documents,
   setDocuments,
 }) {
@@ -23,7 +21,18 @@ export default function CreateDocument({
   let [file, setFile] = useState(null);
   let [description, setDescription] = useState('');
   let [project, setProject] = useState(null);
-  let [relatedToProject, setRelatedToProject] = useState(false);
+  let [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    async function fetchProjects() {
+      let { data } = await supabase
+        .from('Projects')
+        .select('*')
+        .eq('HOA', state?.id);
+      setProjects(data);
+    }
+    fetchProjects();
+  }, [state]);
 
   async function createDocument() {
     if (!file) {
@@ -34,18 +43,22 @@ export default function CreateDocument({
       alert('Document name is required!');
       return;
     }
+    const { data, error } = await supabase.storage
+      .from(`${state?.id}`)
+      .upload(`${documentName}`, file);
+    if (error) {
+      alert('There was a problem uploading your file. Please try again.');
+      return;
+    }
     const { data: documentData, error: documentError } = await supabase
       .from('Documents')
       .insert({
         name: documentName,
         description: description,
-        project: project,
-        relatedToProject: relatedToProject,
+        project: project?.id || null,
+        relatedToProject: project?.id ? true : false,
         HOA: state?.id,
       });
-    const { data, error } = await supabase.storage
-      .from(`${state?.id}`)
-      .upload(`${documentName}`, file);
 
     setDocuments([...documents, documentData[0]]);
 
@@ -55,9 +68,7 @@ export default function CreateDocument({
   return (
     <ThemeProvider theme={state?.mdTheme}>
       <CssBaseline />
-      <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
-        Create Document
-      </Typography>
+
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8} lg={9}>
@@ -67,10 +78,13 @@ export default function CreateDocument({
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                height: 240,
+                height: 'fit-content',
                 justifyContent: 'flex-start',
               }}
             >
+              <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
+                Create Document
+              </Typography>
               <div id="form-inputs">
                 <div className="display-column">
                   <div className="display-row">
@@ -91,7 +105,7 @@ export default function CreateDocument({
                           Upload File{' '}
                           <input
                             type="file"
-                            accept=".jpg, .png, .pdf, .doc"
+                            accept="image/*, .pdf, .doc, .docx"
                             hidden
                             onChange={(evt) => setFile(evt.target.files[0])}
                           />
@@ -109,6 +123,13 @@ export default function CreateDocument({
                       name="beginDate"
                       autoComplete="Jimmy"
                       onChange={(evt) => setDescription(evt.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <ProjectList
+                      projects={projects}
+                      project={project}
+                      setProject={setProject}
                     />
                   </Grid>
                 </div>

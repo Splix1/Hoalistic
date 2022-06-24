@@ -75,7 +75,7 @@ export default function SingleDocument({
         {!editingDocument ? (
           <div className="single-cost">
             <Typography sx={{ fontSize: '1.5rem' }}>
-              Name: {currentDocument?.name}
+              {currentDocument?.name}
             </Typography>
             <Typography sx={{ fontSize: '1.5rem' }}>
               {currentDocument?.description}

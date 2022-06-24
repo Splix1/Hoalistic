@@ -19,20 +19,14 @@ export default function Projects() {
 
   useEffect(() => {
     async function fetchProjects() {
-      let { email } = supabase.auth.user();
-      let { data: userData } = await supabase
-        .from('HOAs')
-        .select('*')
-        .eq('email', email);
-      setUser(userData[0]);
       let { data: projectsData, error } = await supabase
         .from('Projects')
         .select('*')
-        .eq('HOA', userData[0].id);
+        .eq('HOA', state?.id);
       setProjects(projectsData);
     }
     fetchProjects();
-  }, []);
+  }, [state]);
 
   function newProject(project) {
     setProjects([...projects, project]);

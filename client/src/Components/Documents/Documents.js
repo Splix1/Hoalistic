@@ -26,7 +26,7 @@ export default function Documents() {
       setDocuments(data);
     }
     fetchDocuments();
-  }, []);
+  }, [state]);
 
   return (
     <ThemeProvider theme={state?.mdTheme}>
