@@ -55,9 +55,6 @@ function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
         }}
       >
         <Toolbar />
-        <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
-          Create Unit
-        </Typography>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={8} lg={9}>
@@ -71,6 +68,13 @@ function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
                   justifyContent: 'flex-start',
                 }}
               >
+                <Typography
+                  component="h1"
+                  variant="h4"
+                  sx={{ color: '#90caf9' }}
+                >
+                  Create Project
+                </Typography>
                 <div id="form-inputs">
                   <Grid item xs={12} sm={6}>
                     <TextField

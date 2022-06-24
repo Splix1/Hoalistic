@@ -38,9 +38,6 @@ export default function CreateCosts({ setCreatingCost, newCost }) {
   return (
     <ThemeProvider theme={state?.mdTheme}>
       <CssBaseline />
-      <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
-        Create Cost
-      </Typography>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8} lg={9}>
@@ -54,6 +51,9 @@ export default function CreateCosts({ setCreatingCost, newCost }) {
                 justifyContent: 'flex-start',
               }}
             >
+              <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
+                Create Cost
+              </Typography>
               <div id="form-inputs">
                 <Grid item xs={12} sm={6}>
                   <TextField

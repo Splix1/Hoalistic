@@ -58,9 +58,6 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
         }}
       >
         <Toolbar />
-        <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
-          Create Unit
-        </Typography>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={8} lg={9}>
@@ -74,6 +71,13 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
                   justifyContent: 'flex-start',
                 }}
               >
+                <Typography
+                  component="h1"
+                  variant="h4"
+                  sx={{ color: '#90caf9' }}
+                >
+                  Create Unit
+                </Typography>
                 <div id="form-inputs">
                   <Grid item xs={12} sm={6}>
                     <TextField
