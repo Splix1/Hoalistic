@@ -85,7 +85,7 @@ export default function SingleDocument({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          height: '604px',
+          height: 'fit-content',
           width: '950px',
         }}
       >
@@ -107,20 +107,10 @@ export default function SingleDocument({
             ) : null}
             {fileType?.includes('image') ? (
               <img src={url} width="911px" />
-            ) : fileType?.includes('video') ? null : (
+            ) : (
               <embed src={url} height="460px" width="911px" />
             )}
 
-            {/* <iframe
-              data-src="https://www.youtube.com/embed/modXbqbsAvs?autoplay=1&amp;auto_play=true"
-              frameborder="0"
-              scrolling="no"
-              allowfullscreen="true"
-              allowtransparency="true"
-              allow="autoplay; fullscreen"
-              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-presentation"
-              src="https://www.youtube.com/embed/modXbqbsAvs?autoplay=1&amp;auto_play=true"
-            ></iframe> */}
             <div className="display-row">
               <Button
                 variant="contained"

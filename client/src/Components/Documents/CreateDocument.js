@@ -22,6 +22,7 @@ export default function CreateDocument({
   let [description, setDescription] = useState('');
   let [project, setProject] = useState(null);
   let [projects, setProjects] = useState([]);
+  let [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     async function fetchProjects() {
@@ -43,6 +44,7 @@ export default function CreateDocument({
       alert('Document name is required!');
       return;
     }
+    setUploading(true);
     const { data, error } = await supabase.storage
       .from(`${state?.id}`)
       .upload(`${documentName}`, file);
@@ -60,8 +62,8 @@ export default function CreateDocument({
         HOA: state?.id,
       });
 
+    setUploading(false);
     setDocuments([...documents, documentData[0]]);
-
     setCreatingDocument(false);
   }
 
@@ -105,7 +107,7 @@ export default function CreateDocument({
                           Upload File{' '}
                           <input
                             type="file"
-                            accept="image/*,  .pdf, .doc, .docx"
+                            accept="image/*, video/mp4,video/x-m4v,video/*, audio/*, .mkv, .pdf, .doc, .docx"
                             hidden
                             onChange={(evt) => setFile(evt.target.files[0])}
                           />
@@ -131,6 +133,9 @@ export default function CreateDocument({
                       project={project}
                       setProject={setProject}
                     />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    {!uploading ? null : <Typography>Uploading...</Typography>}
                   </Grid>
                 </div>
               </div>
