@@ -9,6 +9,11 @@ import { NavLink } from 'react-router-dom';
 
 const mdTheme = createTheme();
 
+function getDate(str) {
+  let date = new Date(str);
+  return `${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`;
+}
+
 export default function SingleDocument({
   creatingDocument,
   theDocument,
@@ -48,26 +53,34 @@ export default function SingleDocument({
     setUrl(publicURL);
   }, []);
 
-  //   async function updateCost() {
-  //     if (!newName || !newCost) {
-  //       alert('All fields must be fulfilled.');
-  //       return;
-  //     }
-  //     let { data: updatedCost, error } = await supabase
-  //       .from('HOA_costs')
-  //       .update({
-  //         name: newName,
-  //         cost: newCost,
-  //       })
-  //       .eq('id', theDocument?.id);
-  //     if (error) {
-  //       alert('There was a problem updating this cost');
-  //       return;
-  //     }
+  async function updateDocument() {
+    if (!newName) {
+      alert('A name is required.');
+      return;
+    }
 
-  //     setCurrentDocument(updatedCost[0]);
-  //     setEditingDocument(false);
-  //   }
+    let { data, error } = await storage.storage
+      .from(`${state?.id}`)
+      .move(currentDocument?.name, newName);
+    if (error) {
+      alert('There was a problem updating this file.');
+      return;
+    }
+    let { data: updatedDocument, error: documentError } = await supabase
+      .from('Documents')
+      .update({
+        name: newName,
+        description: newDescription,
+      })
+      .eq('id', theDocument?.id);
+    if (error) {
+      alert('There was a problem updating this document');
+      return;
+    }
+
+    setCurrentDocument(updatedDocument[0]);
+    setEditingDocument(false);
+  }
 
   //   async function deleteCost() {
   //     let { data } = await supabase
@@ -84,22 +97,32 @@ export default function SingleDocument({
           p: 2,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-start',
+          alignItems: 'center',
           height: 'fit-content',
           width: '950px',
         }}
       >
         {!editingDocument ? (
-          <div className="single-cost">
+          <div
+            className="single-cost"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
             <Typography sx={{ fontSize: '1.5rem' }}>
               {currentDocument?.name} -{' '}
               <a href={url} target="_blank">
                 Open file
               </a>
             </Typography>
+            <Typography sx={{ fontSize: '1.5rem' }}>
+              {getDate(theDocument?.created_at)}
+            </Typography>
             {!currentDocument?.description ? null : (
               <Typography sx={{ fontSize: '1.5rem' }}>
-                Description: {currentDocument?.description}
+                {currentDocument?.description}
               </Typography>
             )}
             {project ? (
@@ -108,7 +131,7 @@ export default function SingleDocument({
               </Typography>
             ) : null}
             {fileType?.includes('image') ? (
-              <img src={url} width="911px" />
+              <img src={url} width="911px" height="460px" />
             ) : (
               <embed src={url} height="460px" width="911px" />
             )}
@@ -129,7 +152,14 @@ export default function SingleDocument({
             </div>
           </div>
         ) : (
-          <div className="single-cost">
+          <div
+            className="single-cost"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
             <TextField
               required
               fullWidth
@@ -155,7 +185,9 @@ export default function SingleDocument({
             />
 
             <div className="display-row">
-              <Button variant="contained">Save</Button>
+              <Button variant="contained" onClick={updateDocument}>
+                Save
+              </Button>
               <Button
                 variant="contained"
                 onClick={() => setEditingDocument(false)}
