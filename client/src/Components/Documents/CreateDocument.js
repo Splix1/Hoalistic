@@ -105,7 +105,7 @@ export default function CreateDocument({
                           Upload File{' '}
                           <input
                             type="file"
-                            accept="image/*, .pdf, .doc, .docx"
+                            accept="image/*,  .pdf, .doc, .docx"
                             hidden
                             onChange={(evt) => setFile(evt.target.files[0])}
                           />

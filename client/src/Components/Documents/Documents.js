@@ -15,6 +15,7 @@ export default function Documents() {
   const [creatingDocument, setCreatingDocument] = useState(false);
   let { state } = useContext(Context);
   const [documents, setDocuments] = useState([]);
+  const [files, setFiles] = useState([]);
 
   useEffect(() => {
     async function fetchDocuments() {
@@ -22,6 +23,11 @@ export default function Documents() {
         .from('Documents')
         .select('*')
         .eq('HOA', state?.id);
+
+      const { data: storageFiles } = await storage.storage
+        .from(`${state?.id}`)
+        .list();
+      setFiles(storageFiles);
 
       setDocuments(data);
     }
@@ -76,6 +82,7 @@ export default function Documents() {
                       creatingDocument={creatingDocument}
                       documents={documents}
                       setDocuments={setDocuments}
+                      files={files}
                     />
                     <br />
                   </div>

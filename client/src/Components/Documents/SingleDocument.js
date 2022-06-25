@@ -15,6 +15,7 @@ export default function SingleDocument({
   theStorageDocument,
   documents,
   setDocuments,
+  files,
 }) {
   let { name, description } = theDocument;
   let [newName, setNewName] = useState(name);
@@ -25,6 +26,7 @@ export default function SingleDocument({
   let { state } = useContext(Context);
   let [url, setUrl] = useState('');
   let [project, setProject] = useState(null);
+  let [fileType, setFileType] = useState('');
 
   useEffect(() => {
     async function fetchProject() {
@@ -35,13 +37,16 @@ export default function SingleDocument({
       setProject(data[0]);
     }
     if (theDocument?.project) fetchProject();
+    let file = files?.filter(
+      (currentFile) => currentFile.name === theDocument?.name
+    );
+    if (file[0]) setFileType(file[0].metadata.mimetype);
+
     const { publicURL } = storage.storage
       .from(`${state?.id}`)
       .getPublicUrl(theDocument?.name);
     setUrl(publicURL);
   }, []);
-  console.log(theDocument);
-  console.log(project);
 
   //   async function updateCost() {
   //     if (!newName || !newCost) {
@@ -80,7 +85,8 @@ export default function SingleDocument({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          height: 'fit-content',
+          height: '604px',
+          width: '950px',
         }}
       >
         {!editingDocument ? (
@@ -99,7 +105,22 @@ export default function SingleDocument({
                 Project: {project?.name}
               </Typography>
             ) : null}
+            {fileType?.includes('image') ? (
+              <img src={url} width="911px" />
+            ) : fileType?.includes('video') ? null : (
+              <embed src={url} height="460px" width="911px" />
+            )}
 
+            {/* <iframe
+              data-src="https://www.youtube.com/embed/modXbqbsAvs?autoplay=1&amp;auto_play=true"
+              frameborder="0"
+              scrolling="no"
+              allowfullscreen="true"
+              allowtransparency="true"
+              allow="autoplay; fullscreen"
+              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-presentation"
+              src="https://www.youtube.com/embed/modXbqbsAvs?autoplay=1&amp;auto_play=true"
+            ></iframe> */}
             <div className="display-row">
               <Button
                 variant="contained"
