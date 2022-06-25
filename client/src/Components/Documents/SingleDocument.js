@@ -97,9 +97,11 @@ export default function SingleDocument({
                 Open file
               </a>
             </Typography>
-            <Typography sx={{ fontSize: '1.5rem' }}>
-              Description: {currentDocument?.description}
-            </Typography>
+            {!currentDocument?.description ? null : (
+              <Typography sx={{ fontSize: '1.5rem' }}>
+                Description: {currentDocument?.description}
+              </Typography>
+            )}
             {project ? (
               <Typography sx={{ fontSize: '1.5rem' }}>
                 Project: {project?.name}
