@@ -4,8 +4,10 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import { TextField, Typography } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { Context } from '../ContextProvider';
 
 export default function ProjectList({ projects, setProject, project }) {
+  const { stateProjects } = React.useContext(Context);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -35,7 +37,7 @@ export default function ProjectList({ projects, setProject, project }) {
         }}
       >
         <MenuItem onClick={() => setProject(null)}>No Project</MenuItem>
-        {projects?.map((project) => (
+        {stateProjects?.map((project) => (
           <MenuItem onClick={() => setProject(project)}>
             {project.name}
           </MenuItem>

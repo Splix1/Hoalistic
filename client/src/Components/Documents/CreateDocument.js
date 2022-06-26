@@ -52,6 +52,10 @@ export default function CreateDocument({
       alert('There was a problem uploading your file. Please try again.');
       return;
     }
+
+    const { publicURL } = storage.storage
+      .from(`${state?.id}`)
+      .getPublicUrl(documentName);
     const { data: documentData, error: documentError } = await supabase
       .from('Documents')
       .insert({
@@ -60,6 +64,7 @@ export default function CreateDocument({
         project: project?.id || null,
         relatedToProject: project?.id ? true : false,
         HOA: state?.id,
+        url: publicURL,
       });
 
     setUploading(false);
@@ -128,11 +133,7 @@ export default function CreateDocument({
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <ProjectList
-                      projects={projects}
-                      project={project}
-                      setProject={setProject}
-                    />
+                    <ProjectList project={project} setProject={setProject} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     {!uploading ? null : <Typography>Uploading...</Typography>}

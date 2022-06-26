@@ -18,7 +18,7 @@ export default function Documents() {
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
-    setFiles(stateFiles);
+    setFiles(stateFiles.slice(1));
     setDocuments(stateDocuments);
   }, [stateFiles, stateDocuments]);
 
@@ -70,7 +70,6 @@ export default function Documents() {
                       creatingDocument={creatingDocument}
                       documents={documents}
                       setDocuments={setDocuments}
-                      files={files}
                     />
                     <br />
                   </div>

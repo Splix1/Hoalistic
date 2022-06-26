@@ -94,7 +94,7 @@ function App() {
           .from('HOAs')
           .select('*')
           .eq('email', curUser?.email);
-        console.log('before', data);
+
         if (location?.pathname === '/projects')
           await fetchProjects(data[0], dispatchProjects);
 

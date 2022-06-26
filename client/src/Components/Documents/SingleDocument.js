@@ -7,32 +7,28 @@ import supabase, { storage } from '../../client';
 import { Context } from '../ContextProvider';
 import { NavLink } from 'react-router-dom';
 import ProjectList from './ProjectList';
-
-const mdTheme = createTheme();
+import Grid from '@mui/material/Grid';
+import { setFiles } from '../../Store/Files';
+import { setDocuments } from '../../Store/Documents';
 
 function getDate(str) {
   let date = new Date(str);
   return `${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`;
 }
 
-export default function SingleDocument({
-  creatingDocument,
-  theDocument,
-  theStorageDocument,
-  documents,
-  setDocuments,
-  files,
-}) {
+export default function SingleDocument({ theDocument }) {
   let { name, description } = theDocument;
   let [newName, setNewName] = useState(name);
   let [newDescription, setNewDescription] = useState(description);
   let [editingDocument, setEditingDocument] = useState(false);
   let [currentDocument, setCurrentDocument] = useState(theDocument);
   let [deletingDocument, setDeletingDocument] = useState(false);
-  let { state } = useContext(Context);
+  let { state, stateFiles, dispatchFiles, stateDocuments, dispatchDocuments } =
+    useContext(Context);
   let [url, setUrl] = useState('');
   let [project, setProject] = useState(null);
   let [fileType, setFileType] = useState('');
+  let [newFile, setNewFile] = useState(null);
 
   useEffect(() => {
     async function fetchProject() {
@@ -43,15 +39,11 @@ export default function SingleDocument({
       setProject(data[0]);
     }
     if (theDocument?.project) fetchProject();
-    let file = files?.filter(
+    setUrl(theDocument?.url);
+    let file = stateFiles?.filter(
       (currentFile) => currentFile.name === theDocument?.name
     );
     if (file[0]) setFileType(file[0].metadata.mimetype);
-
-    const { publicURL } = storage.storage
-      .from(`${state?.id}`)
-      .getPublicUrl(theDocument?.name);
-    setUrl(publicURL);
   }, []);
 
   async function updateDocument() {
@@ -60,13 +52,23 @@ export default function SingleDocument({
       return;
     }
 
-    let { data, error } = await storage.storage
+    let { data: updatedFile, error: updateFileError } = await storage.storage
       .from(`${state?.id}`)
-      .move(currentDocument?.name, newName);
-    if (error) {
-      alert('There was a problem updating this file.');
-      return;
+      .update(currentDocument?.name, newFile, {
+        cacheControl: '3600',
+        upsert: false,
+      });
+
+    if (newName !== theDocument?.name) {
+      let { data, error: newFileName } = await storage.storage
+        .from(`${state?.id}`)
+        .move(currentDocument?.name, newName);
+      if (newFileName) {
+        alert('There was a problem updating this file.');
+        return;
+      }
     }
+
     let { data: updatedDocument, error: documentError } = await supabase
       .from('Documents')
       .update({
@@ -74,12 +76,19 @@ export default function SingleDocument({
         description: newDescription,
       })
       .eq('id', theDocument?.id);
-    if (error) {
-      alert('There was a problem updating this document');
-      return;
+    dispatchDocuments(
+      setDocuments(
+        stateDocuments.map((document) => {
+          if (document.id === updatedDocument[0].id) return updatedDocument[0];
+          return document;
+        })
+      )
+    );
+    if (newFile) {
+      alert(
+        'New file uploaded! The link is updated but the display may take a few minutes to update.'
+      );
     }
-
-    setCurrentDocument(updatedDocument[0]);
     setEditingDocument(false);
   }
 
@@ -184,6 +193,25 @@ export default function SingleDocument({
               className="editing-document"
               onChange={(evt) => setNewDescription(evt.target.value)}
             />
+            <Grid item xs={12} sm={6}>
+              <ProjectList project={project} setProject={setProject} />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              {!newFile ? (
+                <Button variant="contained" component="label">
+                  Upload File{' '}
+                  <input
+                    type="file"
+                    accept="image/*, video/mp4,video/x-m4v,video/*, audio/*, .mkv, .pdf, .doc, .docx"
+                    hidden
+                    onChange={(evt) => setNewFile(evt.target.files[0])}
+                  />
+                </Button>
+              ) : (
+                <Typography>{`${newFile?.name} - ${newFile?.type}`}</Typography>
+              )}
+            </Grid>
 
             <div className="display-row">
               <Button variant="contained" onClick={updateDocument}>
