@@ -10,6 +10,7 @@ import ProjectList from './ProjectList';
 import Grid from '@mui/material/Grid';
 import { setFiles } from '../../Store/Files';
 import { setDocuments } from '../../Store/Documents';
+import DeletingDocument from './DeletingDocument';
 
 function getDate(str) {
   let date = new Date(str);
@@ -21,7 +22,6 @@ export default function SingleDocument({ theDocument }) {
   let [newName, setNewName] = useState(name);
   let [newDescription, setNewDescription] = useState(description);
   let [editingDocument, setEditingDocument] = useState(false);
-  let [currentDocument, setCurrentDocument] = useState(theDocument);
   let [deletingDocument, setDeletingDocument] = useState(false);
   let { state, stateFiles, dispatchFiles, stateDocuments, dispatchDocuments } =
     useContext(Context);
@@ -54,7 +54,7 @@ export default function SingleDocument({ theDocument }) {
 
     let { data: updatedFile, error: updateFileError } = await storage.storage
       .from(`${state?.id}`)
-      .update(currentDocument?.name, newFile, {
+      .update(theDocument?.name, newFile, {
         cacheControl: '3600',
         upsert: false,
       });
@@ -62,7 +62,7 @@ export default function SingleDocument({ theDocument }) {
     if (newName !== theDocument?.name) {
       let { data, error: newFileName } = await storage.storage
         .from(`${state?.id}`)
-        .move(currentDocument?.name, newName);
+        .move(theDocument?.name, newName);
       if (newFileName) {
         alert('There was a problem updating this file.');
         return;
@@ -92,13 +92,30 @@ export default function SingleDocument({ theDocument }) {
     setEditingDocument(false);
   }
 
-  //   async function deleteCost() {
-  //     let { data } = await supabase
-  //       .from('HOA_costs')
-  //       .delete()
-  //       .eq('id', theDocument?.id);
-  //     setDocuments(documents.filter((cost) => cost.id !== data[0].id));
-  //   }
+  async function deleteDocument() {
+    const { data: deletedFile, error } = await storage.storage
+      .from(`${state?.id}`)
+      .remove([`${theDocument?.name}`]);
+
+    if (error) {
+      alert('There was a problem deleting this file.');
+      console.log('error');
+      return;
+    }
+
+    const { data: deletedDocument } = await supabase
+      .from('Documents')
+      .delete()
+      .eq('id', theDocument?.id);
+
+    dispatchDocuments(
+      setDocuments(
+        stateDocuments.filter(
+          (document) => document.id !== deletedDocument[0].id
+        )
+      )
+    );
+  }
 
   return (
     <ThemeProvider theme={state?.mdTheme}>
@@ -122,7 +139,7 @@ export default function SingleDocument({ theDocument }) {
             }}
           >
             <Typography sx={{ fontSize: '1.5rem' }}>
-              {currentDocument?.name} -{' '}
+              {theDocument?.name} -{' '}
               <a href={url} target="_blank">
                 Open file
               </a>
@@ -130,9 +147,9 @@ export default function SingleDocument({ theDocument }) {
             <Typography sx={{ fontSize: '1.5rem' }}>
               {getDate(theDocument?.created_at)}
             </Typography>
-            {!currentDocument?.description ? null : (
+            {!theDocument?.description ? null : (
               <Typography sx={{ fontSize: '1.5rem' }}>
-                {currentDocument?.description}
+                {theDocument?.description}
               </Typography>
             )}
             {project ? (
@@ -176,7 +193,7 @@ export default function SingleDocument({ theDocument }) {
               id="documentName"
               label="Document Name"
               name="documentName"
-              defaultValue={currentDocument?.name}
+              defaultValue={theDocument?.name}
               autoComplete="Jimmy"
               className="editing-document"
               onChange={(evt) => setNewName(evt.target.value)}
@@ -188,7 +205,7 @@ export default function SingleDocument({ theDocument }) {
               id="description"
               label="Description"
               name="description"
-              defaultValue={currentDocument?.description}
+              defaultValue={theDocument?.description}
               autoComplete="Jimmy"
               className="editing-document"
               onChange={(evt) => setNewDescription(evt.target.value)}
@@ -226,12 +243,12 @@ export default function SingleDocument({ theDocument }) {
             </div>
           </div>
         )}
-        {/* {deletingCost ? (
-          <DeletingCost
-            setDeletingCost={setDeletingCost}
-            deleteCost={deleteCost}
+        {deletingDocument ? (
+          <DeletingDocument
+            setDeletingDocument={setDeletingDocument}
+            deleteDocument={deleteDocument}
           />
-        ) : null} */}
+        ) : null}
       </Paper>
     </ThemeProvider>
   );
