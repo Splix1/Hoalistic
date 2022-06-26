@@ -6,6 +6,7 @@ import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import DeletingCost from './DeletingCost';
 import { Context } from '../ContextProvider';
+import { setCosts } from '../../Store/Costs';
 
 const mdTheme = createTheme();
 
@@ -16,7 +17,7 @@ export default function SingleCost({ creatingCost, theCost, costs, setCosts }) {
   let [editingCost, setEditingCost] = useState(false);
   let [currentCost, setCost] = useState(theCost);
   let [deletingCost, setDeletingCost] = useState(false);
-  let { state } = useContext(Context);
+  let { state, stateCosts, dispatchCosts } = useContext(Context);
 
   async function updateCost() {
     if (!newName || !newCost) {
@@ -45,6 +46,7 @@ export default function SingleCost({ creatingCost, theCost, costs, setCosts }) {
       .delete()
       .eq('id', theCost?.id);
     setCosts(costs.filter((cost) => cost.id !== data[0].id));
+    dispatchCosts(setCosts(costs.filter((cost) => cost.id !== data[0].id)));
   }
 
   function numberWithCommas(x) {

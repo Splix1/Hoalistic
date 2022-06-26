@@ -47,9 +47,6 @@ function DashboardContent() {
 
   React.useEffect(() => {
     async function fetchBudgets() {
-      setUser(state);
-      setRecurringCosts(stateCosts);
-      setMonthlyAssessments(stateUnits);
       //fetch projects
       let { data: projectsData } = await supabase
         .from('Projects')
@@ -75,7 +72,13 @@ function DashboardContent() {
       setHOABalance(state?.balance);
     }
     fetchBudgets();
-  }, []);
+  }, [state]);
+
+  React.useEffect(() => {
+    setUser(state);
+    setRecurringCosts(stateCosts);
+    setMonthlyAssessments(stateUnits);
+  }, [state, stateCosts, stateUnits]);
 
   React.useEffect(() => {
     generateChartData(state);
