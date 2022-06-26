@@ -13,26 +13,12 @@ import { Context } from '../ContextProvider';
 const mdTheme = createTheme();
 export default function HOACosts() {
   const [costs, setCosts] = useState([]);
-  const [user, setUser] = useState({});
   const [creatingCost, setCreatingCost] = useState(false);
-  let { state } = useContext(Context);
+  let { state, stateCosts } = useContext(Context);
 
   useEffect(() => {
-    async function fetchCosts() {
-      let { email } = supabase.auth.user();
-      let { data: userData } = await supabase
-        .from('HOAs')
-        .select('*')
-        .eq('email', email);
-      setUser(userData[0]);
-      let { data: CostsData, error } = await supabase
-        .from('HOA_costs')
-        .select('*')
-        .eq('HOA', userData[0].id);
-      setCosts(CostsData);
-    }
-    fetchCosts();
-  }, []);
+    setCosts(stateCosts);
+  }, [stateCosts]);
 
   function newCost(cost) {
     setCosts([...costs, cost]);
@@ -73,7 +59,7 @@ export default function HOACosts() {
         <br />
         <br />
 
-        {costs.length > 0 ? (
+        {costs?.length > 0 ? (
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>

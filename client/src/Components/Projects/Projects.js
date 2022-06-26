@@ -15,18 +15,11 @@ export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [user, setUser] = useState({});
   const [creatingProject, setCreatingProject] = useState(false);
-  let { state } = useContext(Context);
+  let { state, stateProjects } = useContext(Context);
 
   useEffect(() => {
-    async function fetchProjects() {
-      let { data: projectsData, error } = await supabase
-        .from('Projects')
-        .select('*')
-        .eq('HOA', state?.id);
-      setProjects(projectsData);
-    }
-    fetchProjects();
-  }, [state]);
+    setProjects(stateProjects);
+  }, [stateProjects]);
 
   function newProject(project) {
     setProjects([...projects, project]);
@@ -67,7 +60,7 @@ export default function Projects() {
         <br />
         <br />
 
-        {projects.length > 0 ? (
+        {projects?.length > 0 ? (
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>

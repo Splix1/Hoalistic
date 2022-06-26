@@ -13,26 +13,14 @@ import SingleDocument from './SingleDocument';
 export default function Documents() {
   const [costs, setCosts] = useState([]);
   const [creatingDocument, setCreatingDocument] = useState(false);
-  let { state } = useContext(Context);
+  let { state, stateDocuments, stateFiles } = useContext(Context);
   const [documents, setDocuments] = useState([]);
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
-    async function fetchDocuments() {
-      let { data, error } = await supabase
-        .from('Documents')
-        .select('*')
-        .eq('HOA', state?.id);
-
-      const { data: storageFiles } = await storage.storage
-        .from(`${state?.id}`)
-        .list();
-      setFiles(storageFiles);
-
-      setDocuments(data);
-    }
-    fetchDocuments();
-  }, [state]);
+    setFiles(stateFiles);
+    setDocuments(stateDocuments);
+  }, [stateFiles, stateDocuments]);
 
   return (
     <ThemeProvider theme={state?.mdTheme}>

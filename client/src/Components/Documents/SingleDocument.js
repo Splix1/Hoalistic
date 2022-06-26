@@ -6,6 +6,7 @@ import CurrencyInput from 'react-currency-input-field';
 import supabase, { storage } from '../../client';
 import { Context } from '../ContextProvider';
 import { NavLink } from 'react-router-dom';
+import ProjectList from './ProjectList';
 
 const mdTheme = createTheme();
 

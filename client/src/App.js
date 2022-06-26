@@ -2,14 +2,79 @@ import React, { useEffect, useContext } from 'react';
 import './App.css';
 import Routes from './Routes';
 import NavBar from './Components/NavBar/NavBar';
-import supabase from './client';
+import supabase, { storage } from './client';
 import { setUser } from './Store/User';
+import { setProjects } from './Store/Projects';
+import { setCosts } from './Store/Costs';
+import { setUnits } from './Store/Units';
+import { setDocuments } from './Store/Documents';
+import { setFiles } from './Store/Files';
 import { Context } from './Components/ContextProvider';
 import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+async function fetchUserData(
+  user,
+  dispatchCosts,
+  dispatchProjects,
+  dispatchUnits,
+  dispatchDocuments,
+  dispatchFiles
+) {
+  fetchProjects(user, dispatchProjects);
+  fetchCosts(user, dispatchCosts);
+  fetchUnits(user, dispatchUnits);
+  fetchDocuments(user, dispatchDocuments, dispatchFiles);
+}
+
+async function fetchProjects(user, dispatchProjects) {
+  let { data: projectsData, error: projectsError } = await supabase
+    .from('Projects')
+    .select('*')
+    .eq('HOA', user?.id);
+  dispatchProjects(setProjects(projectsData));
+}
+
+async function fetchCosts(user, dispatchCosts) {
+  let { data: costsData, error: costsError } = await supabase
+    .from('HOA_costs')
+    .select('*')
+    .eq('HOA', user?.id);
+
+  dispatchCosts(setCosts(costsData));
+}
+
+async function fetchUnits(user, dispatchUnits) {
+  let { data: unitsData, error: unitsError } = await supabase
+    .from('Units')
+    .select('*')
+    .eq('HOA', user?.id);
+
+  dispatchUnits(setUnits(unitsData));
+}
+
+async function fetchDocuments(user, dispatchDocuments, dispatchFiles) {
+  let { data: documentsData, error: documentsError } = await supabase
+    .from('Documents')
+    .select('*')
+    .eq('HOA', user?.id);
+  dispatchDocuments(setDocuments(documentsData));
+  const { data: storageFiles } = await storage.storage
+    .from(`${user?.id}`)
+    .list();
+  dispatchFiles(setFiles(storageFiles));
+}
+
 function App() {
-  const { state, dispatch } = useContext(Context);
+  const {
+    state,
+    dispatch,
+    dispatchUnits,
+    dispatchCosts,
+    dispatchProjects,
+    dispatchDocuments,
+    dispatchFiles,
+  } = useContext(Context);
   const location = useLocation();
   const history = useHistory();
 
@@ -29,11 +94,32 @@ function App() {
           .from('HOAs')
           .select('*')
           .eq('email', curUser?.email);
+        console.log('before', data);
+        if (location?.pathname === '/projects')
+          await fetchProjects(data[0], dispatchProjects);
+
+        if (location?.pathname === '/costs')
+          await fetchCosts(data[0], dispatchCosts);
+
+        if (location?.pathname === '/units')
+          await fetchUnits(data[0], dispatchUnits);
+
+        if (location?.pathname === '/documents')
+          await fetchDocuments(data[0], dispatchDocuments, dispatchFiles);
+
         dispatch(
           setUser({
             ...data[0],
             mdTheme: createTheme({ palette: { mode: data[0].theme } }),
           })
+        );
+        fetchUserData(
+          data[0],
+          dispatchCosts,
+          dispatchProjects,
+          dispatchUnits,
+          dispatchDocuments,
+          dispatchFiles
         );
       }
       fetchUser();

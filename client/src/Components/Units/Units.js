@@ -17,20 +17,11 @@ const mdTheme = createTheme();
 function Units() {
   const [creatingUnit, setCreatingUnit] = useState(false);
   const [units, setUnits] = useState([]);
-  let { state } = useContext(Context);
+  let { state, stateUnits } = useContext(Context);
 
   useEffect(() => {
-    async function fetchUnits() {
-      let { email } = supabase.auth.user();
-      const user = await supabase.from('HOAs').select('*').eq('email', email);
-      let units = await supabase
-        .from('Units')
-        .select('*')
-        .eq('HOA', user.data[0].id);
-      setUnits(units.data);
-    }
-    fetchUnits();
-  }, []);
+    setUnits(stateUnits);
+  }, [stateUnits]);
 
   function newUnit(unit) {
     setUnits([...units, unit]);
@@ -75,7 +66,7 @@ function Units() {
         <br />
         <br />
 
-        {units.length > 0 ? (
+        {units?.length > 0 ? (
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>
