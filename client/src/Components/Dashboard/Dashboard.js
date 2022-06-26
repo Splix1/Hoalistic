@@ -14,6 +14,8 @@ import { Button } from '@mui/material';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
+import { setUnits } from '../../Store/Units';
+import { setCosts } from '../../Store/Costs';
 
 function DashboardContent() {
   let [creatingCost, setCreatingCost] = React.useState(false);
@@ -88,6 +90,7 @@ function DashboardContent() {
       .from('HOA_costs')
       .insert({ name: costName, cost: costPrice, HOA: user.id });
     setRecurringCosts([...recurringCosts, data[0]]);
+    dispatchCosts(setCosts([...stateCosts, data[0]]));
     setCreatingCost(false);
   }
 
@@ -103,6 +106,7 @@ function DashboardContent() {
       HOA: user.id,
     });
     setProjects([...projects, data[0]]);
+    dispatchProjects(setProjects([...projects, data[0]]));
     setCreatingProject(false);
   }
 
@@ -124,6 +128,7 @@ function DashboardContent() {
       dateMovedIn: unitMovedIn,
     });
     setMonthlyAssessments([...monthlyAssessments, unitData[0]]);
+    dispatchUnits(setUnits([...stateUnits, unitData[0]]));
     setCreatingUnit(false);
   }
 
