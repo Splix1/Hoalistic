@@ -236,7 +236,10 @@ export default function SingleDocument({ theDocument }) {
               </Button>
               <Button
                 variant="contained"
-                onClick={() => setEditingDocument(false)}
+                onClick={() => {
+                  setEditingDocument(false);
+                  setNewFile(null);
+                }}
               >
                 Cancel
               </Button>
