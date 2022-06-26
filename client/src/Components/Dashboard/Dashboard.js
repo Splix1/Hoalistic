@@ -34,30 +34,25 @@ function DashboardContent() {
   let [unitMovedIn, setUnitMovedIn] = React.useState('');
   let [unitTenantName, setUnitTenantName] = React.useState('');
   let [HOABalance, setHOABalance] = React.useState(0);
-  let { state } = React.useContext(Context);
+  let {
+    state,
+    stateCosts,
+    stateUnits,
+    dispatchUnits,
+    dispatchCosts,
+    dispatchProjects,
+  } = React.useContext(Context);
 
   React.useEffect(() => {
     async function fetchBudgets() {
-      //fetch user data
-      let { email } = supabase.auth.user();
-      const { data: userData } = await supabase
-        .from('HOAs')
-        .select('*')
-        .eq('email', email);
-      setUser(userData[0]);
-
-      //fetch recurring costs
-      let { data: recurringCostsData } = await supabase
-        .from('HOA_costs')
-        .select('*')
-        .eq('HOA', userData[0].id);
-      setRecurringCosts(recurringCostsData);
-
+      setUser(state);
+      setRecurringCosts(stateCosts);
+      setMonthlyAssessments(stateUnits);
       //fetch projects
       let { data: projectsData } = await supabase
         .from('Projects')
         .select('*')
-        .eq('HOA', userData[0].id);
+        .eq('HOA', state?.id);
 
       let currentDate = new Date().getMonth();
       let furthestProject = currentDate;
@@ -74,15 +69,8 @@ function DashboardContent() {
       });
       setProjects(upcomingProjects);
 
-      //fetch unit assessments
-      let { data: monthlyAssessmentsData } = await supabase
-        .from('Units')
-        .select('*')
-        .eq('HOA', userData[0].id);
-      setMonthlyAssessments(monthlyAssessmentsData);
-
       //update balance
-      setHOABalance(userData[0].balance);
+      setHOABalance(state?.balance);
     }
     fetchBudgets();
   }, []);
