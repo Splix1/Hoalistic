@@ -12,7 +12,7 @@ import DeletingDocument from './DeletingDocument';
 
 function getDate(str) {
   let date = new Date(str);
-  return `${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`;
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 }
 
 export default function SingleDocument({ theDocument }) {
