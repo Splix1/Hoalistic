@@ -125,9 +125,11 @@ function App() {
       fetchUser();
     }
 
-    const searchParams = new URLSearchParams(location.hash);
+    const searchParams = new URLSearchParams(location.hash.replace('#', ''));
     if (searchParams.getAll('type').includes('recovery')) {
       const access_token = searchParams.get('access_token');
+      console.log('searchParams', searchParams);
+      console.log('access_token', access_token);
       dispatch(setUser({ ...state, access_token: access_token }));
       history.push('/resetpassword');
     }
