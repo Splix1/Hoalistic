@@ -38,7 +38,12 @@ export default function ProjectList({ projects, setProject, project }) {
       >
         <MenuItem onClick={() => setProject(null)}>No Project</MenuItem>
         {stateProjects?.map((project) => (
-          <MenuItem onClick={() => setProject(project)}>
+          <MenuItem
+            onClick={() => {
+              setProject(project);
+              handleClose();
+            }}
+          >
             {project.name}
           </MenuItem>
         ))}
