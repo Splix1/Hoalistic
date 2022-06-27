@@ -55,12 +55,14 @@ export default function SingleDocument({ theDocument }) {
       return;
     }
 
-    let { data: updatedFile, error: updateFileError } = await storage.storage
-      .from(`${state?.id}`)
-      .update(theDocument?.name, newFile, {
-        cacheControl: '3600',
-        upsert: false,
-      });
+    if (newFile) {
+      let { data: updatedFile, error: updateFileError } = await storage.storage
+        .from(`${state?.id}`)
+        .update(theDocument?.name, newFile, {
+          cacheControl: '3600',
+          upsert: false,
+        });
+    }
 
     if (newName !== theDocument?.name) {
       let { data, error: newFileName } = await storage.storage
@@ -71,12 +73,15 @@ export default function SingleDocument({ theDocument }) {
         return;
       }
     }
-
+    const { publicURL } = storage.storage
+      .from(`${state?.id}`)
+      .getPublicUrl(newName);
     let { data: updatedDocument, error: documentError } = await supabase
       .from('Documents')
       .update({
         name: newName,
         description: newDescription,
+        url: publicURL,
       })
       .eq('id', theDocument?.id);
 
@@ -104,7 +109,6 @@ export default function SingleDocument({ theDocument }) {
 
     if (error) {
       alert('There was a problem deleting this file.');
-      console.log('error');
       return;
     }
 
