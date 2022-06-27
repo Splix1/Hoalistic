@@ -40,8 +40,10 @@ export default function ResetPassword() {
       alert('There was a problem updating your password.');
       return;
     } else {
-      dispatch(setUser(supabase.auth.user()));
-      history.push('/dashboard');
+      alert('Your password has been reset. Please log in.');
+      supabase.auth.signOut();
+      dispatch(setUser({ ...state, access_token: null }));
+      history.push('/login');
     }
   };
 
