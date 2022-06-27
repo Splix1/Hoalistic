@@ -73,7 +73,8 @@ function DashboardContent() {
     }
     fetchBudgets();
   }, [state]);
-
+  console.log('stateCosts', stateCosts);
+  console.log('stateUnits', stateUnits);
   React.useEffect(() => {
     setUser(state);
     setRecurringCosts(stateCosts);

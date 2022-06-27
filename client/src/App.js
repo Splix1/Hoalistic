@@ -13,7 +13,7 @@ import { Context } from './Components/ContextProvider';
 import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-async function fetchUserData(
+export async function fetchUserData(
   user,
   dispatchCosts,
   dispatchProjects,

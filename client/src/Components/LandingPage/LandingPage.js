@@ -13,11 +13,19 @@ import { NavLink, useHistory } from 'react-router-dom';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
 import { setUser } from '../../Store/User';
+import { fetchUserData } from '../../App';
 
 const theme = createTheme();
 
 function LandingPage() {
-  const { dispatch } = useContext(Context);
+  const {
+    dispatch,
+    dispatchCosts,
+    dispatchProjects,
+    dispatchUnits,
+    dispatchDocuments,
+    dispatchFiles,
+  } = useContext(Context);
   const history = useHistory();
 
   const handleSubmit = async (event) => {
@@ -43,6 +51,14 @@ function LandingPage() {
           ...data[0],
           mdTheme: createTheme({ palette: { mode: data[0].theme } }),
         })
+      );
+      fetchUserData(
+        data[0],
+        dispatchCosts,
+        dispatchProjects,
+        dispatchUnits,
+        dispatchDocuments,
+        dispatchFiles
       );
       history.push('/dashboard');
     }
