@@ -126,6 +126,22 @@ export default function SingleDocument({ theDocument }) {
     dispatchFiles(setFiles(storageFiles));
   }
 
+  async function downloadFile(theDocument) {
+    const { data, error } = await storage.storage
+      .from(`${state?.id}`)
+      .download(`${theDocument.name}`);
+    const b = window.URL.createObjectURL(new Blob([data]));
+    const link = document.createElement('a');
+    link.href = b;
+    link.setAttribute(
+      'download',
+      `${theDocument.name}.${data.type.split('/')[1]}`
+    );
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+  }
+
   return (
     <ThemeProvider theme={state?.mdTheme}>
       <Paper
@@ -176,14 +192,24 @@ export default function SingleDocument({ theDocument }) {
               <Button
                 variant="contained"
                 onClick={() => setEditingDocument(true)}
+                style={{ marginRight: '1rem' }}
               >
                 edit
               </Button>
               <Button
                 variant="contained"
                 onClick={() => setDeletingDocument(true)}
+                style={{ marginRight: '1rem' }}
               >
                 delete
+              </Button>
+
+              <Button
+                variant="contained"
+                onClick={() => downloadFile(theDocument)}
+                style={{ marginRight: '1rem' }}
+              >
+                download
               </Button>
             </div>
           </div>
