@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import { Typography } from '@mui/material';
@@ -10,30 +10,15 @@ import Button from '@mui/material/Button';
 import supabase, { storage } from '../../client';
 import { Context } from '../ContextProvider';
 import ProjectList from './ProjectList';
+import { setDocuments } from '../../Store/Documents';
 
-export default function CreateDocument({
-  setCreatingDocument,
-  documents,
-  setDocuments,
-}) {
+export default function CreateDocument({ setCreatingDocument, documents }) {
   let [documentName, setDocumentName] = useState('');
-  let { state } = useContext(Context);
+  let { state, stateDocuments, dispatchDocuments } = useContext(Context);
   let [file, setFile] = useState(null);
   let [description, setDescription] = useState('');
   let [project, setProject] = useState(null);
-  let [projects, setProjects] = useState([]);
   let [uploading, setUploading] = useState(false);
-
-  useEffect(() => {
-    async function fetchProjects() {
-      let { data } = await supabase
-        .from('Projects')
-        .select('*')
-        .eq('HOA', state?.id);
-      setProjects(data);
-    }
-    fetchProjects();
-  }, [state]);
 
   async function createDocument() {
     if (!file) {
@@ -45,7 +30,7 @@ export default function CreateDocument({
       return;
     }
     setUploading(true);
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from(`${state?.id}`)
       .upload(`${documentName}`, file);
     if (error) {
@@ -56,19 +41,17 @@ export default function CreateDocument({
     const { publicURL } = storage.storage
       .from(`${state?.id}`)
       .getPublicUrl(documentName);
-    const { data: documentData, error: documentError } = await supabase
-      .from('Documents')
-      .insert({
-        name: documentName,
-        description: description,
-        project: project?.id || null,
-        relatedToProject: project?.id ? true : false,
-        HOA: state?.id,
-        url: publicURL,
-      });
+    const { data: documentData } = await supabase.from('Documents').insert({
+      name: documentName,
+      description: description,
+      project: project?.id || null,
+      relatedToProject: project?.id ? true : false,
+      HOA: state?.id,
+      url: publicURL,
+    });
 
     setUploading(false);
-    setDocuments([...documents, documentData[0]]);
+    dispatchDocuments(setDocuments([...stateDocuments, documentData[0]]));
     setCreatingDocument(false);
   }
 

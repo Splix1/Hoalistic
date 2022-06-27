@@ -1,11 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { Typography, TextField, Button } from '@mui/material';
-import CurrencyInput from 'react-currency-input-field';
 import supabase, { storage } from '../../client';
 import { Context } from '../ContextProvider';
-import { NavLink } from 'react-router-dom';
 import ProjectList from './ProjectList';
 import Grid from '@mui/material/Grid';
 import { setFiles } from '../../Store/Files';
@@ -39,12 +37,17 @@ export default function SingleDocument({ theDocument }) {
       setProject(data[0]);
     }
     if (theDocument?.project) fetchProject();
-    setUrl(theDocument?.url);
+
     let file = stateFiles?.filter(
       (currentFile) => currentFile.name === theDocument?.name
     );
     if (file[0]) setFileType(file[0].metadata.mimetype);
-  }, []);
+
+    const { publicURL } = storage.storage
+      .from(`${state?.id}`)
+      .getPublicUrl(theDocument?.name);
+    setUrl(publicURL);
+  }, [state]);
 
   async function updateDocument() {
     if (!newName) {
@@ -76,6 +79,7 @@ export default function SingleDocument({ theDocument }) {
         description: newDescription,
       })
       .eq('id', theDocument?.id);
+
     dispatchDocuments(
       setDocuments(
         stateDocuments.map((document) => {
@@ -84,6 +88,7 @@ export default function SingleDocument({ theDocument }) {
         })
       )
     );
+
     if (newFile) {
       alert(
         'New file uploaded! The link is updated but the display may take a few minutes to update.'
@@ -115,6 +120,10 @@ export default function SingleDocument({ theDocument }) {
         )
       )
     );
+    const { data: storageFiles } = await storage.storage
+      .from(`${state?.id}`)
+      .list();
+    dispatchFiles(setFiles(storageFiles));
   }
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import supabase, { storage } from '../../client';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Typography, Button } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -11,16 +11,13 @@ import CreateDocument from './CreateDocument';
 import SingleDocument from './SingleDocument';
 
 export default function Documents() {
-  const [costs, setCosts] = useState([]);
   const [creatingDocument, setCreatingDocument] = useState(false);
-  let { state, stateDocuments, stateFiles } = useContext(Context);
+  let { state, stateDocuments } = useContext(Context);
   const [documents, setDocuments] = useState([]);
-  const [files, setFiles] = useState([]);
 
   useEffect(() => {
-    setFiles(stateFiles.slice(1));
     setDocuments(stateDocuments);
-  }, [stateFiles, stateDocuments]);
+  }, [stateDocuments]);
 
   return (
     <ThemeProvider theme={state?.mdTheme}>
@@ -42,8 +39,6 @@ export default function Documents() {
           <CreateDocument
             setCreatingDocument={setCreatingDocument}
             creatingDocument={creatingDocument}
-            setDocuments={setDocuments}
-            documents={documents}
           />
         ) : null}
         {!creatingDocument ? (
