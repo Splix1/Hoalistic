@@ -192,14 +192,14 @@ export default function SingleDocument({ theDocument }) {
               <Button
                 variant="contained"
                 onClick={() => setEditingDocument(true)}
-                style={{ marginRight: '1rem' }}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
               >
                 edit
               </Button>
               <Button
                 variant="contained"
                 onClick={() => setDeletingDocument(true)}
-                style={{ marginRight: '1rem' }}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
               >
                 delete
               </Button>
@@ -207,7 +207,7 @@ export default function SingleDocument({ theDocument }) {
               <Button
                 variant="contained"
                 onClick={() => downloadFile(theDocument)}
-                style={{ marginRight: '1rem' }}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
               >
                 download
               </Button>
