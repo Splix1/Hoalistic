@@ -76,10 +76,18 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
               Date moved in: {unit?.dateMovedIn}
             </Typography>
             <div className="display-row">
-              <Button variant="contained" onClick={() => setEditingUnit(true)}>
+              <Button
+                variant="contained"
+                onClick={() => setEditingUnit(true)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
                 edit
               </Button>
-              <Button variant="contained" onClick={() => setDeletingUnit(true)}>
+              <Button
+                variant="contained"
+                onClick={() => setDeletingUnit(true)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
                 delete
               </Button>
             </div>
@@ -136,10 +144,18 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
               onChange={(evt) => setMovedIn(evt.target.value)}
             />
             <div className="display-row">
-              <Button variant="contained" onClick={updateUnit}>
+              <Button
+                variant="contained"
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+                onClick={updateUnit}
+              >
                 Save
               </Button>
-              <Button variant="contained" onClick={() => setEditingUnit(false)}>
+              <Button
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+                variant="contained"
+                onClick={() => setEditingUnit(false)}
+              >
                 Cancel
               </Button>
             </div>

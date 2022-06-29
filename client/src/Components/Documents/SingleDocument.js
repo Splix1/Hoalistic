@@ -249,13 +249,17 @@ export default function SingleDocument({ theDocument }) {
               className="editing-document"
               onChange={(evt) => setNewDescription(evt.target.value)}
             />
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6} style={{ marginTop: '1rem' }}>
               <ProjectList project={project} setProject={setProject} />
             </Grid>
 
             <Grid item xs={12} sm={6}>
               {!newFile ? (
-                <Button variant="contained" component="label">
+                <Button
+                  variant="contained"
+                  component="label"
+                  style={{ marginTop: '1rem' }}
+                >
                   Upload File{' '}
                   <input
                     type="file"
@@ -270,11 +274,16 @@ export default function SingleDocument({ theDocument }) {
             </Grid>
 
             <div className="display-row">
-              <Button variant="contained" onClick={updateDocument}>
+              <Button
+                variant="contained"
+                onClick={updateDocument}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
                 Save
               </Button>
               <Button
                 variant="contained"
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
                 onClick={() => {
                   setEditingDocument(false);
                   setNewFile(null);

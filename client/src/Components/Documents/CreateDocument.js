@@ -125,12 +125,17 @@ export default function CreateDocument({ setCreatingDocument, documents }) {
               </div>
             </Paper>
             <div id="form-input">
-              <Button variant="contained" onClick={createDocument}>
+              <Button
+                variant="contained"
+                onClick={createDocument}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
                 Submit
               </Button>
               <Button
                 variant="contained"
                 onClick={() => setCreatingDocument(false)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
               >
                 Cancel
               </Button>

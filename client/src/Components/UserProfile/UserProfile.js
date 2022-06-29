@@ -95,6 +95,7 @@ function UserProfileContent() {
               <Button
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                style={{ marginRight: '1rem' }}
                 onClick={() => updateProfile()}
               >
                 Update Profile
@@ -102,6 +103,7 @@ function UserProfileContent() {
               <Button
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                style={{ marginRight: '1rem' }}
                 onClick={() => setEditingProfile(false)}
               >
                 Cancel

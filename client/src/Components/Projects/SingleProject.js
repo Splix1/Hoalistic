@@ -86,12 +86,14 @@ export default function SingleProject({
               <Button
                 variant="contained"
                 onClick={() => setEditingProject(true)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
               >
                 edit
               </Button>
               <Button
                 variant="contained"
                 onClick={() => setDeletingProject(true)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
               >
                 delete
               </Button>
@@ -142,12 +144,17 @@ export default function SingleProject({
             />
 
             <div className="display-row">
-              <Button variant="contained" onClick={updateProject}>
+              <Button
+                variant="contained"
+                onClick={updateProject}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
                 Save
               </Button>
               <Button
                 variant="contained"
                 onClick={() => setEditingProject(false)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
               >
                 Cancel
               </Button>

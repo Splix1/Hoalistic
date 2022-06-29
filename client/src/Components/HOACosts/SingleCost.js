@@ -75,10 +75,18 @@ export default function SingleCost({ creatingCost, theCost, costs, setCosts }) {
             </Typography>
 
             <div className="display-row">
-              <Button variant="contained" onClick={() => setEditingCost(true)}>
+              <Button
+                variant="contained"
+                onClick={() => setEditingCost(true)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
                 edit
               </Button>
-              <Button variant="contained" onClick={() => setDeletingCost(true)}>
+              <Button
+                variant="contained"
+                onClick={() => setDeletingCost(true)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
                 delete
               </Button>
             </div>
@@ -115,10 +123,18 @@ export default function SingleCost({ creatingCost, theCost, costs, setCosts }) {
             />
 
             <div className="display-row">
-              <Button variant="contained" onClick={updateCost}>
+              <Button
+                variant="contained"
+                onClick={updateCost}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
                 Save
               </Button>
-              <Button variant="contained" onClick={() => setEditingCost(false)}>
+              <Button
+                variant="contained"
+                onClick={() => setEditingCost(false)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
                 Cancel
               </Button>
             </div>

@@ -86,12 +86,17 @@ export default function CreateCosts({ setCreatingCost, newCost }) {
               </div>
             </Paper>
             <div id="form-input">
-              <Button variant="contained" onClick={createCost}>
+              <Button
+                variant="contained"
+                onClick={createCost}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
                 Submit
               </Button>
               <Button
                 variant="contained"
                 onClick={() => setCreatingCost(false)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
               >
                 Cancel
               </Button>

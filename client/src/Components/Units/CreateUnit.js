@@ -131,12 +131,17 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
                 </div>
               </Paper>
               <div id="form-input">
-                <Button variant="contained" type="submit">
+                <Button
+                  variant="contained"
+                  type="submit"
+                  style={{ marginRight: '1rem', marginTop: '1rem' }}
+                >
                   Submit
                 </Button>
                 <Button
                   variant="contained"
                   onClick={() => setCreatingUnit(false)}
+                  style={{ marginRight: '1rem', marginTop: '1rem' }}
                 >
                   Cancel
                 </Button>
