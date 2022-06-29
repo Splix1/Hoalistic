@@ -37,6 +37,7 @@ function DashboardContent() {
   let [unitMovedIn, setUnitMovedIn] = React.useState('');
   let [unitTenantName, setUnitTenantName] = React.useState('');
   let [HOABalance, setHOABalance] = React.useState(0);
+  let [monthsToAdd, setMonthsToAdd] = React.useState(0);
   let {
     state,
     stateCosts,
@@ -84,6 +85,10 @@ function DashboardContent() {
   React.useEffect(() => {
     generateChartData(state);
   }, [HOABalance]);
+
+  React.useEffect(() => {
+    generateChartData(state);
+  }, [monthsToAdd]);
 
   async function createCost() {
     if (costName === '' || costPrice === 0) {
@@ -184,7 +189,7 @@ function DashboardContent() {
     let j = 1;
     let yearCounter = 0;
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 12 + monthsToAdd; i++) {
       let monthCounter = i + 1;
       //if month + j is greater than 12 therefore not a month and in a new year
       if (months[currentMonth + j] === undefined) {
@@ -223,6 +228,9 @@ function DashboardContent() {
         )
       );
       j++;
+    }
+    for (let i = 0; i < monthsToAdd; i++) {
+      data.shift();
     }
     setChartData(data);
   }
@@ -264,7 +272,11 @@ function DashboardContent() {
             <Grid container spacing={3}>
               <div style={{ display: 'flex', flexDirection: 'row' }}></div>
               <Grid item xs={12} md={8} lg={9}>
-                <FutureProjections data={chartData} />
+                <FutureProjections
+                  data={chartData}
+                  monthsToAdd={monthsToAdd}
+                  setMonthsToAdd={setMonthsToAdd}
+                />
               </Grid>
               <Grid item xs={12} md={4} lg={3}>
                 <Paper

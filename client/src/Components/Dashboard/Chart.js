@@ -13,7 +13,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-export default function FutureProjections({ data }) {
+export default function FutureProjections({
+  data,
+  monthsToAdd,
+  setMonthsToAdd,
+}) {
   return (
     <Paper
       sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 300 }}
@@ -31,20 +35,31 @@ export default function FutureProjections({ data }) {
         <LineSeries valueField="y" argumentField="x" />
         <EventTracker />
         <Tooltip />
-        {/* <div
+        <div
           style={{
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}
         >
-          <div style={{ backgroundColor: '#90caf9' }}>
-            <ArrowBackIcon />
-          </div>
-          <div style={{ backgroundColor: '#90caf9' }}>
+          {monthsToAdd > 0 ? (
+            <div
+              style={{ backgroundColor: '#90caf9' }}
+              onClick={() => setMonthsToAdd(monthsToAdd - 1)}
+            >
+              <ArrowBackIcon />
+            </div>
+          ) : (
+            <div> </div>
+          )}
+
+          <div
+            style={{ backgroundColor: '#90caf9' }}
+            onClick={() => setMonthsToAdd(monthsToAdd + 1)}
+          >
             <ArrowForwardIcon />
           </div>
-        </div> */}
+        </div>
       </Chart>
     </Paper>
   );
