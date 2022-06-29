@@ -16,6 +16,7 @@ import supabase from '../../client';
 import { Context } from '../ContextProvider';
 import { setUnits } from '../../Store/Units';
 import { setCosts } from '../../Store/Costs';
+import { setProjects } from '../../Store/Projects';
 
 function DashboardContent() {
   let [creatingCost, setCreatingCost] = React.useState(false);
@@ -27,7 +28,7 @@ function DashboardContent() {
   let [projectName, setProjectName] = React.useState('');
   let [projectDate, setProjectDate] = React.useState('');
   let [projectCost, setProjectCost] = React.useState(0);
-  let [projects, setProjects] = React.useState([]);
+  let [projects, setStateProjects] = React.useState([]);
   let [chartData, setChartData] = React.useState([]);
   let [monthlyAssessments, setMonthlyAssessments] = React.useState([]);
   let [creatingUnit, setCreatingUnit] = React.useState(false);
@@ -66,15 +67,14 @@ function DashboardContent() {
           };
         }
       });
-      setProjects(upcomingProjects);
+      setStateProjects(upcomingProjects);
 
       //update balance
       setHOABalance(state?.balance);
     }
     fetchBudgets();
   }, [state]);
-  console.log('stateCosts', stateCosts);
-  console.log('stateUnits', stateUnits);
+
   React.useEffect(() => {
     setUser(state);
     setRecurringCosts(stateCosts);
@@ -109,7 +109,7 @@ function DashboardContent() {
       begin_date: projectDate,
       HOA: user.id,
     });
-    setProjects([...projects, data[0]]);
+    setStateProjects([...projects, data[0]]);
     dispatchProjects(setProjects([...projects, data[0]]));
     setCreatingProject(false);
   }
