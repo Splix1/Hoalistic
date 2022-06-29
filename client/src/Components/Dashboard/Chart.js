@@ -44,7 +44,7 @@ export default function FutureProjections({
         >
           {monthsToAdd > 0 ? (
             <div
-              style={{ backgroundColor: '#90caf9' }}
+              style={{ backgroundColor: '#90caf9', cursor: 'pointer' }}
               onClick={() => setMonthsToAdd(monthsToAdd - 1)}
             >
               <ArrowBackIcon />
@@ -54,7 +54,7 @@ export default function FutureProjections({
           )}
 
           <div
-            style={{ backgroundColor: '#90caf9' }}
+            style={{ backgroundColor: '#90caf9', cursor: 'pointer' }}
             onClick={() => setMonthsToAdd(monthsToAdd + 1)}
           >
             <ArrowForwardIcon />
