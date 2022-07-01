@@ -194,10 +194,12 @@ function DashboardContent() {
 
       let projectsToSubtract = projects
         .filter((project) => {
-          let currentProject = new Date(project.begin_date);
+          let projectMonth = new Date(project.begin_date).getMonth() + 1;
+          let projectYear = new Date(project.begin_date).getFullYear();
+
           if (
-            currentProject.getMonth() <= currentMonth + i &&
-            currentProject.getFullYear() <= currentYear
+            projectMonth <= currentMonth + j &&
+            projectYear <= currentYear + yearCounter
           ) {
             return project;
           }
