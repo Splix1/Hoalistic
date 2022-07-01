@@ -43,15 +43,8 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="sticky">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <BasicMenu />
-          </IconButton>
+          <BasicMenu />
+
           <IconButton sx={{ ml: 1 }} onClick={updateTheme} color="inherit">
             {state.theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>

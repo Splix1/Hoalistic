@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
+import IconButton from '@mui/material/IconButton';
 
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -18,13 +19,23 @@ export default function BasicMenu() {
   const history = useHistory();
 
   return (
-    <div>
+    <IconButton
+      size="large"
+      edge="start"
+      color="inherit"
+      aria-label="menu"
+      sx={{ mr: 2 }}
+      onClick={(evt) => {
+        if (!anchorEl) {
+          handleClick(evt);
+        }
+      }}
+    >
       <MenuIcon
         id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
       ></MenuIcon>
       <Menu
         id="basic-menu"
@@ -42,6 +53,6 @@ export default function BasicMenu() {
         <MenuItem onClick={() => handleClose('/costs')}>Costs</MenuItem>
         <MenuItem onClick={() => handleClose('/documents')}>Documents</MenuItem>
       </Menu>
-    </div>
+    </IconButton>
   );
 }
