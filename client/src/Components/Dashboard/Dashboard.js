@@ -55,13 +55,12 @@ function DashboardContent() {
         .select('*')
         .eq('HOA', state?.id);
 
-      let currentMonth = new Date().getMonth() + 1;
-      let currentYear = new Date().getFullYear();
       let upcomingProjects = projectsData.filter((currentProject) => {
-        let projectMonth = new Date(currentProject.begin_date).getMonth() + 1;
-        let projectYear = new Date(currentProject.begin_date).getFullYear();
-        if (projectMonth > currentMonth || projectYear > currentYear)
-          return { ...currentProject, month: projectMonth };
+        let projectDate = new Date(currentProject.begin_date);
+        let currentTime = new Date().getTime();
+
+        if (projectDate.getTime() > currentTime)
+          return { ...currentProject, month: projectDate.getMonth() + 1 };
       });
       setStateProjects(upcomingProjects);
 
