@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Paper } from '@mui/material';
+import { Paper, Button } from '@mui/material';
 import Title from './Title';
 import {
   ArgumentAxis,

@@ -55,18 +55,13 @@ function DashboardContent() {
         .select('*')
         .eq('HOA', state?.id);
 
-      let currentDate = new Date().getMonth();
-      let furthestProject = currentDate;
+      let currentMonth = new Date().getMonth() + 1;
+      let currentYear = new Date().getFullYear();
       let upcomingProjects = projectsData.filter((currentProject) => {
-        if (new Date(currentProject.begin_date).getMonth() > currentDate) {
-          let currentProjectMonth = new Date(currentProject).getMonth();
-          if (currentProjectMonth > furthestProject)
-            furthestProject = currentProjectMonth;
-          return {
-            ...currentProject,
-            month: currentProjectMonth,
-          };
-        }
+        let projectMonth = new Date(currentProject.begin_date).getMonth() + 1;
+        let projectYear = new Date(currentProject.begin_date).getFullYear();
+        if (projectMonth > currentMonth || projectYear > currentYear)
+          return { ...currentProject, month: projectMonth };
       });
       setStateProjects(upcomingProjects);
 
