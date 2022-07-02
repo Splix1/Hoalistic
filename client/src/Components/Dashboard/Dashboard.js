@@ -266,7 +266,7 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          <Container sx={{ mt: 4, mb: 4 }}>
+          <Container sx={{ mt: 4, mb: 4, marginTop: '0px' }}>
             <Grid container spacing={3}>
               <div style={{ display: 'flex', flexDirection: 'row' }}></div>
               <Grid item xs={12} md={8} lg={9}>
@@ -304,6 +304,7 @@ function DashboardContent() {
                     justifyContent: 'space-between',
                     height: 'fit-content',
                     width: 1150,
+                    marginBottom: '2rem',
                   }}
                 >
                   <div>
