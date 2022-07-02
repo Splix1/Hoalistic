@@ -9,19 +9,21 @@ import Container from '@mui/material/Container';
 import SingleCost from './SingleCost';
 import CreateCosts from './CreateCosts';
 import { Context } from '../ContextProvider';
+import { setCosts } from '../../Store/Costs';
 
 const mdTheme = createTheme();
 export default function HOACosts() {
-  const [costs, setCosts] = useState([]);
+  const [costs, setStateCosts] = useState([]);
   const [creatingCost, setCreatingCost] = useState(false);
-  let { state, stateCosts } = useContext(Context);
-
+  let { state, stateCosts, dispatchCosts } = useContext(Context);
+  console.log(stateCosts);
   useEffect(() => {
-    setCosts(stateCosts);
+    setStateCosts(stateCosts);
   }, [stateCosts]);
 
   function newCost(cost) {
-    setCosts([...costs, cost]);
+    setStateCosts([...costs, cost]);
+    dispatchCosts(setCosts([...stateCosts, cost]));
   }
 
   return (
@@ -69,7 +71,7 @@ export default function HOACosts() {
                       theCost={cost}
                       creatingCost={creatingCost}
                       costs={costs}
-                      setCosts={setCosts}
+                      setStateCosts={setStateCosts}
                     />
                     <br />
                   </div>

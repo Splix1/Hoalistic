@@ -10,12 +10,17 @@ import { setCosts } from '../../Store/Costs';
 
 const mdTheme = createTheme();
 
-export default function SingleCost({ creatingCost, theCost, costs, setCosts }) {
+export default function SingleCost({
+  creatingCost,
+  theCost,
+  costs,
+  setStateCosts,
+}) {
   let { name, cost } = theCost;
   let [newName, setNewName] = useState(name);
   let [newCost, setNewCost] = useState(cost);
   let [editingCost, setEditingCost] = useState(false);
-  let [currentCost, setCost] = useState(theCost);
+  let [currentCost, setStateCost] = useState(theCost);
   let [deletingCost, setDeletingCost] = useState(false);
   let { state, stateCosts, dispatchCosts } = useContext(Context);
 
@@ -36,7 +41,7 @@ export default function SingleCost({ creatingCost, theCost, costs, setCosts }) {
       return;
     }
 
-    setCost(updatedCost[0]);
+    setStateCost(updatedCost[0]);
     setEditingCost(false);
   }
 
@@ -45,11 +50,14 @@ export default function SingleCost({ creatingCost, theCost, costs, setCosts }) {
       .from('HOA_costs')
       .delete()
       .eq('id', theCost?.id);
-    setCosts(costs.filter((cost) => cost.id !== data[0].id));
-    dispatchCosts(setCosts(costs.filter((cost) => cost.id !== data[0].id)));
+    setStateCosts(costs.filter((cost) => cost.id !== data[0].id));
+    dispatchCosts(
+      setCosts(stateCosts.filter((cost) => cost.id !== data[0].id))
+    );
   }
 
   function numberWithCommas(x) {
+    if (!x) return;
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
