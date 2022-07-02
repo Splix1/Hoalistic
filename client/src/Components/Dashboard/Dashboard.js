@@ -65,7 +65,8 @@ function DashboardContent() {
       setStateProjects(upcomingProjects);
 
       //update balance
-      setHOABalance(state?.balance);
+
+      setHOABalance(numberWithCommas(state?.balance));
     }
     fetchBudgets();
   }, [state]);
@@ -244,6 +245,7 @@ function DashboardContent() {
   }
 
   function numberWithCommas(x) {
+    if (!x) return;
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 

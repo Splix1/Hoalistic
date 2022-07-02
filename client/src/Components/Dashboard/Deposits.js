@@ -57,8 +57,7 @@ export default function Deposits({
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
           onClick={() => {
-            setHOABalance(numberWithCommas(HOABalanceField));
-            dispatch(setUser({ ...state, HOABalance: HOABalanceField }));
+            dispatch(setUser({ ...state, balance: HOABalanceField }));
             updateBalance(HOABalanceField);
           }}
         >
