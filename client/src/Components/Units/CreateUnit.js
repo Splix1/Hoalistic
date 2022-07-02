@@ -79,7 +79,12 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
                   Create Unit
                 </Typography>
                 <div id="form-inputs">
-                  <Grid item xs={12} sm={6}>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    style={{ marginBottom: '0.5rem', marginRight: '0.5rem' }}
+                  >
                     <TextField
                       required
                       fullWidth
@@ -108,7 +113,7 @@ function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
                   </Grid>
                 </div>
                 <div id="form-inputs">
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12} sm={6} style={{ marginRight: '1rem' }}>
                     <TextField
                       type={'date'}
                       required

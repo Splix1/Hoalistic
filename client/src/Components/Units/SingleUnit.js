@@ -112,6 +112,7 @@ function SingleUnit({ creatingUnit, theUnit }) {
               autoComplete="1A"
               className="editing-unit"
               onChange={(evt) => setNewUnitID(evt.target.value)}
+              style={{ marginBottom: '0.5rem' }}
             />
             <TextField
               required
@@ -123,6 +124,7 @@ function SingleUnit({ creatingUnit, theUnit }) {
               defaultValue={unit?.tenant_name}
               className="editing-unit"
               onChange={(evt) => setTenantName(evt.target.value)}
+              style={{ marginBottom: '0.5rem' }}
             />
             <CurrencyInput
               id="monthlyAssessment"
@@ -136,6 +138,7 @@ function SingleUnit({ creatingUnit, theUnit }) {
                 fontSize: '1rem',
                 backgroundColor: '#121212',
                 color: 'white',
+                marginBottom: '0.5rem',
               }}
               onValueChange={(value) => setMonthlyAssessment(value)}
               className="editing-unit"
@@ -150,6 +153,7 @@ function SingleUnit({ creatingUnit, theUnit }) {
               defaultValue={unit?.dateMovedIn}
               className="editing-unit"
               onChange={(evt) => setMovedIn(evt.target.value)}
+              style={{ marginBottom: '0.5rem' }}
             />
             <div className="display-row">
               <Button
