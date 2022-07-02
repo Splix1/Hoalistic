@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Paper, Button } from '@mui/material';
+import { Paper, Button, Typography } from '@mui/material';
 import Title from './Title';
 import {
   ArgumentAxis,
@@ -35,16 +35,24 @@ export default function FutureProjections({
         <LineSeries valueField="y" argumentField="x" />
         <EventTracker />
         <Tooltip />
+      </Chart>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {/* <Typography style={{ color: '#90caf9' }}>
+          Adjust range of data
+        </Typography> */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
           }}
         >
           {monthsToAdd > 0 ? (
             <div
-              style={{ backgroundColor: '#90caf9', cursor: 'pointer' }}
+              style={{
+                cursor: 'pointer',
+                marginRight: '1rem',
+              }}
               onClick={() => setMonthsToAdd(monthsToAdd - 1)}
             >
               <ArrowBackIcon />
@@ -54,13 +62,13 @@ export default function FutureProjections({
           )}
 
           <div
-            style={{ backgroundColor: '#90caf9', cursor: 'pointer' }}
+            style={{ cursor: 'pointer' }}
             onClick={() => setMonthsToAdd(monthsToAdd + 1)}
           >
             <ArrowForwardIcon />
           </div>
         </div>
-      </Chart>
+      </div>
     </Paper>
   );
 }
