@@ -105,7 +105,7 @@ function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
                   </Grid>
                 </div>
                 <div id="form-inputs">
-                  <Grid item xs={24} sm={12}>
+                  <Grid item xs={24} sm={12} style={{ marginTop: '0.5rem' }}>
                     <TextField
                       type={'date'}
                       required

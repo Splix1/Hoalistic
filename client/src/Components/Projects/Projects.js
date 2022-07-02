@@ -9,20 +9,16 @@ import Container from '@mui/material/Container';
 import SingleProject from './SingleProject';
 import CreateProjects from './CreateProjects';
 import { Context } from '../ContextProvider';
+import { setProjects } from '../../Store/Projects';
 
 const mdTheme = createTheme();
 export default function Projects() {
-  const [projects, setProjects] = useState([]);
   const [user, setUser] = useState({});
   const [creatingProject, setCreatingProject] = useState(false);
-  let { state, stateProjects } = useContext(Context);
-
-  useEffect(() => {
-    setProjects(stateProjects);
-  }, [stateProjects]);
+  let { state, stateProjects, dispatchProjects } = useContext(Context);
 
   function newProject(project) {
-    setProjects([...projects, project]);
+    dispatchProjects(setProjects([...stateProjects, project]));
   }
 
   return (
@@ -60,17 +56,15 @@ export default function Projects() {
         <br />
         <br />
 
-        {projects?.length > 0 ? (
+        {stateProjects?.length > 0 ? (
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>
-                {projects.map((project) => (
+                {stateProjects.map((project) => (
                   <div key={project.id}>
                     <SingleProject
                       theProject={project}
                       creatingProject={creatingProject}
-                      projects={projects}
-                      setProjects={setProjects}
                     />
                     <br />
                   </div>

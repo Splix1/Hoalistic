@@ -6,15 +6,11 @@ import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import DeletingProject from './DeletingProject';
 import { Context } from '../ContextProvider';
+import { setProjects } from '../../Store/Projects';
 
 const mdTheme = createTheme();
 
-export default function SingleProject({
-  creatingProject,
-  theProject,
-  projects,
-  setProjects,
-}) {
+export default function SingleProject({ creatingProject, theProject }) {
   let { name, cost, begin_date } = theProject;
   let [newName, setNewName] = useState(name);
   let [newCost, setNewCost] = useState(cost);
@@ -22,7 +18,7 @@ export default function SingleProject({
   let [editingProject, setEditingProject] = useState(false);
   let [project, setProject] = useState(theProject);
   let [deletingProject, setDeletingProject] = useState(false);
-  let { state } = useContext(Context);
+  let { state, stateProjects, dispatchProjects } = useContext(Context);
 
   async function updateProject() {
     if (!newName || !newCost || !newBeginDate) {
@@ -51,10 +47,13 @@ export default function SingleProject({
       .from('Projects')
       .delete()
       .eq('id', project?.id);
-    setProjects(projects.filter((project) => project.id !== data[0].id));
+    dispatchProjects(
+      setProjects(stateProjects.filter((project) => project.id !== data[0].id))
+    );
   }
 
   function numberWithCommas(x) {
+    if (!x) return;
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
