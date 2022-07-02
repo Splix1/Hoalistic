@@ -10,12 +10,7 @@ import { setCosts } from '../../Store/Costs';
 
 const mdTheme = createTheme();
 
-export default function SingleCost({
-  creatingCost,
-  theCost,
-  costs,
-  setStateCosts,
-}) {
+export default function SingleCost({ creatingCost, theCost }) {
   let { name, cost } = theCost;
   let [newName, setNewName] = useState(name);
   let [newCost, setNewCost] = useState(cost);
@@ -50,7 +45,7 @@ export default function SingleCost({
       .from('HOA_costs')
       .delete()
       .eq('id', theCost?.id);
-    setStateCosts(costs.filter((cost) => cost.id !== data[0].id));
+
     dispatchCosts(
       setCosts(stateCosts.filter((cost) => cost.id !== data[0].id))
     );

@@ -13,16 +13,10 @@ import { setCosts } from '../../Store/Costs';
 
 const mdTheme = createTheme();
 export default function HOACosts() {
-  const [costs, setStateCosts] = useState([]);
   const [creatingCost, setCreatingCost] = useState(false);
   let { state, stateCosts, dispatchCosts } = useContext(Context);
 
-  useEffect(() => {
-    setStateCosts(stateCosts);
-  }, [stateCosts]);
-
   function newCost(cost) {
-    setStateCosts([...costs, cost]);
     dispatchCosts(setCosts([...stateCosts, cost]));
   }
 
@@ -61,18 +55,13 @@ export default function HOACosts() {
         <br />
         <br />
 
-        {costs?.length > 0 ? (
+        {stateCosts?.length > 0 ? (
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>
-                {costs.map((cost) => (
+                {stateCosts.map((cost) => (
                   <div key={cost.id}>
-                    <SingleCost
-                      theCost={cost}
-                      creatingCost={creatingCost}
-                      costs={costs}
-                      setStateCosts={setStateCosts}
-                    />
+                    <SingleCost theCost={cost} creatingCost={creatingCost} />
                     <br />
                   </div>
                 ))}
