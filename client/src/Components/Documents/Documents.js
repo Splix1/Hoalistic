@@ -13,11 +13,6 @@ import SingleDocument from './SingleDocument';
 export default function Documents() {
   const [creatingDocument, setCreatingDocument] = useState(false);
   let { state, stateDocuments } = useContext(Context);
-  const [documents, setDocuments] = useState([]);
-
-  useEffect(() => {
-    setDocuments(stateDocuments);
-  }, [stateDocuments]);
 
   return (
     <ThemeProvider theme={state?.mdTheme}>
@@ -54,17 +49,15 @@ export default function Documents() {
         <br />
         <br />
 
-        {documents.length > 0 ? (
+        {stateDocuments.length > 0 ? (
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>
-                {documents.map((document, i) => (
+                {stateDocuments.map((document, i) => (
                   <div key={document.id}>
                     <SingleDocument
                       theDocument={document}
                       creatingDocument={creatingDocument}
-                      documents={documents}
-                      setDocuments={setDocuments}
                     />
                     <br />
                   </div>

@@ -6,8 +6,12 @@ export default function DeletingDocument({
   deleteDocument,
 }) {
   return (
-    <div id="deleting-cost">
-      <Button variant="contained" onClick={deleteDocument}>
+    <div id="deleting-cost" style={{ marginTop: '0.5rem' }}>
+      <Button
+        variant="contained"
+        onClick={deleteDocument}
+        style={{ marginRight: '0.5rem' }}
+      >
         Confirm deletion
       </Button>
       <Button variant="contained" onClick={() => setDeletingDocument(false)}>

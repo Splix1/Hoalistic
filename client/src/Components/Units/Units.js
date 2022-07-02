@@ -21,7 +21,6 @@ function Units() {
 
   function newUnit(unit) {
     dispatchUnits(setUnits([...stateUnits, unit]));
-    // setUnits([...units, unit]);
   }
 
   return (
