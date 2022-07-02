@@ -318,6 +318,7 @@ function DashboardContent() {
                           name="name"
                           autoComplete="Jimmy"
                           onChange={(evt) => setCostName(evt.target.value)}
+                          style={{ marginBottom: '0.5rem' }}
                         />
                         <CurrencyInput
                           id="input-example"
@@ -331,6 +332,7 @@ function DashboardContent() {
                             fontSize: '1rem',
                             backgroundColor: '#121212',
                             color: 'white',
+                            marginBottom: '0.5rem',
                           }}
                           onValueChange={(value) => setCostPrice(value)}
                         />
@@ -386,6 +388,7 @@ function DashboardContent() {
                           name="name"
                           autoComplete="Jimmy"
                           onChange={(evt) => setProjectName(evt.target.value)}
+                          style={{ marginBottom: '0.5rem' }}
                         />
                         <TextField
                           type={'date'}
@@ -395,6 +398,7 @@ function DashboardContent() {
                           name="dateMovedIn"
                           autoComplete="Jimmy"
                           onChange={(evt) => setProjectDate(evt.target.value)}
+                          style={{ marginBottom: '0.5rem' }}
                         />
                         <CurrencyInput
                           id="input-example"
@@ -408,6 +412,7 @@ function DashboardContent() {
                             fontSize: '1rem',
                             backgroundColor: '#121212',
                             color: 'white',
+                            marginBottom: '0.5rem',
                           }}
                           onValueChange={(value) => setProjectCost(value)}
                         />
@@ -466,6 +471,7 @@ function DashboardContent() {
                           name="unitID"
                           autoComplete="Jimmy"
                           onChange={(evt) => setUnitID(evt.target.value)}
+                          style={{ marginBottom: '0.5rem' }}
                         />
 
                         <CurrencyInput
@@ -480,6 +486,7 @@ function DashboardContent() {
                             fontSize: '1rem',
                             backgroundColor: '#121212',
                             color: 'white',
+                            marginBottom: '0.5rem',
                           }}
                           onValueChange={(value) => setUnitAssessment(value)}
                         />
@@ -491,6 +498,7 @@ function DashboardContent() {
                           name="dateMovedIn"
                           autoComplete="Jimmy"
                           onChange={(evt) => setUnitMovedIn(evt.target.value)}
+                          style={{ marginBottom: '0.5rem' }}
                         />
                         <TextField
                           required
@@ -499,6 +507,7 @@ function DashboardContent() {
                           name="tenantName"
                           label="Tenant Name"
                           autoComplete="Jimmy"
+                          style={{ marginBottom: '0.5rem' }}
                           onChange={(evt) =>
                             setUnitTenantName(evt.target.value)
                           }
