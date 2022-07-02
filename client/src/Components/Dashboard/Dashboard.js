@@ -334,12 +334,19 @@ function DashboardContent() {
                           }}
                           onValueChange={(value) => setCostPrice(value)}
                         />
-                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            marginTop: '0.5rem',
+                          }}
+                        >
                           <Button
                             variant="contained"
                             onClick={() => createCost()}
                           >
-                            Create Cost
+                            Add Cost
                           </Button>
                           <Button
                             variant="contained"
@@ -369,7 +376,7 @@ function DashboardContent() {
                   </div>
 
                   <div>
-                    <Title>Expected Projects</Title>
+                    <Title>Upcoming Projects</Title>
                     {creatingProject ? (
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <TextField
@@ -404,12 +411,19 @@ function DashboardContent() {
                           }}
                           onValueChange={(value) => setProjectCost(value)}
                         />
-                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            marginTop: '0.5rem',
+                          }}
+                        >
                           <Button
                             variant="contained"
                             onClick={() => createProject()}
                           >
-                            Create Project
+                            Add Project
                           </Button>
                           <Button
                             variant="contained"
@@ -442,7 +456,7 @@ function DashboardContent() {
                   </div>
 
                   <div>
-                    <Title>Unit Assessments</Title>
+                    <Title>Units</Title>
                     {creatingUnit ? (
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <TextField
@@ -490,12 +504,19 @@ function DashboardContent() {
                           }
                         />
 
-                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            marginTop: '0.5rem',
+                          }}
+                        >
                           <Button
                             variant="contained"
                             onClick={() => createUnit()}
                           >
-                            Create Unit
+                            Add Unit
                           </Button>
                           <Button
                             variant="contained"
@@ -510,7 +531,7 @@ function DashboardContent() {
                         variant="outlined"
                         onClick={() => setCreatingUnit(true)}
                       >
-                        Create a Unit
+                        Add a Unit
                       </Button>
                     )}
                     {monthlyAssessments.map((assessment) => (
