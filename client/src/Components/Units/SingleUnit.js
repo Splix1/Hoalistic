@@ -7,10 +7,11 @@ import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import DeletingUnit from './DeletingUnit';
 import { Context } from '../ContextProvider';
+import { setUnits } from '../../Store/Units';
 
 const mdTheme = createTheme();
 
-function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
+function SingleUnit({ creatingUnit, theUnit }) {
   let { dateMovedIn, monthly_assessment, tenant_name, unitID } = theUnit;
   let [newUnitID, setNewUnitID] = useState(unitID);
   let [tenantName, setTenantName] = useState(tenant_name);
@@ -19,7 +20,7 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
   let [editingUnit, setEditingUnit] = useState(false);
   let [unit, setUnit] = useState(theUnit);
   let [deletingUnit, setDeletingUnit] = useState(false);
-  let { state } = useContext(Context);
+  let { state, stateUnits, dispatchUnits } = useContext(Context);
 
   async function updateUnit() {
     if (!newUnitID || !monthlyAssessment || !tenantName || !movedIn) {
@@ -46,7 +47,14 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
 
   async function deleteUnit() {
     let { data } = await supabase.from('Units').delete().eq('id', unit?.id);
-    setUnits(units.filter((unit) => unit.id !== data[0].id));
+    dispatchUnits(
+      setUnits(stateUnits.filter((unit) => unit.id !== data[0].id))
+    );
+  }
+
+  function numberWithCommas(x) {
+    if (!x) return;
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
   return (
@@ -70,7 +78,7 @@ function SingleUnit({ creatingUnit, theUnit, units, setUnits }) {
               Tenant Name: {unit?.tenant_name}
             </Typography>
             <Typography sx={{ fontSize: '1.5rem' }}>
-              Monthly Assessment: ${unit?.monthly_assessment}
+              Monthly Assessment: ${numberWithCommas(unit?.monthly_assessment)}
             </Typography>
             <Typography sx={{ fontSize: '1.5rem' }}>
               Date moved in: {unit?.dateMovedIn}

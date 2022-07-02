@@ -11,24 +11,17 @@ import CreateUnits from './CreateUnit';
 import SingleUnit from './SingleUnit';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
+import { setUnits } from '../../Store/Units';
 
 const mdTheme = createTheme();
 
 function Units() {
   const [creatingUnit, setCreatingUnit] = useState(false);
-  const [units, setUnits] = useState([]);
-  let { state, stateUnits } = useContext(Context);
-
-  useEffect(() => {
-    setUnits(stateUnits);
-  }, [stateUnits]);
+  let { state, stateUnits, dispatchUnits } = useContext(Context);
 
   function newUnit(unit) {
-    setUnits([...units, unit]);
-  }
-
-  function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    dispatchUnits(setUnits([...stateUnits, unit]));
+    // setUnits([...units, unit]);
   }
 
   return (
@@ -66,18 +59,13 @@ function Units() {
         <br />
         <br />
 
-        {units?.length > 0 ? (
+        {stateUnits?.length > 0 ? (
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>
-                {units.map((unit) => (
+                {stateUnits.map((unit) => (
                   <div key={unit.id}>
-                    <SingleUnit
-                      theUnit={unit}
-                      creatingUnit={creatingUnit}
-                      units={units}
-                      setUnits={setUnits}
-                    />
+                    <SingleUnit theUnit={unit} creatingUnit={creatingUnit} />
                     <br />
                   </div>
                 ))}

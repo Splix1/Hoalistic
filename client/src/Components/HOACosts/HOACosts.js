@@ -16,7 +16,7 @@ export default function HOACosts() {
   const [costs, setStateCosts] = useState([]);
   const [creatingCost, setCreatingCost] = useState(false);
   let { state, stateCosts, dispatchCosts } = useContext(Context);
-  console.log(stateCosts);
+
   useEffect(() => {
     setStateCosts(stateCosts);
   }, [stateCosts]);
