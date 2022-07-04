@@ -26,9 +26,9 @@ body::-webkit-scrollbar {
   flex-wrap: wrap;
   justify-content: center;
   border-radius: 4px;
-  box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 5px 0px rgba(78, 128, 185, 0.5);
   width: 15rem;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 .display-row {
