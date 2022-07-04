@@ -30,6 +30,11 @@ export default function BasicMenu() {
           handleClick(evt);
         }
       }}
+      onMouseEnter={(evt) => {
+        if (!anchorEl) {
+          handleClick(evt);
+        }
+      }}
     >
       <MenuIcon
         id="basic-button"

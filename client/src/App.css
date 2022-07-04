@@ -65,3 +65,11 @@ body::-webkit-scrollbar {
   margin-bottom: 1rem;
 }
 
+#sign-out-button {
+  color: inherit;
+}
+
+#sign-out-button:hover {
+  color: #FFCCCB;
+}
+

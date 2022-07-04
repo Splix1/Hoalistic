@@ -74,7 +74,7 @@ export default function NavBar() {
                   Hello, {state?.name?.split(' ')[0]}
                 </NavLink>
               </h4>
-              <Button color="inherit" onClick={signOut}>
+              <Button id="sign-out-button" onClick={signOut}>
                 Sign Out
               </Button>
             </div>
