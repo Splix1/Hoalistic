@@ -23,15 +23,20 @@ const style = {
   alignItems: 'center',
 };
 
-export default function Scenarios() {
+export default function NewScenario() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button onClick={handleOpen} fullWidth variant="contained">
-        Scenarios
+      <Button
+        onClick={handleOpen}
+        fullWidth
+        variant="contained"
+        style={{ marginBottom: '0.5rem' }}
+      >
+        Add Scenario
       </Button>
       <Modal
         aria-labelledby="transition-modal-title"

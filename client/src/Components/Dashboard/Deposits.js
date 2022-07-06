@@ -8,6 +8,7 @@ import { Context } from '../ContextProvider';
 import supabase from '../../client';
 import CssBaseline from '@mui/material/CssBaseline';
 import Scenarios from '../Scenarios/Scenarios';
+import NewScenario from '../Scenarios/NewScenario';
 
 export default function Deposits({
   generateChartData,
@@ -65,6 +66,7 @@ export default function Deposits({
         >
           Update Balance
         </Button>
+        <NewScenario />
         <Scenarios />
       </div>
     </div>
