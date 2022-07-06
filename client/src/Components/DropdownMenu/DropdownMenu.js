@@ -41,6 +41,7 @@ export default function BasicMenu() {
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
+        style={{ zIndex: 0 }}
       ></MenuIcon>
       <Menu
         id="basic-menu"
@@ -50,6 +51,7 @@ export default function BasicMenu() {
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}
+        style={{ zIndex: 0 }}
       >
         <MenuItem onClick={() => handleClose('/dashboard')}>Dashboard</MenuItem>
         <MenuItem onClick={() => handleClose('/profile')}>Profile</MenuItem>

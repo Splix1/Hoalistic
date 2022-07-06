@@ -37,9 +37,6 @@ export default function FutureProjections({
         <Tooltip />
       </Chart>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {/* <Typography style={{ color: '#90caf9' }}>
-          Adjust range of data
-        </Typography> */}
         <div
           style={{
             display: 'flex',
@@ -58,7 +55,13 @@ export default function FutureProjections({
               <ArrowBackIcon />
             </div>
           ) : (
-            <div> </div>
+            <div
+              style={{
+                marginRight: '1rem',
+              }}
+            >
+              <ArrowBackIcon style={{ color: 'gray' }} />
+            </div>
           )}
 
           <div
