@@ -185,6 +185,7 @@ function DashboardContent() {
     let yearCounter = 0;
 
     for (let i = 0; i < 12 + monthsToAdd; i++) {
+      let dataObj = {};
       let monthCounter = i + 1;
       //if month + j is greater than 12 therefore not a month and in a new year
       if (months[currentMonth + j] === undefined) {
@@ -212,16 +213,17 @@ function DashboardContent() {
       let correctAssSum = sumOfAssessments * monthCounter;
       let correctCostSum = sumOfCosts * monthCounter;
 
-      let HOABalance =
+      let futureProjection =
         +currentUser.balance +
         correctAssSum -
         correctCostSum -
         projectsToSubtract;
-
+      dataObj['date'] = mobileOrComputer(months[currentMonth + j]);
+      dataObj['Future Projection'] = futureProjection;
       data.push(
         createData(
           mobileOrComputer(months[currentMonth + j], currentYear + yearCounter),
-          HOABalance
+          futureProjection
         )
       );
       j++;

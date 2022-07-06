@@ -47,7 +47,9 @@ export default function Deposits({
           style={{
             height: '2rem',
             fontSize: '1rem',
-            color: 'white',
+            // color: state?.theme === 'light' ? 'white' : 'gray',
+            color: state?.theme === 'light' ? '#121212' : 'white',
+            backgroundColor: state?.theme === 'light' ? 'white' : '#121212',
           }}
           onValueChange={(value) => setHOABalanceField(value)}
         />
