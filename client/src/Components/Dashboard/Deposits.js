@@ -7,6 +7,7 @@ import { setUser } from '../../Store/User';
 import { Context } from '../ContextProvider';
 import supabase from '../../client';
 import CssBaseline from '@mui/material/CssBaseline';
+import Scenarios from '../Scenarios/Scenarios';
 
 export default function Deposits({
   generateChartData,
@@ -16,6 +17,7 @@ export default function Deposits({
 }) {
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
   let { state, dispatch } = React.useContext(Context);
+  let [showScenarios, setShowScenarios] = React.useState(false);
 
   function numberWithCommas(x) {
     if (!x) return;
@@ -47,7 +49,6 @@ export default function Deposits({
           style={{
             height: '2rem',
             fontSize: '1rem',
-            // color: state?.theme === 'light' ? 'white' : 'gray',
             color: state?.theme === 'light' ? '#121212' : 'white',
             backgroundColor: state?.theme === 'light' ? 'white' : '#121212',
           }}
@@ -64,6 +65,7 @@ export default function Deposits({
         >
           Update Balance
         </Button>
+        <Scenarios />
       </div>
     </div>
   );
