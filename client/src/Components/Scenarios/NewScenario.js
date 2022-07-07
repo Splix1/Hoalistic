@@ -9,6 +9,8 @@ import Title from '../Dashboard/Title';
 import TextField from '@mui/material/TextField';
 import { Context } from '../ContextProvider';
 import CurrencyInput from 'react-currency-input-field';
+import supabase from '../../client';
+import { setScenarios } from '../../Store/Scenarios';
 
 const style = {
   position: 'absolute',
@@ -31,11 +33,30 @@ export default function NewScenario() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { state } = React.useContext(Context);
-  const [date, setDate] = React.useState(null);
+  const { state, stateScenarios, dispatchScenarios } =
+    React.useContext(Context);
+  const [name, setName] = React.useState('');
+  const [specialDate, setSpecialDate] = React.useState(null);
   const [specialAmount, setSpecialAmount] = React.useState(null);
   const [changeAmount, setChangeAmount] = React.useState(null);
   const [changeDate, setChangeDate] = React.useState(null);
+
+  async function createScenario() {
+    if (!name) {
+      alert('A name for your scenario is required!');
+      return;
+    }
+    let { data: scenarioData } = await supabase.from('Scenarios').insert({
+      name,
+      specialDate,
+      specialAmount,
+      changeAmount,
+      changeDate,
+      HOA: state?.id,
+    });
+
+    dispatchScenarios(setScenarios([...stateScenarios, scenarioData[0]]));
+  }
 
   return (
     <div>
@@ -67,7 +88,7 @@ export default function NewScenario() {
               label="Scenario Name"
               name="scenarioName"
               style={{ marginBottom: '1rem', marginTop: '0.5rem' }}
-              onChange={(evt) => console.log(evt)}
+              onChange={(evt) => setName(evt.target.value)}
             />
 
             <Title>Special Assessment</Title>
@@ -86,7 +107,7 @@ export default function NewScenario() {
               }}
             >
               <div className="display-column">
-                <Title>Increase Amount</Title>
+                <Title>Amount</Title>
                 <CurrencyInput
                   prefix="$"
                   placeholder="Special Assessment Amount"
@@ -111,7 +132,7 @@ export default function NewScenario() {
                   id="beginDate"
                   name="beginDate"
                   autoComplete="Jimmy"
-                  onChange={(evt) => setDate(evt.target.value)}
+                  onChange={(evt) => setSpecialDate(evt.target.value)}
                 />
               </div>
             </div>
@@ -159,6 +180,7 @@ export default function NewScenario() {
               <Button
                 variant="contained"
                 style={{ marginRight: '1rem', marginTop: '1rem' }}
+                onClick={createScenario}
               >
                 Finish
               </Button>
