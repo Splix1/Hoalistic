@@ -56,6 +56,7 @@ export default function NewScenario() {
     });
 
     dispatchScenarios(setScenarios([...stateScenarios, scenarioData[0]]));
+    setOpen(false);
   }
 
   return (
