@@ -25,11 +25,6 @@ export default function BasicMenu() {
       color="inherit"
       aria-label="menu"
       sx={{ mr: 2 }}
-      onClick={(evt) => {
-        if (!anchorEl) {
-          handleClick(evt);
-        }
-      }}
       onMouseEnter={(evt) => {
         if (!anchorEl) {
           handleClick(evt);
