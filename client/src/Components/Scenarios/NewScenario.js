@@ -5,6 +5,10 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Title from '../Dashboard/Title';
+import TextField from '@mui/material/TextField';
+import { Context } from '../ContextProvider';
+import CurrencyInput from 'react-currency-input-field';
 
 const style = {
   position: 'absolute',
@@ -12,7 +16,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '65vw',
-  height: '65vh',
+  height: 'fit-content',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 2,
@@ -27,6 +31,11 @@ export default function NewScenario() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { state } = React.useContext(Context);
+  const [date, setDate] = React.useState(null);
+  const [specialAmount, setSpecialAmount] = React.useState(null);
+  const [changeAmount, setChangeAmount] = React.useState(null);
+  const [changeDate, setChangeDate] = React.useState(null);
 
   return (
     <div>
@@ -51,12 +60,116 @@ export default function NewScenario() {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Text in a modal
+            <Title>Scenario Name</Title>
+            <TextField
+              required
+              id="scenarioName"
+              label="Scenario Name"
+              name="scenarioName"
+              style={{ marginBottom: '1rem', marginTop: '0.5rem' }}
+              onChange={(evt) => console.log(evt)}
+            />
+
+            <Title>Special Assessment</Title>
+            <Typography style={{ fontStyle: 'italic' }}>
+              special assessments are one time payments made by unit owners to
+              the HOA
             </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginTop: '0.5rem',
+                marginBottom: '1rem',
+              }}
+            >
+              <div className="display-column">
+                <Title>Increase Amount</Title>
+                <CurrencyInput
+                  prefix="$"
+                  placeholder="Special Assessment Amount"
+                  decimalsLimit={2}
+                  style={{
+                    height: '3.5rem',
+                    fontSize: '1rem',
+                    color: state?.theme === 'light' ? '#121212' : 'white',
+                    marginRight: '1rem',
+                    backgroundColor:
+                      state?.theme === 'light' ? 'white' : '#121212',
+                  }}
+                  onValueChange={(value) => setSpecialAmount(value)}
+                />
+              </div>
+              <div className="display-column">
+                <Title>Date</Title>
+                <TextField
+                  type={'date'}
+                  required
+                  fullWidth
+                  id="beginDate"
+                  name="beginDate"
+                  autoComplete="Jimmy"
+                  onChange={(evt) => setDate(evt.target.value)}
+                />
+              </div>
+            </div>
+            <Title>Change Monthly Assessments</Title>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginTop: '0.5rem',
+              }}
+            >
+              <div className="display-column">
+                <Title>% Change</Title>
+                <CurrencyInput
+                  prefix="%"
+                  placeholder="Change Assessments By %"
+                  decimalsLimit={0}
+                  style={{
+                    height: '3.5rem',
+                    fontSize: '1rem',
+                    color: state?.theme === 'light' ? '#121212' : 'white',
+                    marginRight: '1rem',
+                    backgroundColor:
+                      state?.theme === 'light' ? 'white' : '#121212',
+                  }}
+                  onValueChange={(value) => setChangeAmount(value)}
+                />
+              </div>
+              <div className="disply-column">
+                <Title>Begin Date</Title>
+                <TextField
+                  type={'date'}
+                  required
+                  fullWidth
+                  id="beginDate"
+                  name="beginDate"
+                  autoComplete="Jimmy"
+                  onChange={(evt) => setChangeDate(evt.target.value)}
+                />
+              </div>
+            </div>
+            <div id="form-input" style={{ marginTop: '1rem' }}>
+              <Button
+                variant="contained"
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
+                Finish
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => setOpen(false)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
+                Cancel
+              </Button>
+            </div>
           </Box>
         </Fade>
       </Modal>

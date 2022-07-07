@@ -12,6 +12,7 @@ import { setFiles } from './Store/Files';
 import { Context } from './Components/ContextProvider';
 import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { setScenarios } from './Store/Scenarios';
 
 export async function fetchUserData(
   user,
@@ -19,12 +20,14 @@ export async function fetchUserData(
   dispatchProjects,
   dispatchUnits,
   dispatchDocuments,
-  dispatchFiles
+  dispatchFiles,
+  dispatchScenarios
 ) {
   fetchProjects(user, dispatchProjects);
   fetchCosts(user, dispatchCosts);
   fetchUnits(user, dispatchUnits);
   fetchDocuments(user, dispatchDocuments, dispatchFiles);
+  fetchScenarios(user, dispatchScenarios);
 }
 
 async function fetchProjects(user, dispatchProjects) {
@@ -65,6 +68,14 @@ async function fetchDocuments(user, dispatchDocuments, dispatchFiles) {
   dispatchFiles(setFiles(storageFiles));
 }
 
+async function fetchScenarios(user, dispatchScenarios) {
+  let { data: scenariosData } = await supabase
+    .from('Scenarios')
+    .select('*')
+    .eq('HOA', user?.id);
+  dispatchScenarios(setScenarios(scenariosData));
+}
+
 function App() {
   const {
     state,
@@ -74,6 +85,7 @@ function App() {
     dispatchProjects,
     dispatchDocuments,
     dispatchFiles,
+    dispatchScenarios,
   } = useContext(Context);
   const location = useLocation();
   const history = useHistory();
@@ -119,7 +131,8 @@ function App() {
           dispatchProjects,
           dispatchUnits,
           dispatchDocuments,
-          dispatchFiles
+          dispatchFiles,
+          dispatchScenarios
         );
       }
       fetchUser();

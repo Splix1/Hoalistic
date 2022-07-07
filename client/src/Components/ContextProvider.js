@@ -5,6 +5,7 @@ import projects from '../Store/Projects';
 import costs from '../Store/Costs';
 import documents from '../Store/Documents';
 import files from '../Store/Files';
+import scenarios from '../Store/Scenarios';
 
 export const Context = createContext();
 
@@ -17,6 +18,7 @@ export default function ContextProvider({ children }) {
   const [stateCosts, dispatchCosts] = useReducer(costs, []);
   const [stateDocuments, dispatchDocuments] = useReducer(documents, []);
   const [stateFiles, dispatchFiles] = useReducer(files, []);
+  const [stateScenarios, dispatchScenarios] = useReducer(scenarios, []);
 
   const value = {
     state,
@@ -25,12 +27,14 @@ export default function ContextProvider({ children }) {
     stateCosts,
     stateDocuments,
     stateFiles,
+    stateScenarios,
     dispatch,
     dispatchUnits,
     dispatchProjects,
     dispatchCosts,
     dispatchDocuments,
     dispatchFiles,
+    dispatchScenarios,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

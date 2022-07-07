@@ -79,7 +79,7 @@ function DashboardContent() {
 
   React.useEffect(() => {
     generateChartData(state);
-  }, [HOABalance]);
+  }, [HOABalance, projects]);
 
   React.useEffect(() => {
     generateChartData(state);
