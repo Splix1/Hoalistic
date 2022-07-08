@@ -73,6 +73,7 @@ export default function Scenarios() {
               style={{
                 overflow: 'scroll',
                 alignItems: 'center',
+                width: '65vw',
               }}
             >
               <Typography
