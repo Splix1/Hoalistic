@@ -72,3 +72,8 @@ body::-webkit-scrollbar {
 #sign-out-button:hover {
   color: #FFCCCB;
 }
+
+
+#scenarios::-webkit-scrollbar {
+  display: none;
+}
