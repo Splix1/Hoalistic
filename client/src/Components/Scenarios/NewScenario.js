@@ -11,6 +11,8 @@ import { Context } from '../ContextProvider';
 import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import { setScenarios } from '../../Store/Scenarios';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
   position: 'absolute',
@@ -40,6 +42,7 @@ export default function NewScenario() {
   const [specialAmount, setSpecialAmount] = React.useState(null);
   const [changeAmount, setChangeAmount] = React.useState(null);
   const [changeDate, setChangeDate] = React.useState(null);
+  const [exitColor, setExitColor] = React.useState('white');
 
   async function createScenario() {
     if (!name) {
@@ -82,6 +85,20 @@ export default function NewScenario() {
       >
         <Fade in={open}>
           <Box sx={style}>
+            <IconButton
+              onClick={() => setOpen(false)}
+              onMouseEnter={() => setExitColor('red')}
+              onMouseLeave={() => setExitColor('white')}
+              style={{
+                left: '34.9rem',
+                bottom: '3rem',
+                color: exitColor,
+                position: 'relative',
+                zIndex: 3,
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
             <Title>Scenario Name</Title>
             <TextField
               required
@@ -107,7 +124,7 @@ export default function NewScenario() {
                 marginBottom: '1rem',
               }}
             >
-              <div className="display-column">
+              <div className="display-column" style={{ alignItems: 'center' }}>
                 <Title>Amount</Title>
                 <CurrencyInput
                   prefix="$"
@@ -124,7 +141,7 @@ export default function NewScenario() {
                   onValueChange={(value) => setSpecialAmount(value)}
                 />
               </div>
-              <div className="display-column">
+              <div className="display-column" style={{ alignItems: 'center' }}>
                 <Title>Date</Title>
                 <TextField
                   type={'date'}
@@ -147,7 +164,7 @@ export default function NewScenario() {
                 marginTop: '0.5rem',
               }}
             >
-              <div className="display-column">
+              <div className="display-column" style={{ alignItems: 'center' }}>
                 <Title>% Change</Title>
                 <CurrencyInput
                   prefix="%"
@@ -164,7 +181,7 @@ export default function NewScenario() {
                   onValueChange={(value) => setChangeAmount(value)}
                 />
               </div>
-              <div className="disply-column">
+              <div className="disply-column" style={{ alignItems: 'center' }}>
                 <Title>Begin Date</Title>
                 <TextField
                   type={'date'}

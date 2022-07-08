@@ -9,7 +9,7 @@ import { setScenarios } from '../../Store/Scenarios';
 import { Context } from '../ContextProvider';
 import Paper from '@mui/material/Paper';
 import Title from '../Dashboard/Title';
-import { Grid, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
