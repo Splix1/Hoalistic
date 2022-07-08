@@ -309,7 +309,7 @@ function DashboardContent() {
                     flexDirection: 'column',
                     justifyContent: 'space-evenly',
                     alignItems: 'center',
-                    height: 300,
+                    height: '25rem',
                   }}
                 >
                   <Deposits
@@ -320,6 +320,7 @@ function DashboardContent() {
                   />
                 </Paper>
               </Grid>
+
               <Grid item xs={12}>
                 <Paper
                   sx={{
