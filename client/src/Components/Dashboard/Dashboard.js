@@ -42,6 +42,7 @@ function DashboardContent() {
     state,
     stateCosts,
     stateUnits,
+    stateScenarios,
     dispatchUnits,
     dispatchCosts,
     dispatchProjects,
@@ -79,11 +80,7 @@ function DashboardContent() {
 
   React.useEffect(() => {
     generateChartData(state);
-  }, [HOABalance, projects]);
-
-  React.useEffect(() => {
-    generateChartData(state);
-  }, [monthsToAdd]);
+  }, [HOABalance, projects, stateScenarios, monthsToAdd]);
 
   async function createCost() {
     if (costName === '' || costPrice === 0) {
@@ -218,14 +215,45 @@ function DashboardContent() {
         correctAssSum -
         correctCostSum -
         projectsToSubtract;
-      dataObj['date'] = mobileOrComputer(months[currentMonth + j]);
-      dataObj['Future Projection'] = futureProjection;
-      data.push(
-        createData(
-          mobileOrComputer(months[currentMonth + j], currentYear + yearCounter),
-          futureProjection
-        )
+      dataObj['date'] = mobileOrComputer(
+        months[currentMonth + j],
+        currentYear + yearCounter
       );
+      dataObj['Future Projection'] = futureProjection;
+      //loop over scenarios, creating a projection for current month with each scenario
+      for (let i = 0; i < stateScenarios?.length; i++) {
+        let currentProjection = futureProjection;
+
+        let specialDate = new Date(stateScenarios[i].specialDate);
+        if (stateScenarios[i].specialAmount) {
+          let specialMonth = specialDate.getMonth() + 1;
+          let specialYear = specialDate.getFullYear();
+          if (
+            specialMonth === currentMonth + j &&
+            specialYear === currentYear + yearCounter
+          )
+            currentProjection += stateScenarios[i].specialAmount;
+        }
+
+        let changeDate = new Date(stateScenarios[i].changeDate);
+        let currentDataTime = new Date(
+          `${currentMonth + j}/1/${currentYear + yearCounter}`
+        );
+        if (stateScenarios[i].changeAmount) {
+          if (currentDataTime.getTime() >= changeDate.getTime()) {
+            currentProjection +=
+              (correctAssSum * stateScenarios[i].changeAmount) / 100;
+          }
+        }
+        dataObj[`${stateScenarios[i].name}`] = currentProjection;
+      }
+      data.push(dataObj);
+      // data.push(
+      //   createData(
+      //     mobileOrComputer(months[currentMonth + j], currentYear + yearCounter),
+      //     futureProjection
+      //   )
+      // );
       j++;
     }
     for (let i = 0; i < monthsToAdd; i++) {

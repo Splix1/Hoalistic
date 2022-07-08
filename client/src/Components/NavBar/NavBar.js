@@ -13,14 +13,35 @@ import BasicMenu from '../DropdownMenu/DropdownMenu';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { createTheme } from '@mui/material/styles';
+import { setCosts } from '../../Store/Costs';
+import { setFiles } from '../../Store/Files';
+import { setDocuments } from '../../Store/Documents';
+import { setProjects } from '../../Store/Projects';
+import { setScenarios } from '../../Store/Scenarios';
+import { setUnits } from '../../Store/Units';
 
 export default function NavBar() {
   const history = useHistory();
-  const { state, dispatch } = useContext(Context);
+  const {
+    state,
+    dispatch,
+    dispatchUnits,
+    dispatchProjects,
+    dispatchCosts,
+    dispatchFiles,
+    dispatchDocuments,
+    dispatchScenarios,
+  } = useContext(Context);
 
   const signOut = async () => {
     await supabase.auth.signOut();
     dispatch(setUser({}));
+    dispatchUnits(setUnits([]));
+    dispatchProjects(setProjects([]));
+    dispatchCosts(setCosts([]));
+    dispatchFiles(setFiles([]));
+    dispatchDocuments(setDocuments([]));
+    dispatchScenarios(setScenarios([]));
     history.push('/');
   };
 

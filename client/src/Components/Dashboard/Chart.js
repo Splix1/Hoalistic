@@ -16,110 +16,15 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { styled } from '@mui/material/styles';
 import { Animation } from '@devexpress/dx-react-chart';
+import { Context } from '../ContextProvider';
 
 export default function FutureProjections({
   data,
   monthsToAdd,
   setMonthsToAdd,
 }) {
-  const confidence = [
-    {
-      year: 1993,
-      tvNews: 19,
-      church: 29,
-      military: 32,
-    },
-    {
-      year: 1995,
-      tvNews: 13,
-      church: 32,
-      military: 33,
-      dogX: 5,
-    },
-    {
-      year: 1997,
-      tvNews: 14,
-      church: 35,
-      military: 30,
-      dogX: 10,
-    },
-    {
-      year: 1999,
-      tvNews: 13,
-      church: 32,
-      military: 34,
-      dogX: 15,
-    },
-    {
-      year: 2001,
-      tvNews: 15,
-      church: 28,
-      military: 32,
-      dogX: 20,
-    },
-    {
-      year: 2003,
-      tvNews: 16,
-      church: 27,
-      military: 48,
-      dogX: 25,
-    },
-    {
-      year: 2006,
-      tvNews: 12,
-      church: 28,
-      military: 41,
-      dogX: 30,
-    },
-    {
-      year: 2008,
-      tvNews: 11,
-      church: 26,
-      military: 45,
-      dogX: 40,
-    },
-    {
-      year: 2010,
-      tvNews: 10,
-      church: 25,
-      military: 44,
-      dogX: 50,
-    },
-    {
-      year: 2012,
-      tvNews: 11,
-      church: 25,
-      military: 43,
-      dogX: 60,
-    },
-    {
-      year: 2014,
-      tvNews: 10,
-      church: 25,
-      military: 39,
-      dogX: 70,
-    },
-    {
-      year: 2016,
-      tvNews: 8,
-      church: 20,
-      military: 41,
-      dogX: 80,
-    },
-    {
-      year: 2018,
-      tvNews: 10,
-      church: 20,
-      military: 43,
-      dogX: 90,
-    },
-    {
-      year: 2018,
-      dogX: 100,
-      dogY: 20,
-      military: 43,
-    },
-  ];
+  const { stateScenarios } = React.useContext(Context);
+
   const PREFIX = 'Demo';
 
   const classes = {
@@ -157,7 +62,12 @@ export default function FutureProjections({
 
   return (
     <Paper
-      sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 300 }}
+      sx={{
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        height: 'fit-content',
+      }}
       xs={24}
       sm={16}
       md={10}
@@ -168,7 +78,25 @@ export default function FutureProjections({
       <StyledChart data={data} className={classes.chart}>
         <ArgumentAxis tickFormat={format} />
         <ValueAxis />
-        <LineSeries valueField="y" argumentField="x" />
+        <LineSeries
+          name="Future Projection"
+          valueField="Future Projection"
+          argumentField="date"
+        />
+
+        {stateScenarios?.map((scenario) => (
+          <LineSeries
+            name={`${scenario.name}`}
+            valueField={`${scenario.name}`}
+            argumentField="date"
+          />
+        ))}
+        <Legend
+          position="bottom"
+          rootComponent={Root}
+          itemComponent={Item}
+          labelComponent={Label}
+        />
         {/* <LineSeries name="TV news" valueField="tvNews" argumentField="year" />
         <LineSeries name="Church" valueField="church" argumentField="year" />
         <LineSeries
