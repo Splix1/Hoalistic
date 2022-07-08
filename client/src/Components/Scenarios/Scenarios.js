@@ -26,7 +26,6 @@ const style = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  overflow: 'scroll',
 };
 
 export default function Scenarios() {
@@ -54,75 +53,102 @@ export default function Scenarios() {
       >
         <Fade in={open}>
           <Box id="scenarios" sx={style}>
-            <Typography
-              sx={{ fontSize: '2rem', color: '#90caf9', marginBottom: '1rem' }}
+            <IconButton
+              onClick={() => setOpen(false)}
+              onMouseEnter={() => setExitColor('red')}
+              onMouseLeave={() => setExitColor('white')}
+              style={{
+                left: '34.9rem',
+                bottom: '3rem',
+                color: exitColor,
+                position: 'relative',
+                zIndex: 3,
+              }}
             >
-              Scenarios
-            </Typography>
-            <div className="display-column">
-              {stateScenarios?.map((scenario) => {
-                let specialDateO = scenario.specialDate
-                  ? new Date(scenario.specialDate)
-                  : null;
-                let changeDateO = scenario.changeDate
-                  ? new Date(scenario.changeDate)
-                  : null;
+              <CloseIcon />
+            </IconButton>
+            <div
+              id="scenarios"
+              className="display-column"
+              style={{
+                overflow: 'scroll',
+                alignItems: 'center',
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: '2rem',
+                  color: '#90caf9',
+                  marginBottom: '1rem',
+                }}
+              >
+                Scenarios
+              </Typography>
+              <div className="display-column">
+                {stateScenarios?.map((scenario) => {
+                  let specialDateO = scenario.specialDate
+                    ? new Date(scenario.specialDate)
+                    : null;
+                  let changeDateO = scenario.changeDate
+                    ? new Date(scenario.changeDate)
+                    : null;
 
-                return (
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: 'fit-content',
-                      width: '75vh',
-                      marginBottom: '1rem',
-                    }}
-                  >
-                    <Title>{scenario?.name}</Title>
+                  return (
+                    <Paper
+                      sx={{
+                        p: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: 'fit-content',
+                        width: '75vh',
+                        marginBottom: '1rem',
+                      }}
+                    >
+                      <Title>{scenario?.name}</Title>
 
-                    {!scenario?.specialAmount ? null : (
-                      <div
-                        className="display-column"
-                        style={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Title>Special Assessment</Title>
-                        <Typography style={{ fontSize: '1.3rem' }}>
-                          {`$${scenario?.specialAmount} on ${
-                            specialDateO.getMonth() + 1
-                          }/${
-                            specialDateO.getDate() + 1
-                          }/${specialDateO.getFullYear()}`}
-                        </Typography>
-                      </div>
-                    )}
+                      {!scenario?.specialAmount ? null : (
+                        <div
+                          className="display-column"
+                          style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Title>Special Assessment</Title>
+                          <Typography style={{ fontSize: '1.3rem' }}>
+                            {`$${scenario?.specialAmount} on ${
+                              specialDateO.getMonth() + 1
+                            }/${
+                              specialDateO.getDate() + 1
+                            }/${specialDateO.getFullYear()}`}
+                          </Typography>
+                        </div>
+                      )}
 
-                    {!scenario.changeAmount ? null : (
-                      <div
-                        className="display-column"
-                        style={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Title>Assessments Change</Title>
-                        <Typography style={{ fontSize: '1.3rem' }}>
-                          {`$${scenario?.changeAmount} beginning ${
-                            changeDateO?.getMonth() + 1
-                          }/${
-                            changeDateO.getDate() + 1
-                          }/${changeDateO.getFullYear()}`}
-                        </Typography>
-                      </div>
-                    )}
-                  </Paper>
-                );
-              })}
+                      {!scenario.changeAmount ? null : (
+                        <div
+                          className="display-column"
+                          style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Title>Assessments Change</Title>
+                          <Typography style={{ fontSize: '1.3rem' }}>
+                            {`$${scenario?.changeAmount} beginning ${
+                              changeDateO?.getMonth() + 1
+                            }/${
+                              changeDateO.getDate() + 1
+                            }/${changeDateO.getFullYear()}`}
+                          </Typography>
+                        </div>
+                      )}
+                    </Paper>
+                  );
+                })}
+              </div>
             </div>
           </Box>
         </Fade>
