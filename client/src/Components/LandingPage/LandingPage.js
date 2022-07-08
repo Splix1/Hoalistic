@@ -25,6 +25,7 @@ function LandingPage() {
     dispatchUnits,
     dispatchDocuments,
     dispatchFiles,
+    dispatchScenarios,
   } = useContext(Context);
   const history = useHistory();
 
@@ -58,7 +59,8 @@ function LandingPage() {
         dispatchProjects,
         dispatchUnits,
         dispatchDocuments,
-        dispatchFiles
+        dispatchFiles,
+        dispatchScenarios
       );
       history.push('/dashboard');
     }
