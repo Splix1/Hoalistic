@@ -223,22 +223,17 @@ function DashboardContent() {
       //loop over scenarios, creating a projection for current month with each scenario
       for (let i = 0; i < stateScenarios?.length; i++) {
         let currentProjection = futureProjection;
-
+        let currentDataTime = new Date(
+          `${currentMonth + j}/1/${currentYear + yearCounter}`
+        );
         let specialDate = new Date(stateScenarios[i].specialDate);
         if (stateScenarios[i].specialAmount) {
-          let specialMonth = specialDate.getMonth() + 1;
-          let specialYear = specialDate.getFullYear();
-          if (
-            specialMonth === currentMonth + j &&
-            specialYear === currentYear + yearCounter
-          )
+          if (currentDataTime.getTime() >= specialDate.getTime())
             currentProjection += stateScenarios[i].specialAmount;
         }
 
         let changeDate = new Date(stateScenarios[i].changeDate);
-        let currentDataTime = new Date(
-          `${currentMonth + j}/1/${currentYear + yearCounter}`
-        );
+
         if (stateScenarios[i].changeAmount) {
           if (currentDataTime.getTime() >= changeDate.getTime()) {
             currentProjection +=
