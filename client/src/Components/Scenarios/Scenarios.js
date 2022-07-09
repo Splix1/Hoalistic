@@ -11,6 +11,7 @@ import Paper from '@mui/material/Paper';
 import Title from '../Dashboard/Title';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import SingleScenario from './SingleScenario';
 
 const style = {
   position: 'absolute',
@@ -87,67 +88,7 @@ export default function Scenarios() {
               </Typography>
               <div className="display-column">
                 {stateScenarios?.map((scenario) => {
-                  let specialDateO = scenario.specialDate
-                    ? new Date(scenario.specialDate)
-                    : null;
-                  let changeDateO = scenario.changeDate
-                    ? new Date(scenario.changeDate)
-                    : null;
-
-                  return (
-                    <Paper
-                      sx={{
-                        p: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: 'fit-content',
-                        width: '75vh',
-                        marginBottom: '1rem',
-                      }}
-                    >
-                      <Title>{scenario?.name}</Title>
-
-                      {!scenario?.specialAmount ? null : (
-                        <div
-                          className="display-column"
-                          style={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Title>Special Assessment</Title>
-                          <Typography style={{ fontSize: '1.3rem' }}>
-                            {`$${scenario?.specialAmount} on ${
-                              specialDateO.getMonth() + 1
-                            }/${
-                              specialDateO.getDate() + 1
-                            }/${specialDateO.getFullYear()}`}
-                          </Typography>
-                        </div>
-                      )}
-
-                      {!scenario.changeAmount ? null : (
-                        <div
-                          className="display-column"
-                          style={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Title>Assessments Change</Title>
-                          <Typography style={{ fontSize: '1.3rem' }}>
-                            {`$${scenario?.changeAmount} beginning ${
-                              changeDateO?.getMonth() + 1
-                            }/${
-                              changeDateO.getDate() + 1
-                            }/${changeDateO.getFullYear()}`}
-                          </Typography>
-                        </div>
-                      )}
-                    </Paper>
-                  );
+                  return <SingleScenario scenario={scenario} />;
                 })}
               </div>
             </div>

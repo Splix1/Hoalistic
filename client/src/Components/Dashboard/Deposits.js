@@ -10,12 +10,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Scenarios from '../Scenarios/Scenarios';
 import NewScenario from '../Scenarios/NewScenario';
 
-export default function Deposits({
-  generateChartData,
-  HOABalance,
-  setHOABalance,
-  user,
-}) {
+export default function Deposits({ generateChartData, HOABalance, user }) {
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
   let { state, dispatch } = React.useContext(Context);
   let [showScenarios, setShowScenarios] = React.useState(false);
@@ -34,9 +29,14 @@ export default function Deposits({
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+      }}
+    >
       <CssBaseline />
-      <div>
+      <div className="display-column" style={{ justifyContent: 'flex-start' }}>
         <Title>Current HOA Balance</Title>
         <Typography component="h1" variant="h5">
           ${HOABalance}
