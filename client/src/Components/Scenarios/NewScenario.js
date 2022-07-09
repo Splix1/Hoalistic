@@ -70,7 +70,7 @@ export default function NewScenario() {
         variant="contained"
         style={{ marginBottom: '0.5rem' }}
       >
-        Add Scenario
+        New Scenario
       </Button>
       <Modal
         aria-labelledby="transition-modal-title"
