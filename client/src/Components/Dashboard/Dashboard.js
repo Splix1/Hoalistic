@@ -229,7 +229,8 @@ function DashboardContent() {
         let specialDate = new Date(stateScenarios[i].specialDate);
         if (stateScenarios[i].specialAmount) {
           if (currentDataTime.getTime() >= specialDate.getTime())
-            currentProjection += stateScenarios[i].specialAmount;
+            currentProjection +=
+              stateScenarios[i].specialAmount * stateUnits?.length;
         }
 
         let changeDate = new Date(stateScenarios[i].changeDate);
