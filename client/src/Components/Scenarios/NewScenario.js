@@ -87,14 +87,11 @@ export default function NewScenario() {
           <Box sx={style}>
             <IconButton
               onClick={() => setOpen(false)}
+              id="x"
               onMouseEnter={() => setExitColor('red')}
               onMouseLeave={() => setExitColor('white')}
               style={{
-                left: '34.9rem',
-                bottom: '3rem',
                 color: exitColor,
-                position: 'relative',
-                zIndex: 3,
               }}
             >
               <CloseIcon />
