@@ -22,6 +22,7 @@ export default function SingleScenario({ scenario }) {
   const [specialDate, setSpecialDate] = useState(scenario?.specialDate);
   const [changeAmount, setChangeAmount] = useState(scenario?.changeAmount);
   const [changeDate, setChangeDate] = useState(scenario?.changeDate);
+  const [deletingScenario, setDeletingScenario] = useState(false);
   const { state, stateScenarios, dispatchScenarios } = useContext(Context);
 
   async function updateScenario() {
@@ -39,7 +40,7 @@ export default function SingleScenario({ scenario }) {
         changeAmount,
         changeDate,
       })
-      .eq('HOA', state?.id);
+      .eq('id', scenario?.id);
 
     if (error) {
       alert('There was a problem updating this scenario.');
@@ -55,6 +56,17 @@ export default function SingleScenario({ scenario }) {
       )
     );
     setEditingScenario(false);
+  }
+
+  async function deleteScenario() {
+    let { data } = await supabase
+      .from('Scenarios')
+      .delete()
+      .eq('id', scenario?.id);
+
+    dispatchScenarios(
+      setScenarios(stateScenarios.filter((scen) => scen.id !== data[0].id))
+    );
   }
 
   return (
@@ -178,7 +190,7 @@ export default function SingleScenario({ scenario }) {
         </div>
       )}
       <div className="display-row" style={{ marginTop: '1rem' }}>
-        {!editingScenario ? (
+        {!editingScenario && !deletingScenario ? (
           <Button
             variant="contained"
             style={{ marginRight: '1rem' }}
@@ -186,7 +198,7 @@ export default function SingleScenario({ scenario }) {
           >
             edit
           </Button>
-        ) : (
+        ) : !deletingScenario ? (
           <Button
             variant="contained"
             style={{ marginRight: '1rem' }}
@@ -194,14 +206,33 @@ export default function SingleScenario({ scenario }) {
           >
             save
           </Button>
-        )}
+        ) : null}
 
-        {!editingScenario ? (
-          <Button variant="contained">delete</Button>
-        ) : (
+        {!editingScenario && !deletingScenario ? (
+          <Button variant="contained" onClick={() => setDeletingScenario(true)}>
+            delete
+          </Button>
+        ) : !deletingScenario ? (
           <Button variant="contained" onClick={() => setEditingScenario(false)}>
             cancel
           </Button>
+        ) : null}
+        {!deletingScenario ? null : (
+          <div className="display-row" style={{ marginTop: '1rem' }}>
+            <Button
+              variant="contained"
+              onClick={deleteScenario}
+              style={{ marginRight: '1rem' }}
+            >
+              delete {`${scenario?.name}`}
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => setDeletingScenario(false)}
+            >
+              cancel
+            </Button>
+          </div>
         )}
       </div>
     </Paper>
