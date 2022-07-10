@@ -79,8 +79,8 @@ export default function FutureProjections({
         <ArgumentAxis tickFormat={format} />
         <ValueAxis />
         <LineSeries
-          name="Future Projection"
-          valueField="Future Projection"
+          name="Current Projection"
+          valueField="Current Projection"
           argumentField="date"
         />
 

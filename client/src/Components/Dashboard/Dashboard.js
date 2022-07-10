@@ -156,7 +156,7 @@ function DashboardContent() {
         months[currentMonth + j],
         currentYear + yearCounter
       );
-      dataObj['Future Projection'] = futureProjection;
+      dataObj['Current Projection'] = futureProjection;
 
       //loop over scenarios, creating a projection for current month with each scenario
       for (let i = 0; i < stateScenarios?.length; i++) {
