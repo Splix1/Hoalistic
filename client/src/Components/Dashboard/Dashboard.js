@@ -19,6 +19,7 @@ import { setCosts } from '../../Store/Costs';
 import { setProjects } from '../../Store/Projects';
 import RecurringCosts from './RecurringCosts';
 import UpcomingProjects from './UpcomingProjects';
+import Units from './Units';
 
 function DashboardContent() {
   let [recurringCosts, setRecurringCosts] = React.useState([]);
@@ -26,11 +27,7 @@ function DashboardContent() {
   let [projects, setStateProjects] = React.useState([]);
   let [chartData, setChartData] = React.useState([]);
   let [monthlyAssessments, setMonthlyAssessments] = React.useState([]);
-  let [creatingUnit, setCreatingUnit] = React.useState(false);
-  let [unitID, setUnitID] = React.useState(null);
-  let [unitAssessment, setUnitAssessment] = React.useState(0);
-  let [unitMovedIn, setUnitMovedIn] = React.useState('');
-  let [unitTenantName, setUnitTenantName] = React.useState('');
+
   let [HOABalance, setHOABalance] = React.useState(0);
   let [monthsToAdd, setMonthsToAdd] = React.useState(0);
   let {
@@ -76,28 +73,6 @@ function DashboardContent() {
   React.useEffect(() => {
     generateChartData(state);
   }, [HOABalance, projects, stateScenarios, monthsToAdd]);
-
-  async function createUnit() {
-    if (
-      unitAssessment === 0 ||
-      unitID === '' ||
-      unitMovedIn === '' ||
-      unitTenantName === ''
-    ) {
-      alert('All fields are required!');
-      return;
-    }
-    let { data: unitData } = await supabase.from('Units').insert({
-      tenant_name: unitTenantName,
-      monthly_assessment: unitAssessment,
-      unitID: unitID,
-      HOA: user.id,
-      dateMovedIn: unitMovedIn,
-    });
-    setMonthlyAssessments([...monthlyAssessments, unitData[0]]);
-    dispatchUnits(setUnits([...stateUnits, unitData[0]]));
-    setCreatingUnit(false);
-  }
 
   async function generateChartData(currentUser) {
     let sumOfCosts = recurringCosts.reduce((sum, currentCost) => {
@@ -207,12 +182,6 @@ function DashboardContent() {
         dataObj[`${stateScenarios[i].name}`] = currentProjection;
       }
       data.push(dataObj);
-      // data.push(
-      //   createData(
-      //     mobileOrComputer(months[currentMonth + j], currentYear + yearCounter),
-      //     futureProjection
-      //   )
-      // );
       j++;
     }
     for (let i = 0; i < monthsToAdd; i++) {
@@ -309,104 +278,12 @@ function DashboardContent() {
                     setStateProjects={setStateProjects}
                   />
 
-                  <div>
-                    <Title>Units</Title>
-                    {creatingUnit ? (
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <TextField
-                          required
-                          id="unitID"
-                          label="Unit ID"
-                          name="unitID"
-                          autoComplete="Jimmy"
-                          onChange={(evt) => setUnitID(evt.target.value)}
-                          style={{ marginBottom: '0.5rem' }}
-                        />
-
-                        <CurrencyInput
-                          id="unitAssessment"
-                          name="unitAssessment"
-                          prefix="$"
-                          placeholder="Please enter a number"
-                          defaultValue={0}
-                          decimalsLimit={2}
-                          style={{
-                            height: '3rem',
-                            fontSize: '1rem',
-                            backgroundColor: '#121212',
-                            color: 'white',
-                            marginBottom: '0.5rem',
-                          }}
-                          onValueChange={(value) => setUnitAssessment(value)}
-                        />
-                        <TextField
-                          type={'date'}
-                          required
-                          fullWidth
-                          id="dateMovedIn"
-                          name="dateMovedIn"
-                          autoComplete="Jimmy"
-                          onChange={(evt) => setUnitMovedIn(evt.target.value)}
-                          style={{ marginBottom: '0.5rem' }}
-                        />
-                        <TextField
-                          required
-                          fullWidth
-                          id="tenantName"
-                          name="tenantName"
-                          label="Tenant Name"
-                          autoComplete="Jimmy"
-                          style={{ marginBottom: '0.5rem' }}
-                          onChange={(evt) =>
-                            setUnitTenantName(evt.target.value)
-                          }
-                        />
-
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-evenly',
-                            marginTop: '0.5rem',
-                          }}
-                        >
-                          <Button
-                            variant="contained"
-                            onClick={() => createUnit()}
-                          >
-                            Add Unit
-                          </Button>
-                          <Button
-                            variant="contained"
-                            onClick={() => setCreatingUnit(false)}
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
-                      <Button
-                        variant="outlined"
-                        onClick={() => setCreatingUnit(true)}
-                      >
-                        Add a Unit
-                      </Button>
-                    )}
-                    {monthlyAssessments.map((assessment) => (
-                      <h4
-                        key={assessment.id}
-                        className="budget-item"
-                        style={{ height: 'fit-content' }}
-                      >
-                        {assessment.unitID}
-                        <br />
-                        {assessment.tenant_name}: $
-                        {numberWithCommas(assessment.monthly_assessment)}
-                        <br />
-                        Moved in: {assessment.dateMovedIn}
-                      </h4>
-                    ))}
-                  </div>
+                  <Units
+                    monthlyAssessments={monthlyAssessments}
+                    user={user}
+                    setMonthlyAssessments={setMonthlyAssessments}
+                    setUnits={setUnits}
+                  />
                 </Paper>
               </Grid>
             </Grid>
