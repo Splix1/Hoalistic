@@ -17,11 +17,9 @@ import { Context } from '../ContextProvider';
 import { setUnits } from '../../Store/Units';
 import { setCosts } from '../../Store/Costs';
 import { setProjects } from '../../Store/Projects';
+import RecurringCosts from './RecurringCosts';
 
 function DashboardContent() {
-  let [creatingCost, setCreatingCost] = React.useState(false);
-  let [costName, setCostName] = React.useState('');
-  let [costPrice, setCostPrice] = React.useState(0);
   let [recurringCosts, setRecurringCosts] = React.useState([]);
   let [user, setUser] = React.useState(null);
   let [creatingProject, setCreatingProject] = React.useState(false);
@@ -82,19 +80,6 @@ function DashboardContent() {
     generateChartData(state);
   }, [HOABalance, projects, stateScenarios, monthsToAdd]);
 
-  async function createCost() {
-    if (costName === '' || costPrice === 0) {
-      alert('Name and price are required!');
-      return;
-    }
-    let { data } = await supabase
-      .from('HOA_costs')
-      .insert({ name: costName, cost: costPrice, HOA: user.id });
-    setRecurringCosts([...recurringCosts, data[0]]);
-    dispatchCosts(setCosts([...stateCosts, data[0]]));
-    setCreatingCost(false);
-  }
-
   async function createProject() {
     if (projectName === '' || projectCost === 0 || projectDate === '') {
       alert('All fields are required!');
@@ -131,10 +116,6 @@ function DashboardContent() {
     setMonthlyAssessments([...monthlyAssessments, unitData[0]]);
     dispatchUnits(setUnits([...stateUnits, unitData[0]]));
     setCreatingUnit(false);
-  }
-
-  function createData(month, amount) {
-    return { x: month, y: amount };
   }
 
   async function generateChartData(currentUser) {
@@ -335,75 +316,11 @@ function DashboardContent() {
                     marginBottom: '2rem',
                   }}
                 >
-                  <div>
-                    <Title>Recurring Costs</Title>
-                    {creatingCost ? (
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <TextField
-                          required
-                          id="name"
-                          label="Cost Name"
-                          name="name"
-                          autoComplete="Jimmy"
-                          onChange={(evt) => setCostName(evt.target.value)}
-                          style={{ marginBottom: '0.5rem' }}
-                        />
-                        <CurrencyInput
-                          id="input-example"
-                          name="input-name"
-                          prefix="$"
-                          placeholder="Please enter a number"
-                          defaultValue={0}
-                          decimalsLimit={2}
-                          style={{
-                            height: '3rem',
-                            fontSize: '1rem',
-                            backgroundColor: '#121212',
-                            color: 'white',
-                            marginBottom: '0.5rem',
-                          }}
-                          onValueChange={(value) => setCostPrice(value)}
-                        />
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-evenly',
-                            marginTop: '0.5rem',
-                          }}
-                        >
-                          <Button
-                            variant="contained"
-                            onClick={() => createCost()}
-                          >
-                            Add Cost
-                          </Button>
-                          <Button
-                            variant="contained"
-                            onClick={() => setCreatingCost(false)}
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
-                      <Button
-                        variant="outlined"
-                        onClick={() => setCreatingCost(true)}
-                      >
-                        Add a Monthly Cost
-                      </Button>
-                    )}
-                    {recurringCosts.map((cost) => (
-                      <h4
-                        key={cost.id}
-                        className="budget-item"
-                        style={{ height: '2rem' }}
-                      >
-                        {cost.name}: ${numberWithCommas(cost.cost)}
-                      </h4>
-                    ))}
-                  </div>
+                  <RecurringCosts
+                    user={user}
+                    setCosts={setCosts}
+                    recurringCosts={recurringCosts}
+                  />
 
                   <div>
                     <Title>Upcoming Projects</Title>
