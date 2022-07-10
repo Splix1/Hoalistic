@@ -18,14 +18,11 @@ import { setUnits } from '../../Store/Units';
 import { setCosts } from '../../Store/Costs';
 import { setProjects } from '../../Store/Projects';
 import RecurringCosts from './RecurringCosts';
+import UpcomingProjects from './UpcomingProjects';
 
 function DashboardContent() {
   let [recurringCosts, setRecurringCosts] = React.useState([]);
   let [user, setUser] = React.useState(null);
-  let [creatingProject, setCreatingProject] = React.useState(false);
-  let [projectName, setProjectName] = React.useState('');
-  let [projectDate, setProjectDate] = React.useState('');
-  let [projectCost, setProjectCost] = React.useState(0);
   let [projects, setStateProjects] = React.useState([]);
   let [chartData, setChartData] = React.useState([]);
   let [monthlyAssessments, setMonthlyAssessments] = React.useState([]);
@@ -79,22 +76,6 @@ function DashboardContent() {
   React.useEffect(() => {
     generateChartData(state);
   }, [HOABalance, projects, stateScenarios, monthsToAdd]);
-
-  async function createProject() {
-    if (projectName === '' || projectCost === 0 || projectDate === '') {
-      alert('All fields are required!');
-      return;
-    }
-    let { data } = await supabase.from('Projects').insert({
-      name: projectName,
-      cost: projectCost,
-      begin_date: projectDate,
-      HOA: user.id,
-    });
-    setStateProjects([...projects, data[0]]);
-    dispatchProjects(setProjects([...projects, data[0]]));
-    setCreatingProject(false);
-  }
 
   async function createUnit() {
     if (
@@ -322,88 +303,11 @@ function DashboardContent() {
                     recurringCosts={recurringCosts}
                   />
 
-                  <div>
-                    <Title>Upcoming Projects</Title>
-                    {creatingProject ? (
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <TextField
-                          required
-                          id="name"
-                          label="Project Name"
-                          name="name"
-                          autoComplete="Jimmy"
-                          onChange={(evt) => setProjectName(evt.target.value)}
-                          style={{ marginBottom: '0.5rem' }}
-                        />
-                        <TextField
-                          type={'date'}
-                          required
-                          fullWidth
-                          id="dateMovedIn"
-                          name="dateMovedIn"
-                          autoComplete="Jimmy"
-                          onChange={(evt) => setProjectDate(evt.target.value)}
-                          style={{ marginBottom: '0.5rem' }}
-                        />
-                        <CurrencyInput
-                          id="input-example"
-                          name="input-name"
-                          prefix="$"
-                          placeholder="Please enter a number"
-                          defaultValue={0}
-                          decimalsLimit={2}
-                          style={{
-                            height: '3rem',
-                            fontSize: '1rem',
-                            backgroundColor: '#121212',
-                            color: 'white',
-                            marginBottom: '0.5rem',
-                          }}
-                          onValueChange={(value) => setProjectCost(value)}
-                        />
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-evenly',
-                            marginTop: '0.5rem',
-                          }}
-                        >
-                          <Button
-                            variant="contained"
-                            onClick={() => createProject()}
-                          >
-                            Add Project
-                          </Button>
-                          <Button
-                            variant="contained"
-                            onClick={() => setCreatingProject(false)}
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
-                      <Button
-                        variant="outlined"
-                        onClick={() => setCreatingProject(true)}
-                      >
-                        Add a Project
-                      </Button>
-                    )}
-
-                    {projects.map((project) => {
-                      return (
-                        <div key={project.id} className="budget-item">
-                          <h4>
-                            {project.name}: ${numberWithCommas(project.cost)}{' '}
-                            <br />
-                            Begin: {project.begin_date}
-                          </h4>
-                        </div>
-                      );
-                    })}
-                  </div>
+                  <UpcomingProjects
+                    projects={projects}
+                    user={user}
+                    setStateProjects={setStateProjects}
+                  />
 
                   <div>
                     <Title>Units</Title>
