@@ -7,6 +7,7 @@ import supabase from '../../client';
 import DeletingProject from './DeletingProject';
 import { Context } from '../ContextProvider';
 import { setProjects } from '../../Store/Projects';
+const dayjs = require('dayjs');
 
 const mdTheme = createTheme();
 
@@ -19,6 +20,7 @@ export default function SingleProject({ creatingProject, theProject }) {
   let [project, setProject] = useState(theProject);
   let [deletingProject, setDeletingProject] = useState(false);
   let { state, stateProjects, dispatchProjects } = useContext(Context);
+  let [projectDate, setProjectDate] = useState(dayjs(begin_date));
 
   async function updateProject() {
     if (!newName || !newCost || !newBeginDate) {
@@ -78,7 +80,8 @@ export default function SingleProject({ creatingProject, theProject }) {
               Cost: ${numberWithCommas(project?.cost)}
             </Typography>
             <Typography sx={{ fontSize: '1.5rem' }}>
-              Begin Date: {project?.begin_date}
+              Begin Date:{' '}
+              {`${projectDate?.$M + 1}/${projectDate?.$D}/${projectDate?.$y}`}
             </Typography>
 
             <div className="display-row">

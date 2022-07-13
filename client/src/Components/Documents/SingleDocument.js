@@ -9,11 +9,7 @@ import Grid from '@mui/material/Grid';
 import { setFiles } from '../../Store/Files';
 import { setDocuments } from '../../Store/Documents';
 import DeletingDocument from './DeletingDocument';
-
-function getDate(str) {
-  let date = new Date(str);
-  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-}
+const dayjs = require('dayjs');
 
 export default function SingleDocument({ theDocument }) {
   let { name, description } = theDocument;
@@ -27,6 +23,9 @@ export default function SingleDocument({ theDocument }) {
   let [project, setProject] = useState(null);
   let [fileType, setFileType] = useState('');
   let [newFile, setNewFile] = useState(null);
+  let [documentDate, setDocumentDate] = useState(
+    dayjs(theDocument?.created_at)
+  );
 
   useEffect(() => {
     async function fetchProject() {
@@ -174,7 +173,9 @@ export default function SingleDocument({ theDocument }) {
               </a>
             </Typography>
             <Typography sx={{ fontSize: '1.5rem' }}>
-              {getDate(theDocument?.created_at)}
+              {`${documentDate?.$M + 1}/${documentDate?.$D}/${
+                documentDate?.$y
+              }`}
             </Typography>
             {!theDocument?.description ? null : (
               <Typography sx={{ fontSize: '1.5rem' }}>
