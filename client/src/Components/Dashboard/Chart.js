@@ -43,7 +43,7 @@ export default function FutureProjections({
       },
     },
     dataLabels: {
-      enabled: true,
+      enabled: false,
       formatter: function (val, opts) {
         return numberWithCommas(val);
       },
@@ -90,7 +90,7 @@ export default function FutureProjections({
                 cursor: 'pointer',
                 marginRight: '1rem',
               }}
-              onClick={() => setMonthsToAdd(monthsToAdd - 1)}
+              onClick={() => setMonthsToAdd(monthsToAdd - 12)}
             >
               <ArrowBackIcon />
             </div>
@@ -106,7 +106,7 @@ export default function FutureProjections({
 
           <div
             style={{ cursor: 'pointer' }}
-            onClick={() => setMonthsToAdd(monthsToAdd + 1)}
+            onClick={() => setMonthsToAdd(monthsToAdd + 12)}
           >
             <ArrowForwardIcon />
           </div>
