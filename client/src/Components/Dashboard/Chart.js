@@ -43,7 +43,7 @@ export default function FutureProjections({
       },
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
       formatter: function (val, opts) {
         return numberWithCommas(val);
       },
