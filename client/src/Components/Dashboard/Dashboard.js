@@ -120,7 +120,7 @@ function DashboardContent() {
     let j = 1;
     let yearCounter = 0;
 
-    for (let i = 0; i < 12 + monthsToAdd; i++) {
+    for (let i = 0; i < 24 + monthsToAdd; i++) {
       let dataObj = {};
       let monthCounter = i + 1;
       //if month + j is greater than 12 therefore not a month and in a new year

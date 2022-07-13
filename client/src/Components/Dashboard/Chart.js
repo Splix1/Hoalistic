@@ -4,7 +4,7 @@ import Title from './Title';
 import {
   ArgumentAxis,
   ValueAxis,
-  Chart,
+  Chart as oldChart,
   LineSeries,
   Tooltip,
   Title as chartTitle,
@@ -17,13 +17,14 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { styled } from '@mui/material/styles';
 import { Animation } from '@devexpress/dx-react-chart';
 import { Context } from '../ContextProvider';
+import Chart from 'react-apexcharts';
 
 export default function FutureProjections({
   data,
   monthsToAdd,
   setMonthsToAdd,
 }) {
-  const { stateScenarios } = React.useContext(Context);
+  const { stateScenarios, state } = React.useContext(Context);
   const [showMouseOver, setShowMouseOver] = React.useState(null);
 
   const PREFIX = 'Demo';
@@ -56,11 +57,32 @@ export default function FutureProjections({
     <chartTitle.Text {...props} sx={{ whiteSpace: 'pre' }} />
   );
 
-  const StyledChart = styled(Chart)(() => ({
+  const StyledChart = styled(oldChart)(() => ({
     [`&.${classes.chart}`]: {
       paddingRight: '20px',
     },
   }));
+
+  const options = {
+    chart: {
+      id: 'basic-bar',
+    },
+    xaxis: {
+      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+    },
+    theme: {
+      mode: state?.theme,
+      palette: 'palette1',
+      monochrome: {
+        enabled: false,
+      },
+    },
+  };
+
+  const series = [
+    { name: 'Jun/1993', data: [100, 200, 300, 400, 500] },
+    { name: 'Aug/1993', data: [200, 400, 600, 800, 1000] },
+  ];
 
   return (
     <Paper
@@ -76,9 +98,15 @@ export default function FutureProjections({
     >
       <CssBaseline />
       <Title>Future Projections</Title>
-
-      <StyledChart data={data} className={classes.chart}>
-        <ArgumentAxis tickFormat={format} />
+      <Chart
+        options={options}
+        series={series}
+        type="line"
+        width="100%"
+        height="300rem"
+      />
+      {/* <StyledChart data={data} className={classes.chart}>
+        <ArgumentAxis />
         <ValueAxis />
         <LineSeries
           name="Current Projection"
@@ -108,11 +136,10 @@ export default function FutureProjections({
         argumentField="year"
         />
         <LineSeries name="Dog" valueField="dogX" argumentField="year" /> */}
-        <EventTracker />
+      {/* <EventTracker />
         <Tooltip />
         <Animation />
-      </StyledChart>
-
+      </StyledChart> */}{' '}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div
           style={{
