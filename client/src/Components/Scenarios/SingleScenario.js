@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Title from '../Dashboard/Title';
 import { Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -8,14 +8,11 @@ import { Context } from '../ContextProvider';
 import Button from '@mui/material/Button';
 import supabase from '../../client';
 import { setScenarios } from '../../Store/Scenarios';
+const dayjs = require('dayjs');
 
 export default function SingleScenario({ scenario }) {
-  const [specialDateO, setSpecialDateO] = useState(
-    scenario?.specialDate ? new Date(scenario.specialDate) : null
-  );
-  const [changeDateO, setChangeDateO] = useState(
-    scenario.changeDate ? new Date(scenario.changeDate) : null
-  );
+  const [specialDateO, setSpecialDateO] = useState(null);
+  const [changeDateO, setChangeDateO] = useState(null);
   const [editingScenario, setEditingScenario] = useState(false);
   const [newName, setNewName] = useState(scenario?.name);
   const [specialAmount, setSpecialAmount] = useState(scenario?.specialAmount);
@@ -24,6 +21,19 @@ export default function SingleScenario({ scenario }) {
   const [changeDate, setChangeDate] = useState(scenario?.changeDate);
   const [deletingScenario, setDeletingScenario] = useState(false);
   const { state, stateScenarios, dispatchScenarios } = useContext(Context);
+
+  useEffect(() => {
+    if (scenario?.specialDate) {
+      let dayjsDate = dayjs(scenario.specialDate);
+      let specDate = new Date(dayjsDate.$d);
+      setSpecialDateO(specDate);
+    }
+
+    if (scenario?.changeDate) {
+      let chanDate = new Date(scenario?.changeDate);
+      setChangeDateO(chanDate);
+    }
+  }, []);
 
   async function updateScenario() {
     if (!newName) {
@@ -107,9 +117,9 @@ export default function SingleScenario({ scenario }) {
           <Title>Special Assessment</Title>
           {!editingScenario ? (
             <Typography style={{ fontSize: '1.3rem' }}>
-              {`$${scenario?.specialAmount} on ${specialDateO.getMonth() + 1}/${
-                specialDateO.getDate() + 1
-              }/${specialDateO.getFullYear()}`}
+              {`$${scenario?.specialAmount} on ${
+                specialDateO?.getMonth() + 1
+              }/${specialDateO?.getDate()}/${specialDateO?.getFullYear()}`}
             </Typography>
           ) : (
             <div className="display-row">
@@ -156,7 +166,7 @@ export default function SingleScenario({ scenario }) {
             <Typography style={{ fontSize: '1.3rem' }}>
               {`$${scenario?.changeAmount} beginning ${
                 changeDateO?.getMonth() + 1
-              }/${changeDateO?.getDate() + 1}/${changeDateO?.getFullYear()}`}
+              }/${changeDateO?.getDate()}/${changeDateO?.getFullYear()}`}
             </Typography>
           ) : (
             <div className="display-row">
