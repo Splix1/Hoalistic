@@ -20,6 +20,7 @@ import { setProjects } from '../../Store/Projects';
 import RecurringCosts from './RecurringCosts';
 import UpcomingProjects from './UpcomingProjects';
 import Units from './Units';
+const dayjs = require('dayjs');
 
 function DashboardContent() {
   let [recurringCosts, setRecurringCosts] = React.useState([]);
@@ -49,7 +50,8 @@ function DashboardContent() {
         .eq('HOA', state?.id);
 
       let upcomingProjects = projectsData.filter((currentProject) => {
-        let projectDate = new Date(currentProject.begin_date);
+        let projectDayJS = dayjs(currentProject.begin_date);
+        let projectDate = new Date(projectDayJS.$d);
         let currentTime = new Date().getTime();
 
         if (projectDate.getTime() > currentTime)
@@ -129,13 +131,12 @@ function DashboardContent() {
 
       let projectsToSubtract = projects
         .filter((project) => {
-          let projectTime = new Date(project.begin_date).getTime();
-          let dataTime = new Date(
-            currentYear + yearCounter,
-            currentMonth + j
-          ).getTime();
+          let projectDate = dayjs(project.begin_date);
+          let dataDate = dayjs(
+            `${currentYear + yearCounter}-${currentMonth + j}`
+          );
 
-          if (projectTime <= dataTime) {
+          if (projectDate.diff(dataDate) <= 0) {
             return project;
           }
         })
@@ -161,20 +162,23 @@ function DashboardContent() {
       //loop over scenarios, creating a projection for current month with each scenario
       for (let i = 0; i < stateScenarios?.length; i++) {
         let currentProjection = futureProjection;
-        let currentDataTime = new Date(
+        let currentDataDate = dayjs(
           `${currentMonth + j}/1/${currentYear + yearCounter}`
         );
-        let specialDate = new Date(stateScenarios[i].specialDate);
+
+        let specialDayDate = dayjs(stateScenarios[i].specialDate);
+
         if (stateScenarios[i].specialAmount) {
-          if (currentDataTime.getTime() >= specialDate.getTime())
+          if (specialDayDate.diff(currentDataDate) <= 0) {
             currentProjection +=
               stateScenarios[i].specialAmount * stateUnits?.length;
+          }
         }
 
-        let changeDate = new Date(stateScenarios[i].changeDate);
+        let changeDayDate = dayjs(stateScenarios[i].changeDate);
 
         if (stateScenarios[i].changeAmount) {
-          if (currentDataTime.getTime() >= changeDate.getTime()) {
+          if (changeDayDate.diff(currentDataDate) <= 0) {
             currentProjection +=
               (correctAssSum * stateScenarios[i].changeAmount) / 100;
           }
@@ -187,6 +191,7 @@ function DashboardContent() {
     for (let i = 0; i < monthsToAdd; i++) {
       data.shift();
     }
+
     setChartData(data);
   }
 
