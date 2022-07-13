@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
 import { setProjects } from '../../Store/Projects';
+const dayjs = require('dayjs');
 
 export default function UpcomingProjects({ projects, user, setStateProjects }) {
   let [creatingProject, setCreatingProject] = useState(false);
@@ -101,11 +102,14 @@ export default function UpcomingProjects({ projects, user, setStateProjects }) {
       )}
 
       {projects.map((project) => {
+        let projectDate = dayjs(project.begin_date);
+
         return (
           <div key={project.id} className="budget-item">
             <h4>
               {project.name}: ${numberWithCommas(project.cost)} <br />
-              Begin: {project.begin_date}
+              Begin:{' '}
+              {`${projectDate.$M + 1}/${projectDate.$D}/${projectDate.$y}`}
             </h4>
           </div>
         );

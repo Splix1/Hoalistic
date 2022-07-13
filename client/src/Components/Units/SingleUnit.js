@@ -8,6 +8,7 @@ import supabase from '../../client';
 import DeletingUnit from './DeletingUnit';
 import { Context } from '../ContextProvider';
 import { setUnits } from '../../Store/Units';
+const dayjs = require('dayjs');
 
 const mdTheme = createTheme();
 
@@ -21,6 +22,7 @@ function SingleUnit({ creatingUnit, theUnit }) {
   let [unit, setUnit] = useState(theUnit);
   let [deletingUnit, setDeletingUnit] = useState(false);
   let { state, stateUnits, dispatchUnits } = useContext(Context);
+  let [unitDate, setUnitDate] = useState(dayjs(theUnit?.dateMovedIn));
 
   async function updateUnit() {
     if (!newUnitID || !monthlyAssessment || !tenantName || !movedIn) {
@@ -81,7 +83,8 @@ function SingleUnit({ creatingUnit, theUnit }) {
               Monthly Assessment: ${numberWithCommas(unit?.monthly_assessment)}
             </Typography>
             <Typography sx={{ fontSize: '1.5rem' }}>
-              Date moved in: {unit?.dateMovedIn}
+              Date moved in:{' '}
+              {`${unitDate?.$M + 1}/${unitDate?.$D}/${unitDate?.$y}`}
             </Typography>
             <div className="display-row">
               <Button

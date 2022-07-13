@@ -5,6 +5,7 @@ import CurrencyInput from 'react-currency-input-field';
 import { Button } from '@mui/material';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
+const dayjs = require('dayjs');
 
 export default function Units({
   monthlyAssessments,
@@ -117,20 +118,26 @@ export default function Units({
           Add a Unit
         </Button>
       )}
-      {monthlyAssessments.map((assessment) => (
-        <h4
-          key={assessment.id}
-          className="budget-item"
-          style={{ height: 'fit-content' }}
-        >
-          {assessment.unitID}
-          <br />
-          {assessment.tenant_name}: $
-          {numberWithCommas(assessment.monthly_assessment)}
-          <br />
-          Moved in: {assessment.dateMovedIn}
-        </h4>
-      ))}
+      {monthlyAssessments.map((assessment) => {
+        let assessmentDate = dayjs(assessment.dateMovedIn);
+        return (
+          <h4
+            key={assessment.id}
+            className="budget-item"
+            style={{ height: 'fit-content' }}
+          >
+            {assessment.unitID}
+            <br />
+            {assessment.tenant_name}: $
+            {numberWithCommas(assessment.monthly_assessment)}
+            <br />
+            Moved in:{' '}
+            {`${assessmentDate.$M + 1}/${assessmentDate.$D}/${
+              assessmentDate.$y
+            }`}
+          </h4>
+        );
+      })}
     </div>
   );
 }
