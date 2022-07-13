@@ -23,52 +23,17 @@ export default function FutureProjections({
   data,
   monthsToAdd,
   setMonthsToAdd,
+  years,
 }) {
   const { stateScenarios, state } = React.useContext(Context);
   const [showMouseOver, setShowMouseOver] = React.useState(null);
-
-  const PREFIX = 'Demo';
-
-  const classes = {
-    chart: `${PREFIX}-chart`,
-  };
-  const format = () => (tick) => tick;
-
-  const Root = (props) => (
-    <Legend.Root
-      {...props}
-      sx={{ display: 'flex', margin: 'auto', flexDirection: 'row' }}
-    />
-  );
-  const Label = (props) => (
-    <Legend.Label sx={{ pt: 1, whiteSpace: 'nowrap' }} {...props} />
-  );
-
-  const Item = (props) => (
-    <Legend.Item sx={{ flexDirection: 'column' }} {...props} />
-  );
-
-  const ValueLabel = (props) => {
-    const { text } = props;
-    return <ValueAxis.Label {...props} text={`${text}%`} />;
-  };
-
-  const TitleText = (props) => (
-    <chartTitle.Text {...props} sx={{ whiteSpace: 'pre' }} />
-  );
-
-  const StyledChart = styled(oldChart)(() => ({
-    [`&.${classes.chart}`]: {
-      paddingRight: '20px',
-    },
-  }));
 
   const options = {
     chart: {
       id: 'basic-bar',
     },
     xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+      categories: years,
     },
     theme: {
       mode: state?.theme,
@@ -77,12 +42,17 @@ export default function FutureProjections({
         enabled: false,
       },
     },
+    dataLabels: {
+      enabled: true,
+      formatter: function (val, opts) {
+        return numberWithCommas(val);
+      },
+    },
   };
-
-  const series = [
-    { name: 'Jun/1993', data: [100, 200, 300, 400, 500] },
-    { name: 'Aug/1993', data: [200, 400, 600, 800, 1000] },
-  ];
+  function numberWithCommas(x) {
+    if (!x) return;
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
 
   return (
     <Paper
@@ -100,46 +70,12 @@ export default function FutureProjections({
       <Title>Future Projections</Title>
       <Chart
         options={options}
-        series={series}
+        series={data}
         type="line"
         width="100%"
         height="300rem"
       />
-      {/* <StyledChart data={data} className={classes.chart}>
-        <ArgumentAxis />
-        <ValueAxis />
-        <LineSeries
-          name="Current Projection"
-          valueField="Current Projection"
-          argumentField="date"
-        />
 
-        {stateScenarios?.map((scenario) => (
-          <LineSeries
-            name={`${scenario.name}`}
-            valueField={`${scenario.name}`}
-            argumentField="date"
-          />
-        ))}
-
-        <Legend
-          position="bottom"
-          rootComponent={Root}
-          itemComponent={Item}
-          labelComponent={Label}
-        />
-        {/* <LineSeries name="TV news" valueField="tvNews" argumentField="year" />
-        <LineSeries name="Church" valueField="church" argumentField="year" />
-        <LineSeries
-        name="Military"
-        valueField="military"
-        argumentField="year"
-        />
-        <LineSeries name="Dog" valueField="dogX" argumentField="year" /> */}
-      {/* <EventTracker />
-        <Tooltip />
-        <Animation />
-      </StyledChart> */}{' '}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div
           style={{

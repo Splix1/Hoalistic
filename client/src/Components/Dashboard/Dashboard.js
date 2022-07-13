@@ -40,6 +40,7 @@ function DashboardContent() {
     dispatchCosts,
     dispatchProjects,
   } = React.useContext(Context);
+  let [chartYears, setChartYears] = React.useState([]);
 
   React.useEffect(() => {
     async function fetchBudgets() {
@@ -96,6 +97,7 @@ function DashboardContent() {
     );
 
     let data = [];
+    let dates = [];
     let currentMonth = new Date().getMonth() + 1;
     let currentYear = new Date().getFullYear();
     let months = {
@@ -129,12 +131,10 @@ function DashboardContent() {
         j = -currentMonth + 1;
       }
 
+      let dataDate = dayjs(`${currentYear + yearCounter}-${currentMonth + j}`);
       let projectsToSubtract = projects
         .filter((project) => {
           let projectDate = dayjs(project.begin_date);
-          let dataDate = dayjs(
-            `${currentYear + yearCounter}-${currentMonth + j}`
-          );
 
           if (projectDate.diff(dataDate) <= 0) {
             return project;
@@ -153,11 +153,18 @@ function DashboardContent() {
         correctAssSum -
         correctCostSum -
         projectsToSubtract;
-      dataObj['date'] = mobileOrComputer(
-        months[currentMonth + j],
-        currentYear + yearCounter
-      );
-      dataObj['Current Projection'] = futureProjection;
+      // dataObj['date'] = mobileOrComputer(
+      //   months[currentMonth + j],
+      //   currentYear + yearCounter
+      // );
+      let isInData = false;
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].name === 'Current Projection') isInData = true;
+      }
+      if (!isInData) {
+        data.push({ name: 'Current Projection', data: [] });
+      }
+      data[0].data.push(futureProjection);
 
       //loop over scenarios, creating a projection for current month with each scenario
       for (let i = 0; i < stateScenarios?.length; i++) {
@@ -183,15 +190,32 @@ function DashboardContent() {
               (correctAssSum * stateScenarios[i].changeAmount) / 100;
           }
         }
-        dataObj[`${stateScenarios[i].name}`] = currentProjection;
+        let isInData = false;
+        for (let j = 0; j < data.length; j++) {
+          if (data[j].name === `${stateScenarios[i].name}`) isInData = true;
+        }
+        if (!isInData) {
+          data.push({
+            name: `${stateScenarios[i].name}`,
+            data: [currentProjection],
+          });
+        } else {
+          for (let j = 0; j < data.length; j++) {
+            if (data[j].name === `${stateScenarios[i].name}`) {
+              data[j].data.push(currentProjection);
+            }
+          }
+        }
       }
-      data.push(dataObj);
+      dates.push(
+        mobileOrComputer(months[currentMonth + j], currentYear + yearCounter)
+      );
       j++;
     }
     for (let i = 0; i < monthsToAdd; i++) {
       data.shift();
     }
-
+    setChartYears(dates);
     setChartData(data);
   }
 
@@ -237,6 +261,7 @@ function DashboardContent() {
                   data={chartData}
                   monthsToAdd={monthsToAdd}
                   setMonthsToAdd={setMonthsToAdd}
+                  years={chartYears}
                 />
               </Grid>
               <Grid item xs={12} md={4} lg={3}>
