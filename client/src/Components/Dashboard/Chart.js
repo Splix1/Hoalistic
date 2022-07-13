@@ -24,6 +24,7 @@ export default function FutureProjections({
   setMonthsToAdd,
 }) {
   const { stateScenarios } = React.useContext(Context);
+  const [showMouseOver, setShowMouseOver] = React.useState(null);
 
   const PREFIX = 'Demo';
 
@@ -41,6 +42,7 @@ export default function FutureProjections({
   const Label = (props) => (
     <Legend.Label sx={{ pt: 1, whiteSpace: 'nowrap' }} {...props} />
   );
+
   const Item = (props) => (
     <Legend.Item sx={{ flexDirection: 'column' }} {...props} />
   );
@@ -91,6 +93,7 @@ export default function FutureProjections({
             argumentField="date"
           />
         ))}
+
         <Legend
           position="bottom"
           rootComponent={Root}
@@ -100,15 +103,16 @@ export default function FutureProjections({
         {/* <LineSeries name="TV news" valueField="tvNews" argumentField="year" />
         <LineSeries name="Church" valueField="church" argumentField="year" />
         <LineSeries
-          name="Military"
-          valueField="military"
-          argumentField="year"
+        name="Military"
+        valueField="military"
+        argumentField="year"
         />
         <LineSeries name="Dog" valueField="dogX" argumentField="year" /> */}
         <EventTracker />
         <Tooltip />
         <Animation />
       </StyledChart>
+
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div
           style={{

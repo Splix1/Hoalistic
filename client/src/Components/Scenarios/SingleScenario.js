@@ -156,7 +156,7 @@ export default function SingleScenario({ scenario }) {
             <Typography style={{ fontSize: '1.3rem' }}>
               {`$${scenario?.changeAmount} beginning ${
                 changeDateO?.getMonth() + 1
-              }/${changeDateO.getDate() + 1}/${changeDateO.getFullYear()}`}
+              }/${changeDateO?.getDate() + 1}/${changeDateO?.getFullYear()}`}
             </Typography>
           ) : (
             <div className="display-row">
