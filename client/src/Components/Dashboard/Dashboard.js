@@ -37,6 +37,7 @@ function DashboardContent() {
     stateCosts,
     stateUnits,
     stateScenarios,
+    stateProjects,
     dispatchUnits,
     dispatchCosts,
     dispatchProjects,
@@ -66,7 +67,7 @@ function DashboardContent() {
       setHOABalance(numberWithCommas(state?.balance));
     }
     fetchBudgets();
-  }, [state]);
+  }, [state, stateProjects]);
 
   React.useEffect(() => {
     setUser(state);
