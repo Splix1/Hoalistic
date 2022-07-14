@@ -1,21 +1,9 @@
 import * as React from 'react';
-import { Paper, Button, Typography } from '@mui/material';
+import { Paper, Button } from '@mui/material';
 import Title from './Title';
-import {
-  ArgumentAxis,
-  ValueAxis,
-  Chart as oldChart,
-  LineSeries,
-  Tooltip,
-  Title as chartTitle,
-  Legend,
-} from '@devexpress/dx-react-chart-material-ui';
-import { EventTracker } from '@devexpress/dx-react-chart';
 import CssBaseline from '@mui/material/CssBaseline';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { styled } from '@mui/material/styles';
-import { Animation } from '@devexpress/dx-react-chart';
 import { Context } from '../ContextProvider';
 import Chart from 'react-apexcharts';
 
@@ -25,8 +13,7 @@ export default function FutureProjections({
   setMonthsToAdd,
   years,
 }) {
-  const { stateScenarios, state } = React.useContext(Context);
-  const [showMouseOver, setShowMouseOver] = React.useState(null);
+  const { state } = React.useContext(Context);
   const [showLabels, setShowLabels] = React.useState(false);
 
   const options = {

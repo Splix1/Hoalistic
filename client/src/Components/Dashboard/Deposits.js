@@ -13,12 +13,6 @@ import NewScenario from '../Scenarios/NewScenario';
 export default function Deposits({ generateChartData, HOABalance, user }) {
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
   let { state, dispatch } = React.useContext(Context);
-  let [showScenarios, setShowScenarios] = React.useState(false);
-
-  function numberWithCommas(x) {
-    if (!x) return;
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
 
   async function updateBalance(newBalance) {
     let { data: updatedBalance } = await supabase

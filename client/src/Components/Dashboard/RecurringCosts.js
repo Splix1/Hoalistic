@@ -1,30 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import Title from './Title';
-import { TextField } from '@mui/material';
-import CurrencyInput from 'react-currency-input-field';
-import { Button } from '@mui/material';
-import supabase from '../../client';
 import { Context } from '../ContextProvider';
 import CreateCost from '../../Components/HOACosts/CreateCosts';
 
-export default function RecurringCosts({ user, setCosts }) {
-  let [creatingCost, setCreatingCost] = useState(false);
-  let [costName, setCostName] = useState('');
-  let [costPrice, setCostPrice] = useState(0);
-  let { dispatchCosts, stateCosts } = useContext(Context);
-
-  async function createCost() {
-    if (costName === '' || costPrice === 0) {
-      alert('Name and price are required!');
-      return;
-    }
-    let { data } = await supabase
-      .from('HOA_costs')
-      .insert({ name: costName, cost: costPrice, HOA: user.id });
-
-    dispatchCosts(setCosts([...stateCosts, data[0]]));
-    setCreatingCost(false);
-  }
+export default function RecurringCosts() {
+  let { stateCosts } = useContext(Context);
 
   function numberWithCommas(x) {
     if (!x) return;
