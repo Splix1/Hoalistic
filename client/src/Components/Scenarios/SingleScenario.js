@@ -33,7 +33,7 @@ export default function SingleScenario({ scenario }) {
       let chanDate = new Date(scenario?.changeDate);
       setChangeDateO(chanDate);
     }
-  }, []);
+  }, [stateScenarios]);
 
   async function updateScenario() {
     if (!newName) {
