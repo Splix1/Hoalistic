@@ -5,6 +5,7 @@ import CurrencyInput from 'react-currency-input-field';
 import { Button } from '@mui/material';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
+import CreateUnit from '../Units/CreateUnit';
 const dayjs = require('dayjs');
 
 export default function Units({
@@ -114,9 +115,7 @@ export default function Units({
           </div>
         </div>
       ) : (
-        <Button variant="outlined" onClick={() => setCreatingUnit(true)}>
-          Add a Unit
-        </Button>
+        <CreateUnit />
       )}
       {monthlyAssessments.map((assessment) => {
         let assessmentDate = dayjs(assessment.dateMovedIn);

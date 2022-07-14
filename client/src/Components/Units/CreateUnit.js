@@ -64,11 +64,10 @@ export default function CreateUnit() {
       <Button
         onClick={handleOpen}
         fullWidth
-        variant="contained"
+        variant="outlined"
         style={{
           marginBottom: '0.5rem',
           width: 'fit-content',
-          marginTop: '2rem',
         }}
       >
         Add Unit
