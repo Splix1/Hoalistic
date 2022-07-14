@@ -45,7 +45,17 @@ export default function FutureProjections({
     dataLabels: {
       enabled: true,
       formatter: function (val, opts) {
-        return numberWithCommas(val);
+        if (val < 0) return `-$${numberWithCommas(Math.abs(val))}`;
+        return `$${numberWithCommas(val)}`;
+      },
+    },
+    tooltip: {
+      y: {
+        formatter: (val) => {
+          if (val < 0) return `-$${numberWithCommas(Math.abs(val))}`;
+
+          return `$${numberWithCommas(val)}`;
+        },
       },
     },
   };
