@@ -1,109 +1,144 @@
-import React, { useState, useContext } from 'react';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container';
-import { Typography } from '@mui/material';
-import TextField from '@mui/material/TextField';
+import * as React from 'react';
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import supabase from '../../client';
-import CurrencyInput from 'react-currency-input-field';
+import Typography from '@mui/material/Typography';
+import Title from '../Dashboard/Title';
+import TextField from '@mui/material/TextField';
 import { Context } from '../ContextProvider';
+import CurrencyInput from 'react-currency-input-field';
+import supabase from '../../client';
+import { setCosts } from '../../Store/Costs';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
-const mdTheme = createTheme();
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '65vw',
+  height: 'fit-content',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 2,
+  p: 4,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
 
-export default function CreateCosts({ setCreatingCost, newCost }) {
-  let [cost, setCost] = useState(0);
-  let [costName, setCostName] = useState('');
-  let { state } = useContext(Context);
+export default function CreateCost() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const { state, stateCosts, dispatchCosts } = React.useContext(Context);
+  const [name, setName] = React.useState(null);
+  const [cost, setCost] = React.useState(null);
+  const [exitColor, setExitColor] = React.useState('white');
 
   async function createCost() {
-    if (cost < 0) {
-      alert('Cost cannot be negative!');
+    if (!name) {
+      alert('A name for your project is required!');
       return;
     }
-
-    let { email } = supabase.auth.user();
-    const user = await supabase.from('HOAs').select('*').eq('email', email);
     let { data: costData } = await supabase.from('HOA_costs').insert({
-      name: costName,
-      cost: cost,
-      HOA: user.data[0].id,
+      name,
+      cost,
+      HOA: state?.id,
     });
-    newCost(costData[0]);
-    setCreatingCost(false);
+
+    dispatchCosts(setCosts([...stateCosts, costData[0]]));
+    setOpen(false);
   }
 
   return (
-    <ThemeProvider theme={state?.mdTheme}>
-      <CssBaseline />
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={8} lg={9}>
-            <Paper
-              sx={{
-                p: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                height: 240,
-                justifyContent: 'flex-start',
+    <div>
+      <Button
+        onClick={handleOpen}
+        fullWidth
+        variant="outlined"
+        style={{
+          marginBottom: '0.5rem',
+          width: 'fit-content',
+        }}
+      >
+        Add Cost
+      </Button>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <IconButton
+              onClick={() => setOpen(false)}
+              id="x"
+              onMouseEnter={() => setExitColor('red')}
+              onMouseLeave={() => setExitColor('white')}
+              style={{
+                color: exitColor,
               }}
             >
-              <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
-                Create Cost
-              </Typography>
-              <div id="form-inputs">
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="costName"
-                    label="Cost Name"
-                    name="costName"
-                    autoComplete="1A"
-                    onChange={(evt) => setCostName(evt.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <CurrencyInput
-                    id="projectCost"
-                    name="projectCost"
-                    prefix="$"
-                    placeholder="Project Cost"
-                    defaultValue={0}
-                    decimalsLimit={2}
-                    style={{
-                      height: '3rem',
-                      fontSize: '1rem',
-                      backgroundColor: '#121212',
-                      color: 'white',
-                    }}
-                    onValueChange={(value) => setCost(value)}
-                  />
-                </Grid>
-              </div>
-            </Paper>
-            <div id="form-input">
+              <CloseIcon />
+            </IconButton>
+            <Title>Cost Name</Title>
+            <TextField
+              required
+              id="scenarioName"
+              label="Cost Name"
+              name="scenarioName"
+              style={{ marginBottom: '1rem', marginTop: '0.5rem' }}
+              onChange={(evt) => setName(evt.target.value)}
+            />
+
+            <div className="display-column" style={{ alignItems: 'center' }}>
+              <Title>Amount</Title>
+              <CurrencyInput
+                prefix="$"
+                placeholder="Amount"
+                decimalsLimit={2}
+                style={{
+                  height: '3.5rem',
+                  fontSize: '1rem',
+                  color: state?.theme === 'light' ? '#121212' : 'white',
+                  marginRight: '1rem',
+                  backgroundColor:
+                    state?.theme === 'light' ? 'white' : '#121212',
+                }}
+                onValueChange={(value) => setCost(value)}
+              />
+            </div>
+
+            <div id="form-input" style={{ marginTop: '1rem' }}>
               <Button
                 variant="contained"
-                onClick={createCost}
                 style={{ marginRight: '1rem', marginTop: '1rem' }}
+                onClick={createCost}
               >
-                Submit
+                Finish
               </Button>
               <Button
                 variant="contained"
-                onClick={() => setCreatingCost(false)}
+                onClick={() => setOpen(false)}
                 style={{ marginRight: '1rem', marginTop: '1rem' }}
               >
                 Cancel
               </Button>
             </div>
-          </Grid>
-        </Grid>
-      </Container>
-    </ThemeProvider>
+          </Box>
+        </Fade>
+      </Modal>
+    </div>
   );
 }

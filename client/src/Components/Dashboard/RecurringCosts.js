@@ -5,6 +5,7 @@ import CurrencyInput from 'react-currency-input-field';
 import { Button } from '@mui/material';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
+import CreateCost from '../../Components/HOACosts/CreateCosts';
 
 export default function RecurringCosts({ user, setCosts }) {
   let [creatingCost, setCreatingCost] = useState(false);
@@ -33,54 +34,7 @@ export default function RecurringCosts({ user, setCosts }) {
   return (
     <div>
       <Title>Recurring Costs</Title>
-      {creatingCost ? (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <TextField
-            required
-            id="name"
-            label="Cost Name"
-            name="name"
-            autoComplete="Jimmy"
-            onChange={(evt) => setCostName(evt.target.value)}
-            style={{ marginBottom: '0.5rem' }}
-          />
-          <CurrencyInput
-            id="input-example"
-            name="input-name"
-            prefix="$"
-            placeholder="Please enter a number"
-            defaultValue={0}
-            decimalsLimit={2}
-            style={{
-              height: '3rem',
-              fontSize: '1rem',
-              backgroundColor: '#121212',
-              color: 'white',
-              marginBottom: '0.5rem',
-            }}
-            onValueChange={(value) => setCostPrice(value)}
-          />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              marginTop: '0.5rem',
-            }}
-          >
-            <Button variant="contained" onClick={() => createCost()}>
-              Add Cost
-            </Button>
-            <Button variant="contained" onClick={() => setCreatingCost(false)}>
-              Cancel
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <Button variant="outlined" onClick={() => setCreatingCost(true)}>
-          Add a Monthly Cost
-        </Button>
-      )}
+      <CreateCost />
       {stateCosts.map((cost) => (
         <h4 key={cost.id} className="budget-item" style={{ height: '2rem' }}>
           {cost.name}: ${numberWithCommas(cost.cost)}

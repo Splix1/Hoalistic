@@ -10,6 +10,7 @@ import SingleCost from './SingleCost';
 import CreateCosts from './CreateCosts';
 import { Context } from '../ContextProvider';
 import { setCosts } from '../../Store/Costs';
+import CreateCost from './CreateCosts';
 
 const mdTheme = createTheme();
 export default function HOACosts() {
@@ -32,28 +33,7 @@ export default function HOACosts() {
         }}
       >
         <br />
-        <Typography component="h1" variant="h4" sx={{ color: '90caf9' }}>
-          Costs
-        </Typography>
-        {creatingCost ? (
-          <CreateCosts
-            setCreatingCost={setCreatingCost}
-            creatingcost={creatingCost}
-            newCost={newCost}
-          />
-        ) : null}
-        {!creatingCost ? (
-          <Button
-            variant="contained"
-            sx={{ top: 50 }}
-            onClick={() => setCreatingCost(!creatingCost)}
-          >
-            Create Cost
-          </Button>
-        ) : null}
-        <br />
-        <br />
-        <br />
+        <CreateCost />
 
         {stateCosts?.length > 0 ? (
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
