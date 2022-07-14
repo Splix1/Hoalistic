@@ -27,6 +27,7 @@ export default function FutureProjections({
 }) {
   const { stateScenarios, state } = React.useContext(Context);
   const [showMouseOver, setShowMouseOver] = React.useState(null);
+  const [showLabels, setShowLabels] = React.useState(false);
 
   const options = {
     chart: {
@@ -43,7 +44,7 @@ export default function FutureProjections({
       },
     },
     dataLabels: {
-      enabled: true,
+      enabled: showLabels,
       formatter: function (val, opts) {
         if (val < 0) return `-$${numberWithCommas(Math.abs(val))}`;
         return `$${numberWithCommas(val)}`;
@@ -85,42 +86,62 @@ export default function FutureProjections({
         width="100%"
         height="300rem"
       />
-
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}
-        >
-          {monthsToAdd > 0 ? (
-            <div
-              style={{
-                cursor: 'pointer',
-                marginRight: '1rem',
-              }}
-              onClick={() => setMonthsToAdd(monthsToAdd - 12)}
-            >
-              <ArrowBackIcon />
-            </div>
-          ) : (
-            <div
-              style={{
-                marginRight: '1rem',
-              }}
-            >
-              <ArrowBackIcon style={{ color: 'gray' }} />
-            </div>
-          )}
-
-          <div
-            style={{ cursor: 'pointer' }}
-            onClick={() => setMonthsToAdd(monthsToAdd + 12)}
+      <div className="display-row" style={{ justifyContent: 'space-between' }}>
+        {!showLabels ? (
+          <Button
+            variant="contained"
+            style={{ width: 'fit-content', height: '1.5rem' }}
+            onClick={() => setShowLabels(true)}
           >
-            <ArrowForwardIcon />
+            show labels
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            style={{ wdith: 'fit-content', height: '1.5rem' }}
+            onClick={() => setShowLabels(false)}
+          >
+            hide labels
+          </Button>
+        )}
+
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}
+          >
+            {monthsToAdd > 0 ? (
+              <div
+                style={{
+                  cursor: 'pointer',
+                  marginRight: '1rem',
+                }}
+                onClick={() => setMonthsToAdd(monthsToAdd - 12)}
+              >
+                <ArrowBackIcon />
+              </div>
+            ) : (
+              <div
+                style={{
+                  marginRight: '1rem',
+                }}
+              >
+                <ArrowBackIcon style={{ color: 'gray' }} />
+              </div>
+            )}
+
+            <div
+              style={{ cursor: 'pointer' }}
+              onClick={() => setMonthsToAdd(monthsToAdd + 12)}
+            >
+              <ArrowForwardIcon />
+            </div>
           </div>
         </div>
+        <div> </div>
       </div>
     </Paper>
   );
