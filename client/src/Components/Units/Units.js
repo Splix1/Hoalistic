@@ -7,7 +7,7 @@ import Container from '@mui/material/Container';
 import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import './Units.css';
-import CreateUnits from './CreateUnit';
+import CreateUnit from './CreateUnit';
 import SingleUnit from './SingleUnit';
 import supabase from '../../client';
 import { Context } from '../ContextProvider';
@@ -34,29 +34,7 @@ function Units() {
           overflow: 'auto',
         }}
       >
-        <br />
-        <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
-          Units
-        </Typography>
-        {creatingUnit ? (
-          <CreateUnits
-            setCreatingUnit={setCreatingUnit}
-            creatingUnit={creatingUnit}
-            newUnit={newUnit}
-          />
-        ) : null}
-        {!creatingUnit ? (
-          <Button
-            variant="contained"
-            sx={{ top: 50 }}
-            onClick={() => setCreatingUnit(!creatingUnit)}
-          >
-            Create Unit
-          </Button>
-        ) : null}
-        <br />
-        <br />
-        <br />
+        <CreateUnit />
 
         {stateUnits?.length > 0 ? (
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>

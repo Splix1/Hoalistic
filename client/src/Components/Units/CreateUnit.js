@@ -1,162 +1,193 @@
-import React, { useState, useContext } from 'react';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
+import * as React from 'react';
+import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container';
-import { Typography } from '@mui/material';
-import TextField from '@mui/material/TextField';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import './Units.css';
-import supabase from '../../client';
-import CurrencyInput from 'react-currency-input-field';
+import Typography from '@mui/material/Typography';
+import Title from '../Dashboard/Title';
+import TextField from '@mui/material/TextField';
 import { Context } from '../ContextProvider';
+import CurrencyInput from 'react-currency-input-field';
+import supabase from '../../client';
+import { setUnits } from '../../Store/Units';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
-const mdTheme = createTheme();
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '65vw',
+  height: 'fit-content',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 2,
+  p: 4,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
 
-function CreateUnits({ setCreatingUnit, creatingUnit, newUnit }) {
-  let [monthlyAssessment, setMonthlyAssessment] = useState(0);
-  let { state } = useContext(Context);
+export default function CreateUnit() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const { state, stateUnits, dispatchUnits } = React.useContext(Context);
+  const [tenant_name, setTenantName] = React.useState('');
+  const [monthly_assessment, setMonthlyAssessment] = React.useState(null);
+  const [unitID, setUnitID] = React.useState(null);
+  const [dateMovedIn, setDateMovedIn] = React.useState(null);
+  const [exitColor, setExitColor] = React.useState('white');
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const unitNumber = data.get('unitNumber');
-
-    if (monthlyAssessment < 0) {
-      alert('Monthly Assessment cannot be negative!');
+  async function createUnit() {
+    if (!tenant_name) {
+      alert('A name for your scenario is required!');
       return;
     }
-    const dateMovedIn = data.get('dateMovedIn');
-    const name = data.get('name');
-    let { email } = supabase.auth.user();
-    const user = await supabase.from('HOAs').select('*').eq('email', email);
     let { data: unitData } = await supabase.from('Units').insert({
-      tenant_name: name,
-      monthly_assessment: monthlyAssessment,
-      unitID: unitNumber,
-      HOA: user.data[0].id,
-      dateMovedIn: dateMovedIn,
+      tenant_name,
+      monthly_assessment,
+      unitID,
+      HOA: state?.id,
+      dateMovedIn,
     });
-    await supabase.from('Tenants').insert({ name, unit: unitNumber });
-    newUnit(unitData[0]);
-    setCreatingUnit(false);
+
+    dispatchUnits(setUnits([...stateUnits, unitData[0]]));
+    setOpen(false);
   }
 
   return (
-    <ThemeProvider theme={state?.mdTheme}>
-      <CssBaseline />
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          flexGrow: 1,
-          height: '100vh',
-          overflow: 'auto',
+    <div>
+      <Button
+        onClick={handleOpen}
+        fullWidth
+        variant="contained"
+        style={{
+          marginBottom: '0.5rem',
+          width: 'fit-content',
+          marginTop: '2rem',
         }}
       >
-        <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  height: 240,
-                  justifyContent: 'flex-start',
-                }}
-              >
-                <Typography
-                  component="h1"
-                  variant="h4"
-                  sx={{ color: '#90caf9' }}
-                >
-                  Create Unit
-                </Typography>
-                <div id="form-inputs">
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    style={{ marginBottom: '0.5rem', marginRight: '0.5rem' }}
-                  >
-                    <TextField
-                      required
-                      fullWidth
-                      id="unitNumber"
-                      label="Unit #"
-                      name="unitNumber"
-                      autoComplete="1A"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <CurrencyInput
-                      id="monthlyAssessment"
-                      name="monthlyAssessment"
-                      prefix="$"
-                      placeholder="Monthly Assessment"
-                      defaultValue={0}
-                      decimalsLimit={2}
-                      style={{
-                        height: '3rem',
-                        fontSize: '1rem',
-                        backgroundColor: '#121212',
-                        color: 'white',
-                      }}
-                      onValueChange={(value) => setMonthlyAssessment(value)}
-                    />
-                  </Grid>
-                </div>
-                <div id="form-inputs">
-                  <Grid item xs={12} sm={6} style={{ marginRight: '1rem' }}>
-                    <TextField
-                      type={'date'}
-                      required
-                      fullWidth
-                      id="dateMovedIn"
-                      name="dateMovedIn"
-                      autoComplete="Jimmy"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="name"
-                      label="Tenant Name"
-                      name="name"
-                      autoComplete="Jimmy"
-                    />
-                  </Grid>
-                </div>
-              </Paper>
-              <div id="form-input">
-                <Button
-                  variant="contained"
-                  type="submit"
-                  style={{ marginRight: '1rem', marginTop: '1rem' }}
-                >
-                  Submit
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => setCreatingUnit(false)}
-                  style={{ marginRight: '1rem', marginTop: '1rem' }}
-                >
-                  Cancel
-                </Button>
+        Add Unit
+      </Button>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <IconButton
+              onClick={() => setOpen(false)}
+              id="x"
+              onMouseEnter={() => setExitColor('red')}
+              onMouseLeave={() => setExitColor('white')}
+              style={{
+                color: exitColor,
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Title>Unit ID</Title>
+            <TextField
+              required
+              id="scenarioName"
+              label="Unit #"
+              name="scenarioName"
+              style={{ marginBottom: '1rem', marginTop: '0.5rem' }}
+              onChange={(evt) => setUnitID(evt.target.value)}
+            />
+
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginTop: '0.5rem',
+                marginBottom: '1rem',
+              }}
+            >
+              <div className="display-column" style={{ alignItems: 'center' }}>
+                <Title>Monthly Assessment</Title>
+                <CurrencyInput
+                  prefix="$"
+                  placeholder="Assessment Amount"
+                  decimalsLimit={2}
+                  style={{
+                    height: '3.5rem',
+                    fontSize: '1rem',
+                    color: state?.theme === 'light' ? '#121212' : 'white',
+                    marginRight: '1rem',
+                    backgroundColor:
+                      state?.theme === 'light' ? 'white' : '#121212',
+                  }}
+                  onValueChange={(value) => setMonthlyAssessment(value)}
+                />
               </div>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
-    </ThemeProvider>
+            </div>
+
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginTop: '0.5rem',
+              }}
+            >
+              <div className="display-column" style={{ alignItems: 'center' }}>
+                <Title>Tenant Name</Title>
+                <TextField
+                  required
+                  id="scenarioName"
+                  label="Tenant Name"
+                  name="scenarioName"
+                  style={{ marginRight: '1rem' }}
+                  onChange={(evt) => setTenantName(evt.target.value)}
+                />
+              </div>
+              <div className="disply-column" style={{ alignItems: 'center' }}>
+                <Title>Date Moved In</Title>
+                <TextField
+                  type={'date'}
+                  required
+                  fullWidth
+                  id="beginDate"
+                  name="beginDate"
+                  autoComplete="Jimmy"
+                  onChange={(evt) => setDateMovedIn(evt.target.value)}
+                />
+              </div>
+            </div>
+            <div id="form-input" style={{ marginTop: '1rem' }}>
+              <Button
+                variant="contained"
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+                onClick={createUnit}
+              >
+                Finish
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => setOpen(false)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </Box>
+        </Fade>
+      </Modal>
+    </div>
   );
 }
-
-export default CreateUnits;
