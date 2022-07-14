@@ -1,144 +1,158 @@
-import React, { useState, useContext, useEffect } from 'react';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
+import * as React from 'react';
+import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container';
-import { Typography } from '@mui/material';
-import TextField from '@mui/material/TextField';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import supabase from '../../client';
-import CurrencyInput from 'react-currency-input-field';
+import Typography from '@mui/material/Typography';
+import Title from '../Dashboard/Title';
+import TextField from '@mui/material/TextField';
 import { Context } from '../ContextProvider';
+import CurrencyInput from 'react-currency-input-field';
+import supabase from '../../client';
+import { setProjects } from '../../Store/Projects';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
-const mdTheme = createTheme();
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '65vw',
+  height: 'fit-content',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 2,
+  p: 4,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
 
-function CreateProjects({ setCreatingProject, creatingProject, newProject }) {
-  let [projectCost, setProjectCost] = useState(0);
-  let { state } = useContext(Context);
+export default function CreateProject() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const { state, stateProjects, dispatchProjects } = React.useContext(Context);
+  const [name, setName] = React.useState(null);
+  const [cost, setCost] = React.useState(null);
+  const [begin_date, setBeginDate] = React.useState(null);
+  const [exitColor, setExitColor] = React.useState('white');
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const projectName = data.get('projectName');
-
-    if (projectCost < 0) {
-      alert('Project cost cannot be negative!');
+  async function createProject() {
+    if (!name) {
+      alert('A name for your project is required!');
       return;
     }
-    const beginDate = data.get('beginDate');
-
-    let { email } = supabase.auth.user();
-    const user = await supabase.from('HOAs').select('*').eq('email', email);
-    let { data: unitData } = await supabase.from('Projects').insert({
-      name: projectName,
-      cost: projectCost,
-      HOA: user.data[0].id,
-      begin_date: beginDate,
+    let { data: projectData } = await supabase.from('Projects').insert({
+      name,
+      cost,
+      HOA: state?.id,
+      begin_date,
     });
-    newProject(unitData[0]);
-    setCreatingProject(false);
+
+    dispatchProjects(setProjects([...stateProjects, projectData[0]]));
+    setOpen(false);
   }
 
   return (
-    <ThemeProvider theme={state?.mdTheme}>
-      <CssBaseline />
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          flexGrow: 1,
-          height: '100vh',
-          overflow: 'auto',
+    <div>
+      <Button
+        onClick={handleOpen}
+        fullWidth
+        variant="outlined"
+        style={{
+          marginBottom: '0.5rem',
+          width: 'fit-content',
         }}
       >
-        <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  height: 240,
-                  justifyContent: 'flex-start',
+        Add Project
+      </Button>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <IconButton
+              onClick={() => setOpen(false)}
+              id="x"
+              onMouseEnter={() => setExitColor('red')}
+              onMouseLeave={() => setExitColor('white')}
+              style={{
+                color: exitColor,
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Title>Project Name</Title>
+            <TextField
+              required
+              id="scenarioName"
+              label="Project Name"
+              name="scenarioName"
+              style={{ marginBottom: '1rem', marginTop: '0.5rem' }}
+              onChange={(evt) => setName(evt.target.value)}
+            />
+
+            <div className="display-column" style={{ alignItems: 'center' }}>
+              <Title>Project Cost</Title>
+              <CurrencyInput
+                prefix="$"
+                placeholder="Assessment Amount"
+                decimalsLimit={2}
+                style={{
+                  height: '3.5rem',
+                  fontSize: '1rem',
+                  color: state?.theme === 'light' ? '#121212' : 'white',
+                  marginRight: '1rem',
+                  backgroundColor:
+                    state?.theme === 'light' ? 'white' : '#121212',
                 }}
+                onValueChange={(value) => setCost(value)}
+              />
+            </div>
+
+            <Title style={{ marginTop: '0.5rem' }}>Date</Title>
+            <TextField
+              type={'date'}
+              required
+              fullWidth
+              id="beginDate"
+              name="beginDate"
+              autoComplete="Jimmy"
+              style={{ width: 'fit-content' }}
+              onChange={(evt) => setBeginDate(evt.target.value)}
+            />
+
+            <div id="form-input" style={{ marginTop: '1rem' }}>
+              <Button
+                variant="contained"
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+                onClick={createProject}
               >
-                <Typography
-                  component="h1"
-                  variant="h4"
-                  sx={{ color: '#90caf9' }}
-                >
-                  Create Project
-                </Typography>
-                <div id="form-inputs">
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="projectName"
-                      label="Project Name"
-                      name="projectName"
-                      autoComplete="1A"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <CurrencyInput
-                      id="projectCost"
-                      name="projectCost"
-                      prefix="$"
-                      placeholder="Project Cost"
-                      defaultValue={0}
-                      decimalsLimit={2}
-                      style={{
-                        height: '3rem',
-                        fontSize: '1rem',
-                        backgroundColor: '#121212',
-                        color: 'white',
-                      }}
-                      onValueChange={(value) => setProjectCost(value)}
-                    />
-                  </Grid>
-                </div>
-                <div id="form-inputs">
-                  <Grid item xs={24} sm={12} style={{ marginTop: '0.5rem' }}>
-                    <TextField
-                      type={'date'}
-                      required
-                      fullWidth
-                      id="beginDate"
-                      name="beginDate"
-                      autoComplete="Jimmy"
-                    />
-                  </Grid>
-                </div>
-              </Paper>
-              <div id="form-input">
-                <Button
-                  variant="contained"
-                  type="submit"
-                  style={{ marginRight: '1rem', marginTop: '1rem' }}
-                >
-                  Submit
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => setCreatingProject(false)}
-                  style={{ marginRight: '1rem', marginTop: '1rem' }}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
-    </ThemeProvider>
+                Finish
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => setOpen(false)}
+                style={{ marginRight: '1rem', marginTop: '1rem' }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </Box>
+        </Fade>
+      </Modal>
+    </div>
   );
 }
-
-export default CreateProjects;

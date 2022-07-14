@@ -44,7 +44,7 @@ export default function CreateUnit() {
 
   async function createUnit() {
     if (!tenant_name) {
-      alert('A name for your scenario is required!');
+      alert('A name for your unit is required!');
       return;
     }
     let { data: unitData } = await supabase.from('Units').insert({

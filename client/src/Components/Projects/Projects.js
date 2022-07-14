@@ -10,6 +10,7 @@ import SingleProject from './SingleProject';
 import CreateProjects from './CreateProjects';
 import { Context } from '../ContextProvider';
 import { setProjects } from '../../Store/Projects';
+import CreateProject from './CreateProjects';
 
 const mdTheme = createTheme();
 export default function Projects() {
@@ -33,28 +34,8 @@ export default function Projects() {
         }}
       >
         <br />
-        <Typography component="h1" variant="h4" sx={{ color: '#90caf9' }}>
-          Projects
-        </Typography>
-        {creatingProject ? (
-          <CreateProjects
-            setCreatingProject={setCreatingProject}
-            creatingProject={creatingProject}
-            newProject={newProject}
-          />
-        ) : null}
-        {!creatingProject ? (
-          <Button
-            variant="contained"
-            sx={{ top: 50 }}
-            onClick={() => setCreatingProject(!creatingProject)}
-          >
-            Create Project
-          </Button>
-        ) : null}
-        <br />
-        <br />
-        <br />
+
+        <CreateProject />
 
         {stateProjects?.length > 0 ? (
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>

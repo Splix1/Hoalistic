@@ -49,74 +49,7 @@ export default function Units({
   return (
     <div>
       <Title>Units</Title>
-      {creatingUnit ? (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <TextField
-            required
-            id="unitID"
-            label="Unit ID"
-            name="unitID"
-            autoComplete="Jimmy"
-            onChange={(evt) => setUnitID(evt.target.value)}
-            style={{ marginBottom: '0.5rem' }}
-          />
-
-          <CurrencyInput
-            id="unitAssessment"
-            name="unitAssessment"
-            prefix="$"
-            placeholder="Please enter a number"
-            defaultValue={0}
-            decimalsLimit={2}
-            style={{
-              height: '3rem',
-              fontSize: '1rem',
-              backgroundColor: '#121212',
-              color: 'white',
-              marginBottom: '0.5rem',
-            }}
-            onValueChange={(value) => setUnitAssessment(value)}
-          />
-          <TextField
-            type={'date'}
-            required
-            fullWidth
-            id="dateMovedIn"
-            name="dateMovedIn"
-            autoComplete="Jimmy"
-            onChange={(evt) => setUnitMovedIn(evt.target.value)}
-            style={{ marginBottom: '0.5rem' }}
-          />
-          <TextField
-            required
-            fullWidth
-            id="tenantName"
-            name="tenantName"
-            label="Tenant Name"
-            autoComplete="Jimmy"
-            style={{ marginBottom: '0.5rem' }}
-            onChange={(evt) => setUnitTenantName(evt.target.value)}
-          />
-
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              marginTop: '0.5rem',
-            }}
-          >
-            <Button variant="contained" onClick={() => createUnit()}>
-              Add Unit
-            </Button>
-            <Button variant="contained" onClick={() => setCreatingUnit(false)}>
-              Cancel
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <CreateUnit />
-      )}
+      <CreateUnit />
       {monthlyAssessments.map((assessment) => {
         let assessmentDate = dayjs(assessment.dateMovedIn);
         return (
