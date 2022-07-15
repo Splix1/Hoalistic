@@ -13,6 +13,7 @@ import supabase from '../../client';
 import { setCosts } from '../../Store/Costs';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import OccurrenceMenu from './OccurrenceMenu';
 
 const style = {
   position: 'absolute',
@@ -38,6 +39,7 @@ export default function CreateCost() {
   const { state, stateCosts, dispatchCosts } = React.useContext(Context);
   const [name, setName] = React.useState(null);
   const [cost, setCost] = React.useState(null);
+  const [occurrence, setOccurrence] = React.useState('monthly');
   const [exitColor, setExitColor] = React.useState('white');
 
   async function createCost() {
@@ -48,6 +50,7 @@ export default function CreateCost() {
     let { data: costData } = await supabase.from('HOA_costs').insert({
       name,
       cost,
+      occurrence,
       HOA: state?.id,
     });
 
@@ -117,6 +120,17 @@ export default function CreateCost() {
                     state?.theme === 'light' ? 'white' : '#121212',
                 }}
                 onValueChange={(value) => setCost(value)}
+              />
+            </div>
+
+            <div
+              className="display-column"
+              style={{ alignItems: 'center', marginTop: '0.5rem' }}
+            >
+              <Title>Occurrence</Title>
+              <OccurrenceMenu
+                occurrence={occurrence}
+                setOccurrence={setOccurrence}
               />
             </div>
 

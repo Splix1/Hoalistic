@@ -16,8 +16,13 @@ export default function RecurringCosts() {
       <Title>Recurring Costs</Title>
       <CreateCost />
       {stateCosts.map((cost) => (
-        <h4 key={cost.id} className="budget-item" style={{ height: '2rem' }}>
-          {cost.name}: ${numberWithCommas(cost.cost)}
+        <h4
+          key={cost.id}
+          className="budget-item"
+          style={{ height: 'fit-content', padding: '0.5rem' }}
+        >
+          {cost.name}: ${numberWithCommas(cost.cost)} <br />
+          {`Occurrence: ${cost.occurrence}`}
         </h4>
       ))}
     </div>
