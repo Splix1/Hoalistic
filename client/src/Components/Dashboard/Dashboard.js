@@ -148,7 +148,10 @@ function DashboardContent() {
 
       let correctAssSum = sumOfAssessments * monthCounter;
       let correctCostSum = stateCosts?.reduce((total, currentCost) => {
-        return total + calculateCost(currentCost, monthCounter, yearCounter);
+        return (
+          total +
+          calculateCost(currentCost, dataDate, monthCounter, yearCounter)
+        );
       }, 0);
 
       let futureProjection =
@@ -220,13 +223,16 @@ function DashboardContent() {
     setChartData(data);
   }
 
-  function calculateCost(cost, monthCounter, yearCounter) {
+  function calculateCost(cost, dataDate, monthCounter, yearCounter) {
+    let costCreated = dayjs(cost.created_at);
     switch (cost?.occurrence) {
       case 'monthly': {
         return cost.cost * monthCounter;
       }
-      case 'yearly':
-        return cost.cost * yearCounter;
+      case 'yearly': {
+        if (costCreated.$M === dataDate.$M) return cost.cost * yearCounter;
+        return 0;
+      }
     }
   }
 
