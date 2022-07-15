@@ -76,6 +76,9 @@ export default function SingleCost({ creatingCost, theCost }) {
             <Typography sx={{ fontSize: '1.5rem' }}>
               Cost: ${numberWithCommas(currentCost?.cost)}
             </Typography>
+            <Typography sx={{ fontSize: '1.5rem' }}>
+              Occurrence: {currentCost?.occurrence}
+            </Typography>
 
             <div className="display-row">
               <Button
