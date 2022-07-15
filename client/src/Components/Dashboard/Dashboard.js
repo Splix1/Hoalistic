@@ -125,7 +125,6 @@ function DashboardContent() {
     let yearCounter = 0;
 
     for (let i = 0; i < 12 + monthsToAdd; i++) {
-      let dataObj = {};
       let monthCounter = i + 1;
       //if month + j is greater than 12 therefore not a month and in a new year
       if (months[currentMonth + j] === undefined) {
@@ -148,7 +147,9 @@ function DashboardContent() {
         }, 0);
 
       let correctAssSum = sumOfAssessments * monthCounter;
-      let correctCostSum = sumOfCosts * monthCounter;
+      let correctCostSum = stateCosts?.reduce((total, currentCost) => {
+        return total + calculateCost(currentCost, monthCounter, yearCounter);
+      }, 0);
 
       let futureProjection =
         +currentUser.balance +
@@ -217,6 +218,16 @@ function DashboardContent() {
 
     setChartYears(dates);
     setChartData(data);
+  }
+
+  function calculateCost(cost, monthCounter, yearCounter) {
+    switch (cost?.occurrence) {
+      case 'monthly': {
+        return cost.cost * monthCounter;
+      }
+      case 'yearly':
+        return cost.cost * yearCounter;
+    }
   }
 
   function mobileOrComputer(month, year) {
