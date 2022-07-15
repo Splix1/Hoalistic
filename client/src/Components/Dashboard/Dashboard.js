@@ -77,7 +77,7 @@ function DashboardContent() {
 
   React.useEffect(() => {
     generateChartData(state);
-  }, [HOABalance, projects, stateScenarios, monthsToAdd]);
+  }, [HOABalance, projects, stateScenarios, monthsToAdd, stateCosts]);
 
   async function generateChartData(currentUser) {
     let sumOfCosts = recurringCosts.reduce((sum, currentCost) => {
