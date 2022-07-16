@@ -16,6 +16,7 @@ export default function ProjectList({ projects, setProject, project }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  console.log('project', project);
 
   return (
     <div>
@@ -36,7 +37,33 @@ export default function ProjectList({ projects, setProject, project }) {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={() => setProject(null)}>No Project</MenuItem>
+        {!project ? (
+          <MenuItem
+            onClick={() => {
+              setProject(null);
+              handleClose();
+            }}
+          >
+            No Project
+          </MenuItem>
+        ) : (
+          <MenuItem
+            onClick={() => {
+              setProject(project);
+              handleClose();
+            }}
+          />
+        )}
+        {project ? (
+          <MenuItem
+            onClick={() => {
+              setProject(null);
+              handleClose();
+            }}
+          >
+            No Project
+          </MenuItem>
+        ) : null}
         {stateProjects?.map((project) => (
           <MenuItem
             onClick={() => {

@@ -9,13 +9,13 @@ import Grid from '@mui/material/Grid';
 import { setFiles } from '../../Store/Files';
 import { setDocuments } from '../../Store/Documents';
 import DeletingDocument from './DeletingDocument';
+import EditDocument from './EditDocument';
 const dayjs = require('dayjs');
 
 export default function SingleDocument({ theDocument }) {
   let { name, description } = theDocument;
   let [newName, setNewName] = useState(name);
   let [newDescription, setNewDescription] = useState(description);
-  let [editingDocument, setEditingDocument] = useState(false);
   let [deletingDocument, setDeletingDocument] = useState(false);
   let { state, stateFiles, dispatchFiles, stateDocuments, dispatchDocuments } =
     useContext(Context);
@@ -23,6 +23,7 @@ export default function SingleDocument({ theDocument }) {
   let [project, setProject] = useState(null);
   let [fileType, setFileType] = useState('');
   let [newFile, setNewFile] = useState(null);
+  let [uploading, setUploading] = useState(false);
   let [documentDate, setDocumentDate] = useState(
     dayjs(theDocument?.created_at)
   );
@@ -55,6 +56,7 @@ export default function SingleDocument({ theDocument }) {
     }
 
     if (newFile) {
+      setUploading(true);
       let { data: updatedFile, error: updateFileError } = await storage.storage
         .from(`${state?.id}`)
         .update(theDocument?.name, newFile, {
@@ -98,7 +100,8 @@ export default function SingleDocument({ theDocument }) {
         'New file uploaded! The link is updated but the display may take a few minutes to update.'
       );
     }
-    setEditingDocument(false);
+    setUploading(false);
+    setNewFile(null);
   }
 
   async function deleteDocument() {
@@ -157,144 +160,62 @@ export default function SingleDocument({ theDocument }) {
           width: '950px',
         }}
       >
-        {!editingDocument ? (
-          <div
-            className="single-cost"
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
+        <div
+          className="single-cost"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography sx={{ fontSize: '1.5rem' }}>
+            {theDocument?.name} -{' '}
+            <a href={url} target="_blank">
+              Open file
+            </a>
+          </Typography>
+          <Typography sx={{ fontSize: '1.5rem' }}>
+            {`${documentDate?.$M + 1}/${documentDate?.$D}/${documentDate?.$y}`}
+          </Typography>
+          {!theDocument?.description ? null : (
             <Typography sx={{ fontSize: '1.5rem' }}>
-              {theDocument?.name} -{' '}
-              <a href={url} target="_blank">
-                Open file
-              </a>
+              {theDocument?.description}
             </Typography>
+          )}
+          {project ? (
             <Typography sx={{ fontSize: '1.5rem' }}>
-              {`${documentDate?.$M + 1}/${documentDate?.$D}/${
-                documentDate?.$y
-              }`}
+              Project: {project?.name}
             </Typography>
-            {!theDocument?.description ? null : (
-              <Typography sx={{ fontSize: '1.5rem' }}>
-                {theDocument?.description}
-              </Typography>
-            )}
-            {project ? (
-              <Typography sx={{ fontSize: '1.5rem' }}>
-                Project: {project?.name}
-              </Typography>
-            ) : null}
-            {fileType?.includes('image') ? (
-              <img src={url} width="911px" height="460px" />
-            ) : (
-              <embed src={url} height="460px" width="911px" />
-            )}
+          ) : null}
+          {fileType?.includes('image') ? (
+            <img src={url} width="911px" height="460px" />
+          ) : (
+            <embed src={url} height="460px" width="911px" />
+          )}
 
-            <div className="display-row">
-              <Button
-                variant="contained"
-                onClick={() => setEditingDocument(true)}
-                style={{ marginRight: '1rem', marginTop: '1rem' }}
-              >
-                edit
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => setDeletingDocument(true)}
-                style={{ marginRight: '1rem', marginTop: '1rem' }}
-              >
-                delete
-              </Button>
+          <div className="display-row">
+            <EditDocument theDocument={theDocument} project={project} />
+            <Button
+              variant="contained"
+              onClick={() => setDeletingDocument(true)}
+              style={{
+                marginRight: '1rem',
+                marginTop: '1rem',
+                marginLeft: '1rem',
+              }}
+            >
+              delete
+            </Button>
 
-              <Button
-                variant="contained"
-                onClick={() => downloadFile(theDocument)}
-                style={{ marginRight: '1rem', marginTop: '1rem' }}
-              >
-                download
-              </Button>
-            </div>
+            <Button
+              variant="contained"
+              onClick={() => downloadFile(theDocument)}
+              style={{ marginRight: '1rem', marginTop: '1rem' }}
+            >
+              download
+            </Button>
           </div>
-        ) : (
-          <div
-            className="single-cost"
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <TextField
-              required
-              fullWidth
-              id="documentName"
-              label="Document Name"
-              name="documentName"
-              defaultValue={theDocument?.name}
-              autoComplete="Jimmy"
-              className="editing-document"
-              onChange={(evt) => setNewName(evt.target.value)}
-            />
-            <br />
-            <TextField
-              required
-              fullWidth
-              id="description"
-              label="Description"
-              name="description"
-              defaultValue={theDocument?.description}
-              autoComplete="Jimmy"
-              className="editing-document"
-              onChange={(evt) => setNewDescription(evt.target.value)}
-            />
-            <Grid item xs={12} sm={6} style={{ marginTop: '1rem' }}>
-              <ProjectList project={project} setProject={setProject} />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              {!newFile ? (
-                <Button
-                  variant="contained"
-                  component="label"
-                  style={{ marginTop: '1rem' }}
-                >
-                  Upload File{' '}
-                  <input
-                    type="file"
-                    accept="image/*, video/mp4,video/x-m4v,video/*, audio/*, .mkv, .pdf, .doc, .docx"
-                    hidden
-                    onChange={(evt) => setNewFile(evt.target.files[0])}
-                  />
-                </Button>
-              ) : (
-                <Typography>{`${newFile?.name} - ${newFile?.type}`}</Typography>
-              )}
-            </Grid>
-
-            <div className="display-row">
-              <Button
-                variant="contained"
-                onClick={updateDocument}
-                style={{ marginRight: '1rem', marginTop: '1rem' }}
-              >
-                Save
-              </Button>
-              <Button
-                variant="contained"
-                style={{ marginRight: '1rem', marginTop: '1rem' }}
-                onClick={() => {
-                  setEditingDocument(false);
-                  setNewFile(null);
-                }}
-              >
-                Cancel
-              </Button>
-            </div>
-          </div>
-        )}
+        </div>
         {deletingDocument ? (
           <DeletingDocument
             setDeletingDocument={setDeletingDocument}
