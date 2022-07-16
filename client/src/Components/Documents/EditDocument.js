@@ -92,11 +92,6 @@ export default function EditDocument({ theDocument, project }) {
       )
     );
 
-    if (newFile) {
-      alert(
-        'New file uploaded! The link is updated but the display may take a few minutes to update.'
-      );
-    }
     setNewFile(null);
     setOpen(false);
   }
