@@ -108,7 +108,7 @@ export default function CreateProject() {
               <Title>Project Cost</Title>
               <CurrencyInput
                 prefix="$"
-                placeholder="Assessment Amount"
+                placeholder="Project Cost"
                 decimalsLimit={2}
                 style={{
                   height: '3.5rem',

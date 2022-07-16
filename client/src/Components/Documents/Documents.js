@@ -25,29 +25,7 @@ export default function Documents() {
           overflow: 'auto',
         }}
       >
-        <br />
-        <Typography component="h1" variant="h4" sx={{ color: '90caf9' }}>
-          Documents
-        </Typography>
-
-        {creatingDocument ? (
-          <CreateDocument
-            setCreatingDocument={setCreatingDocument}
-            creatingDocument={creatingDocument}
-          />
-        ) : null}
-        {!creatingDocument ? (
-          <Button
-            variant="contained"
-            sx={{ top: 50 }}
-            onClick={() => setCreatingDocument(!creatingDocument)}
-          >
-            Add Document
-          </Button>
-        ) : null}
-        <br />
-        <br />
-        <br />
+        <CreateDocument />
 
         {stateDocuments.length > 0 ? (
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
