@@ -98,6 +98,7 @@ export default function EditDocument({ theDocument, project }) {
       );
     }
     setNewFile(null);
+    setOpen(false);
   }
 
   return (

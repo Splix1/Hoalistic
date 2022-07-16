@@ -47,62 +47,7 @@ export default function SingleDocument({ theDocument }) {
       .from(`${state?.id}`)
       .getPublicUrl(theDocument?.name);
     setUrl(publicURL);
-  }, [state]);
-
-  async function updateDocument() {
-    if (!newName) {
-      alert('A name is required.');
-      return;
-    }
-
-    if (newFile) {
-      setUploading(true);
-      let { data: updatedFile, error: updateFileError } = await storage.storage
-        .from(`${state?.id}`)
-        .update(theDocument?.name, newFile, {
-          cacheControl: '3600',
-          upsert: false,
-        });
-    }
-
-    if (newName !== theDocument?.name) {
-      let { data, error: newFileName } = await storage.storage
-        .from(`${state?.id}`)
-        .move(theDocument?.name, newName);
-      if (newFileName) {
-        alert('There was a problem updating this file.');
-        return;
-      }
-    }
-    const { publicURL } = storage.storage
-      .from(`${state?.id}`)
-      .getPublicUrl(newName);
-    let { data: updatedDocument, error: documentError } = await supabase
-      .from('Documents')
-      .update({
-        name: newName,
-        description: newDescription,
-        url: publicURL,
-      })
-      .eq('id', theDocument?.id);
-
-    dispatchDocuments(
-      setDocuments(
-        stateDocuments.map((document) => {
-          if (document.id === updatedDocument[0].id) return updatedDocument[0];
-          return document;
-        })
-      )
-    );
-
-    if (newFile) {
-      alert(
-        'New file uploaded! The link is updated but the display may take a few minutes to update.'
-      );
-    }
-    setUploading(false);
-    setNewFile(null);
-  }
+  }, [stateDocuments]);
 
   async function deleteDocument() {
     const { data: deletedFile, error } = await storage.storage

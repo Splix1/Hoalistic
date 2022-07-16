@@ -16,7 +16,6 @@ export default function ProjectList({ projects, setProject, project }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  console.log('project', project);
 
   return (
     <div>
