@@ -8,6 +8,7 @@ import DeletingProject from './DeletingProject';
 import { Context } from '../ContextProvider';
 import { setProjects } from '../../Store/Projects';
 import EditProject from './EditProject';
+import DeleteProject from './DeletingProject';
 const dayjs = require('dayjs');
 
 const mdTheme = createTheme();
@@ -22,16 +23,6 @@ export default function SingleProject({ creatingProject, theProject }) {
   let [deletingProject, setDeletingProject] = useState(false);
   let { state, stateProjects, dispatchProjects } = useContext(Context);
   let [projectDate, setProjectDate] = useState(dayjs(theProject?.begin_date));
-
-  async function deleteProject() {
-    let { data } = await supabase
-      .from('Projects')
-      .delete()
-      .eq('id', project?.id);
-    dispatchProjects(
-      setProjects(stateProjects.filter((project) => project.id !== data[0].id))
-    );
-  }
 
   function numberWithCommas(x) {
     if (!x) return;
@@ -64,22 +55,9 @@ export default function SingleProject({ creatingProject, theProject }) {
 
           <div className="display-row">
             <EditProject project={theProject} />
-            <Button
-              variant="contained"
-              onClick={() => setDeletingProject(true)}
-              style={{ marginRight: '1rem', marginTop: '1rem' }}
-            >
-              delete
-            </Button>
+            <DeleteProject project={theProject} />
           </div>
         </div>
-
-        {deletingProject ? (
-          <DeletingProject
-            setDeletingProject={setDeletingProject}
-            deleteProject={deleteProject}
-          />
-        ) : null}
       </Paper>
     </ThemeProvider>
   );
