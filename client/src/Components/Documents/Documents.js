@@ -9,7 +9,6 @@ import CreateDocument from './CreateDocument';
 import SingleDocument from './SingleDocument';
 
 export default function Documents() {
-  const [creatingDocument, setCreatingDocument] = useState(false);
   let { state, stateDocuments } = useContext(Context);
 
   return (
@@ -29,12 +28,9 @@ export default function Documents() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>
-                {stateDocuments.map((document, i) => (
+                {stateDocuments.map((document) => (
                   <div key={document.id}>
-                    <SingleDocument
-                      theDocument={document}
-                      creatingDocument={creatingDocument}
-                    />
+                    <SingleDocument theDocument={document} />
                     <br />
                   </div>
                 ))}

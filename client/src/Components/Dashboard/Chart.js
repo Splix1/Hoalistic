@@ -77,7 +77,7 @@ export default function FutureProjections({
         {!showLabels ? (
           <Button
             variant="contained"
-            style={{ width: 'fit-content', height: '1.5rem' }}
+            style={{ width: '9rem', height: '1.5rem' }}
             onClick={() => setShowLabels(true)}
           >
             show labels
@@ -85,7 +85,7 @@ export default function FutureProjections({
         ) : (
           <Button
             variant="contained"
-            style={{ wdith: 'fit-content', height: '1.5rem' }}
+            style={{ width: '9rem', height: '1.5rem' }}
             onClick={() => setShowLabels(false)}
           >
             hide labels
