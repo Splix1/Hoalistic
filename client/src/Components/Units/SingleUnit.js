@@ -9,22 +9,13 @@ import DeletingUnit from './DeletingUnit';
 import { Context } from '../ContextProvider';
 import { setUnits } from '../../Store/Units';
 import EditUnit from './EditUnit';
+import DeleteUnit from './DeletingUnit';
 const dayjs = require('dayjs');
 
-const mdTheme = createTheme();
-
-function SingleUnit({ creatingUnit, theUnit }) {
-  let [unit, setUnit] = useState(theUnit);
+function SingleUnit({ theUnit }) {
   let [deletingUnit, setDeletingUnit] = useState(false);
-  let { state, stateUnits, dispatchUnits } = useContext(Context);
+  let { state } = useContext(Context);
   let [unitDate, setUnitDate] = useState(dayjs(theUnit?.dateMovedIn));
-
-  async function deleteUnit() {
-    let { data } = await supabase.from('Units').delete().eq('id', unit?.id);
-    dispatchUnits(
-      setUnits(stateUnits.filter((unit) => unit.id !== data[0].id))
-    );
-  }
 
   function numberWithCommas(x) {
     if (!x) return;
@@ -59,22 +50,9 @@ function SingleUnit({ creatingUnit, theUnit }) {
           </Typography>
           <div className="display-row">
             <EditUnit unit={theUnit} />
-            <Button
-              variant="contained"
-              onClick={() => setDeletingUnit(true)}
-              style={{ marginRight: '1rem', marginTop: '1rem' }}
-            >
-              delete
-            </Button>
+            <DeleteUnit unit={theUnit} />
           </div>
         </div>
-
-        {deletingUnit ? (
-          <DeletingUnit
-            setDeletingUnit={setDeletingUnit}
-            deleteUnit={deleteUnit}
-          />
-        ) : null}
       </Paper>
     </ThemeProvider>
   );

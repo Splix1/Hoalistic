@@ -1,19 +1,113 @@
-import React from 'react';
-import { Button } from '@mui/material';
+import * as React from 'react';
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { Context } from '../ContextProvider';
+import supabase from '../../client';
+import { setUnits } from '../../Store/Units';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
-export default function DeletingUnit({ setDeletingUnit, deleteUnit }) {
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 'fit-content',
+  height: 'fit-content',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 2,
+  p: 4,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+export default function DeleteUnit({ unit }) {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const { stateUnits, dispatchUnits } = React.useContext(Context);
+  const [exitColor, setExitColor] = React.useState('white');
+
+  async function deleteUnit() {
+    let { data } = await supabase.from('Units').delete().eq('id', unit?.id);
+    dispatchUnits(
+      setUnits(
+        stateUnits.filter((currentUnit) => currentUnit.id !== data[0].id)
+      )
+    );
+    setOpen(false);
+  }
+
   return (
-    <div id="deleting-unit" style={{ marginTop: '0.5rem' }}>
+    <div>
       <Button
+        onClick={handleOpen}
+        fullWidth
         variant="contained"
-        onClick={deleteUnit}
-        style={{ marginRight: '0.5rem' }}
+        style={{
+          width: 'fit-content',
+          marginTop: '1rem',
+          marginRight: '0.5rem',
+        }}
       >
-        Confirm deletion
+        delete
       </Button>
-      <Button variant="contained" onClick={() => setDeletingUnit(false)}>
-        Cancel
-      </Button>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <IconButton
+              onClick={() => setOpen(false)}
+              id="x"
+              onMouseEnter={() => setExitColor('red')}
+              onMouseLeave={() => setExitColor('white')}
+              style={{
+                color: exitColor,
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+
+            <div className="display-column">
+              <Typography sx={{ fontSize: '1.5rem' }}>
+                Delete {unit?.unitID}?
+              </Typography>
+              <div id="form-input" style={{ marginTop: '1rem' }}>
+                <Button
+                  variant="contained"
+                  style={{ marginRight: '1rem', marginTop: '1rem' }}
+                  onClick={deleteUnit}
+                >
+                  Finish
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => setOpen(false)}
+                  style={{ marginRight: '1rem', marginTop: '1rem' }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </Box>
+        </Fade>
+      </Modal>
     </div>
   );
 }
