@@ -4,15 +4,11 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import Title from '../Dashboard/Title';
-import TextField from '@mui/material/TextField';
 import { Context } from '../ContextProvider';
-import CurrencyInput from 'react-currency-input-field';
 import supabase from '../../client';
 import { setCosts } from '../../Store/Costs';
 import { IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import OccurrenceMenu from './OccurrenceMenu';
 
 const style = {
   position: 'absolute',
@@ -35,10 +31,7 @@ export default function DeleteCost({ currentCost }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { state, stateCosts, dispatchCosts } = React.useContext(Context);
-  const [name, setName] = React.useState(currentCost?.name);
-  const [cost, setCost] = React.useState(currentCost?.cost);
-  const [occurrence, setOccurrence] = React.useState(currentCost?.occurrence);
+  const { stateCosts, dispatchCosts } = React.useContext(Context);
   const [exitColor, setExitColor] = React.useState('white');
 
   async function deleteCost() {

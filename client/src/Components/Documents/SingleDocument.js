@@ -10,6 +10,7 @@ import { setFiles } from '../../Store/Files';
 import { setDocuments } from '../../Store/Documents';
 import DeletingDocument from './DeletingDocument';
 import EditDocument from './EditDocument';
+import DeleteDocument from './DeletingDocument';
 const dayjs = require('dayjs');
 
 export default function SingleDocument({ theDocument }) {
@@ -140,22 +141,15 @@ export default function SingleDocument({ theDocument }) {
 
           <div className="display-row">
             <EditDocument theDocument={theDocument} project={project} />
-            <Button
-              variant="contained"
-              onClick={() => setDeletingDocument(true)}
-              style={{
-                marginRight: '1rem',
-                marginTop: '1rem',
-                marginLeft: '1rem',
-              }}
-            >
-              delete
-            </Button>
+            <DeleteDocument theDocument={theDocument} />
 
             <Button
               variant="contained"
               onClick={() => downloadFile(theDocument)}
-              style={{ marginRight: '1rem', marginTop: '1rem' }}
+              style={{
+                marginRight: '1rem',
+                marginTop: '1rem',
+              }}
             >
               download
             </Button>

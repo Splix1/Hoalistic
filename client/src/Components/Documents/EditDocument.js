@@ -100,10 +100,10 @@ export default function EditDocument({ theDocument, project }) {
     <div>
       <Button
         onClick={handleOpen}
-        fullWidth
         variant="contained"
         style={{
           marginTop: '1rem',
+          marginLeft: '0.5rem',
         }}
       >
         Edit
