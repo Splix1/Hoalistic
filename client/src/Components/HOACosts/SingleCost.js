@@ -1,11 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import Paper from '@mui/material/Paper';
 import { ThemeProvider } from '@mui/material/styles';
-import { Typography, Button } from '@mui/material';
-import supabase from '../../client';
-import DeletingCost from './DeletingCost';
+import { Typography } from '@mui/material';
 import { Context } from '../ContextProvider';
-import { setCosts } from '../../Store/Costs';
 import EditCost from './EditCost';
 import DeleteCost from './DeletingCost';
 

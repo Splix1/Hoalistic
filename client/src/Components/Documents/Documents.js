@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
-import supabase, { storage } from '../../client';
+import React, { useState, useContext } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Typography, Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';

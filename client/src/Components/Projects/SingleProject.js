@@ -1,28 +1,15 @@
 import React, { useState, useContext } from 'react';
 import Paper from '@mui/material/Paper';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Typography, TextField, Button } from '@mui/material';
-import CurrencyInput from 'react-currency-input-field';
-import supabase from '../../client';
-import DeletingProject from './DeletingProject';
+import { ThemeProvider } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 import { Context } from '../ContextProvider';
-import { setProjects } from '../../Store/Projects';
 import EditProject from './EditProject';
 import DeleteProject from './DeletingProject';
 const dayjs = require('dayjs');
 
-const mdTheme = createTheme();
-
-export default function SingleProject({ creatingProject, theProject }) {
-  let { name, cost, begin_date } = theProject;
-  let [newName, setNewName] = useState(name);
-  let [newCost, setNewCost] = useState(cost);
-  let [newBeginDate, setNewBeginDate] = useState(begin_date);
-  let [editingProject, setEditingProject] = useState(false);
-  let [project, setProject] = useState(theProject);
-  let [deletingProject, setDeletingProject] = useState(false);
-  let { state, stateProjects, dispatchProjects } = useContext(Context);
-  let [projectDate, setProjectDate] = useState(dayjs(theProject?.begin_date));
+export default function SingleProject({ theProject }) {
+  let { state } = useContext(Context);
+  let [projectDate] = useState(dayjs(theProject?.begin_date));
 
   function numberWithCommas(x) {
     if (!x) return;
