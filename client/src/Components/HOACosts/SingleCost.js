@@ -7,38 +7,15 @@ import supabase from '../../client';
 import DeletingCost from './DeletingCost';
 import { Context } from '../ContextProvider';
 import { setCosts } from '../../Store/Costs';
+import EditCost from './EditCost';
 
 const mdTheme = createTheme();
 
-export default function SingleCost({ creatingCost, theCost }) {
+export default function SingleCost({ theCost }) {
   let { name, cost } = theCost;
-  let [newName, setNewName] = useState(name);
-  let [newCost, setNewCost] = useState(cost);
-  let [editingCost, setEditingCost] = useState(false);
-  let [currentCost, setStateCost] = useState(theCost);
+
   let [deletingCost, setDeletingCost] = useState(false);
   let { state, stateCosts, dispatchCosts } = useContext(Context);
-
-  async function updateCost() {
-    if (!newName || !newCost) {
-      alert('All fields must be fulfilled.');
-      return;
-    }
-    let { data: updatedCost, error } = await supabase
-      .from('HOA_costs')
-      .update({
-        name: newName,
-        cost: newCost,
-      })
-      .eq('id', theCost?.id);
-    if (error) {
-      alert('There was a problem updating this cost');
-      return;
-    }
-
-    setStateCost(updatedCost[0]);
-    setEditingCost(false);
-  }
 
   async function deleteCost() {
     let { data } = await supabase
@@ -68,84 +45,29 @@ export default function SingleCost({ creatingCost, theCost }) {
           justifyContent: 'flex-start',
         }}
       >
-        {!editingCost ? (
-          <div className="single-cost">
-            <Typography sx={{ fontSize: '1.5rem' }}>
-              Name: {currentCost?.name}
-            </Typography>
-            <Typography sx={{ fontSize: '1.5rem' }}>
-              Cost: ${numberWithCommas(currentCost?.cost)}
-            </Typography>
-            <Typography sx={{ fontSize: '1.5rem' }}>
-              Occurrence: {currentCost?.occurrence}
-            </Typography>
+        <div className="single-cost">
+          <Typography sx={{ fontSize: '1.5rem' }}>
+            Name: {theCost?.name}
+          </Typography>
+          <Typography sx={{ fontSize: '1.5rem' }}>
+            Cost: ${numberWithCommas(theCost?.cost)}
+          </Typography>
+          <Typography sx={{ fontSize: '1.5rem' }}>
+            Occurrence: {theCost?.occurrence}
+          </Typography>
 
-            <div className="display-row">
-              <Button
-                variant="contained"
-                onClick={() => setEditingCost(true)}
-                style={{ marginRight: '1rem', marginTop: '1rem' }}
-              >
-                edit
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => setDeletingCost(true)}
-                style={{ marginRight: '1rem', marginTop: '1rem' }}
-              >
-                delete
-              </Button>
-            </div>
+          <div className="display-row">
+            <EditCost currentCost={theCost} />
+            <Button
+              variant="contained"
+              onClick={() => setDeletingCost(true)}
+              style={{ marginRight: '1rem', marginTop: '1rem' }}
+            >
+              delete
+            </Button>
           </div>
-        ) : (
-          <div className="single-cost">
-            <TextField
-              required
-              fullWidth
-              id="costName"
-              label="Cost Name"
-              name="costName"
-              defaultValue={currentCost?.name}
-              autoComplete="Jimmy"
-              className="editing-cost"
-              onChange={(evt) => setNewName(evt.target.value)}
-            />
-            <br />
-            <CurrencyInput
-              id="Cost"
-              name="Cost"
-              prefix="$"
-              placeholder="Cost"
-              defaultValue={currentCost?.cost}
-              decimalsLimit={2}
-              style={{
-                height: '3rem',
-                fontSize: '1rem',
-                backgroundColor: '#121212',
-                color: 'white',
-              }}
-              onValueChange={(value) => setNewCost(value)}
-              className="editing-cost"
-            />
+        </div>
 
-            <div className="display-row">
-              <Button
-                variant="contained"
-                onClick={updateCost}
-                style={{ marginRight: '1rem', marginTop: '1rem' }}
-              >
-                Save
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => setEditingCost(false)}
-                style={{ marginRight: '1rem', marginTop: '1rem' }}
-              >
-                Cancel
-              </Button>
-            </div>
-          </div>
-        )}
         {deletingCost ? (
           <DeletingCost
             setDeletingCost={setDeletingCost}

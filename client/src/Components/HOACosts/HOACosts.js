@@ -1,25 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
-import supabase from '../../client';
+import React, { useState, useContext } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Typography, Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import SingleCost from './SingleCost';
-import CreateCosts from './CreateCosts';
 import { Context } from '../ContextProvider';
-import { setCosts } from '../../Store/Costs';
 import CreateCost from './CreateCosts';
 
-const mdTheme = createTheme();
 export default function HOACosts() {
-  const [creatingCost, setCreatingCost] = useState(false);
-  let { state, stateCosts, dispatchCosts } = useContext(Context);
-
-  function newCost(cost) {
-    dispatchCosts(setCosts([...stateCosts, cost]));
-  }
+  let { state, stateCosts } = useContext(Context);
 
   return (
     <ThemeProvider theme={state?.mdTheme}>
@@ -41,7 +31,7 @@ export default function HOACosts() {
               <Grid item xs={12} md={8} lg={9}>
                 {stateCosts.map((cost) => (
                   <div key={cost.id}>
-                    <SingleCost theCost={cost} creatingCost={creatingCost} />
+                    <SingleCost theCost={cost} />
                     <br />
                   </div>
                 ))}
