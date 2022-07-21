@@ -164,7 +164,7 @@ export default function SingleScenario({ scenario }) {
           <Title>Assessments Change</Title>
           {!editingScenario ? (
             <Typography style={{ fontSize: '1.3rem' }}>
-              {`$${scenario?.changeAmount} beginning ${
+              {`${scenario?.changeAmount}% beginning ${
                 changeDateO?.getMonth() + 1
               }/${changeDateO?.getDate()}/${changeDateO?.getFullYear()}`}
             </Typography>

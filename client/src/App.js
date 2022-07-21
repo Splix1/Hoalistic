@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import './App.css';
 import Routes from './Routes';
 import NavBar from './Components/NavBar/NavBar';
@@ -87,12 +87,17 @@ function App() {
     dispatchFiles,
     dispatchScenarios,
   } = useContext(Context);
+  const [session] = useState(supabase.auth.session());
   const location = useLocation();
   const history = useHistory();
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     const user = supabase.auth.session();
     const curUser = supabase.auth.user();
+
+    console.log('user', user);
+    console.log('session', session);
 
     if (user?.access_token) {
       dispatch(
@@ -145,6 +150,13 @@ function App() {
       history.push('/resetpassword');
     }
   }, []);
+
+  useEffect(() => {
+    if (checked) {
+      console.log('user', supabase.auth.user());
+      console.log('session', supabase.auth.session());
+    }
+  }, [checked]);
 
   return (
     <ThemeProvider theme={state?.mdTheme}>
