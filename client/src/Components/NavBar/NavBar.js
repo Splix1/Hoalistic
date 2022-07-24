@@ -19,6 +19,7 @@ import { setDocuments } from '../../Store/Documents';
 import { setProjects } from '../../Store/Projects';
 import { setScenarios } from '../../Store/Scenarios';
 import { setUnits } from '../../Store/Units';
+import { setPlaid } from '../../Store/Plaid';
 
 export default function NavBar() {
   const history = useHistory();
@@ -31,6 +32,7 @@ export default function NavBar() {
     dispatchFiles,
     dispatchDocuments,
     dispatchScenarios,
+    dispatchPlaid,
   } = useContext(Context);
 
   const signOut = async () => {
@@ -42,6 +44,7 @@ export default function NavBar() {
     dispatchFiles(setFiles([]));
     dispatchDocuments(setDocuments([]));
     dispatchScenarios(setScenarios([]));
+    dispatchPlaid(setPlaid({}));
     history.push('/');
   };
 

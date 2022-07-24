@@ -6,6 +6,7 @@ import costs from '../Store/Costs';
 import documents from '../Store/Documents';
 import files from '../Store/Files';
 import scenarios from '../Store/Scenarios';
+import plaid from '../Store/Plaid';
 
 export const Context = createContext();
 
@@ -19,6 +20,7 @@ export default function ContextProvider({ children }) {
   const [stateDocuments, dispatchDocuments] = useReducer(documents, []);
   const [stateFiles, dispatchFiles] = useReducer(files, []);
   const [stateScenarios, dispatchScenarios] = useReducer(scenarios, []);
+  const [statePlaid, dispatchPlaid] = useReducer(plaid, {});
 
   const value = {
     state,
@@ -28,6 +30,7 @@ export default function ContextProvider({ children }) {
     stateDocuments,
     stateFiles,
     stateScenarios,
+    statePlaid,
     dispatch,
     dispatchUnits,
     dispatchProjects,
@@ -35,6 +38,7 @@ export default function ContextProvider({ children }) {
     dispatchDocuments,
     dispatchFiles,
     dispatchScenarios,
+    dispatchPlaid,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

@@ -9,10 +9,26 @@ import supabase from '../../client';
 import CssBaseline from '@mui/material/CssBaseline';
 import Scenarios from '../Scenarios/Scenarios';
 import NewScenario from '../Scenarios/NewScenario';
+import App from '../../Plaid/App';
+const dayjs = require('dayjs');
 
 export default function Deposits({ generateChartData, HOABalance, user }) {
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
-  let { state, dispatch } = React.useContext(Context);
+  let { state, dispatch, statePlaid } = React.useContext(Context);
+  let [tokenExpired, setTokenExpired] = React.useState(false);
+
+  React.useEffect(() => {
+    async function getToken() {
+      let t = await supabase
+        .from('access_tokens')
+        .select('*')
+        .eq('HOA', state?.id);
+      let expiration = dayjs(t.data[0].expiration);
+      let current = dayjs();
+      if (current.diff(expiration) > 0) setTokenExpired(true);
+    }
+    if (state?.id !== 123) getToken();
+  }, [statePlaid]);
 
   async function updateBalance(newBalance) {
     let { data: updatedBalance } = await supabase
@@ -20,6 +36,12 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
       .update([{ balance: +newBalance }])
       .eq('id', user?.id);
     generateChartData(updatedBalance[0]);
+  }
+
+  async function fetchBalance() {
+    const response = await fetch('/api/balance', { method: 'GET' });
+    const data = await response.json();
+    console.log('data', data);
   }
 
   return (
@@ -52,7 +74,7 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
         <Button
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+          style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}
           onClick={() => {
             dispatch(setUser({ ...state, balance: HOABalanceField }));
             updateBalance(HOABalanceField);
@@ -60,6 +82,19 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
         >
           Update Balance
         </Button>
+        {statePlaid?.accessToken && state?.id !== 123 && !tokenExpired ? (
+          <Button
+            fullWidth
+            variant="contained"
+            style={{ marginBottom: '1rem' }}
+            onClick={fetchBalance}
+          >
+            Update From Bank
+          </Button>
+        ) : !statePlaid?.accessToken && state?.id !== 123 && state?.id ? (
+          <App />
+        ) : null}
+
         <NewScenario />
         <Scenarios />
       </div>

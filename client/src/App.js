@@ -13,6 +13,7 @@ import { Context } from './Components/ContextProvider';
 import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { setScenarios } from './Store/Scenarios';
+import { setPlaid } from './Store/Plaid';
 
 export async function fetchUserData(
   user,
@@ -86,18 +87,16 @@ function App() {
     dispatchDocuments,
     dispatchFiles,
     dispatchScenarios,
+    dispatchPlaid,
+    statePlaid,
   } = useContext(Context);
-  const [session] = useState(supabase.auth.session());
+
   const location = useLocation();
   const history = useHistory();
-  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     const user = supabase.auth.session();
     const curUser = supabase.auth.user();
-
-    console.log('user', user);
-    console.log('session', session);
 
     if (user?.access_token) {
       dispatch(
@@ -111,6 +110,10 @@ function App() {
           .from('HOAs')
           .select('*')
           .eq('email', curUser?.email);
+        let { data: accessTokenData } = await supabase
+          .from('access_tokens')
+          .select('*')
+          .eq('HOA', data[0]?.id);
 
         if (location?.pathname === '/projects')
           await fetchProjects(data[0], dispatchProjects);
@@ -124,6 +127,23 @@ function App() {
         if (location?.pathname === '/documents')
           await fetchDocuments(data[0], dispatchDocuments, dispatchFiles);
 
+        dispatchPlaid(
+          setPlaid({
+            linkSuccess: false,
+            isItemAccess: true,
+            linkToken: '', // Don't set to null or error message will show up briefly when site loads
+            accessToken: accessTokenData[0]?.access_token || null,
+            itemId: null,
+            isError: false,
+            backend: true,
+            products: ['transactions'],
+            linkTokenError: {
+              error_type: '',
+              error_code: '',
+              error_message: '',
+            },
+          })
+        );
         dispatch(
           setUser({
             ...data[0],
@@ -137,7 +157,9 @@ function App() {
           dispatchUnits,
           dispatchDocuments,
           dispatchFiles,
-          dispatchScenarios
+          dispatchScenarios,
+          dispatchPlaid,
+          statePlaid
         );
       }
       fetchUser();
@@ -150,13 +172,6 @@ function App() {
       history.push('/resetpassword');
     }
   }, []);
-
-  useEffect(() => {
-    if (checked) {
-      console.log('user', supabase.auth.user());
-      console.log('session', supabase.auth.session());
-    }
-  }, [checked]);
 
   return (
     <ThemeProvider theme={state?.mdTheme}>
