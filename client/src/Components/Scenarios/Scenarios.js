@@ -35,7 +35,12 @@ export default function Scenarios() {
 
   return (
     <div>
-      <Button onClick={handleOpen} fullWidth variant="contained">
+      <Button
+        onClick={handleOpen}
+        fullWidth
+        variant="contained"
+        style={{ width: 'fit-content', height: '1.5rem' }}
+      >
         Scenarios
       </Button>
       <Modal

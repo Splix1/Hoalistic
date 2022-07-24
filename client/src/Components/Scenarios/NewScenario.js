@@ -68,7 +68,11 @@ export default function NewScenario() {
         onClick={handleOpen}
         fullWidth
         variant="contained"
-        style={{ marginBottom: '0.5rem' }}
+        style={{
+          width: 'fit-content',
+          height: '1.5rem',
+          marginLeft: '0.5rem',
+        }}
       >
         New Scenario
       </Button>

@@ -6,6 +6,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Context } from '../ContextProvider';
 import Chart from 'react-apexcharts';
+import Scenarios from '../Scenarios/Scenarios';
+import NewScenario from '../Scenarios/NewScenario';
 
 export default function FutureProjections({
   data,
@@ -128,7 +130,10 @@ export default function FutureProjections({
             </div>
           </div>
         </div>
-        <div> </div>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <Scenarios />
+          <NewScenario />
+        </div>
       </div>
     </Paper>
   );

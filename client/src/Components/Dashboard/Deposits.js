@@ -82,7 +82,7 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
         >
           Update Balance
         </Button>
-        {statePlaid?.accessToken && state?.id !== 123 && !tokenExpired ? (
+        {/* {statePlaid?.accessToken && state?.id !== 123 && !tokenExpired ? (
           <Button
             fullWidth
             variant="contained"
@@ -93,10 +93,7 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
           </Button>
         ) : !statePlaid?.accessToken && state?.id !== 123 && state?.id ? (
           <App />
-        ) : null}
-
-        <NewScenario />
-        <Scenarios />
+        ) : null} */}
       </div>
     </div>
   );
