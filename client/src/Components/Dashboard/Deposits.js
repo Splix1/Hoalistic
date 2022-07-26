@@ -7,27 +7,62 @@ import { setUser } from '../../Store/User';
 import { Context } from '../ContextProvider';
 import supabase from '../../client';
 import CssBaseline from '@mui/material/CssBaseline';
-import Scenarios from '../Scenarios/Scenarios';
-import NewScenario from '../Scenarios/NewScenario';
 import App from '../../Plaid/App';
 const dayjs = require('dayjs');
 
 export default function Deposits({ generateChartData, HOABalance, user }) {
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
   let { state, dispatch, statePlaid } = React.useContext(Context);
+  let [fetchingBalance, setFetchingBalance] = React.useState(false);
 
   async function updateBalance(newBalance) {
     let { data: updatedBalance } = await supabase
       .from('HOAs')
       .update([{ balance: +newBalance }])
       .eq('id', user?.id);
+    dispatch(setUser({ ...state, balance: updatedBalance[0]?.balance }));
     generateChartData(updatedBalance[0]);
   }
 
   async function fetchBalance() {
+    setFetchingBalance(true);
     const response = await fetch('/api/balance', { method: 'GET' });
     const data = await response.json();
-    console.log('data', data);
+    let newBalance = data?.accounts?.reduce((balance, account) => {
+      balance += account?.balances?.available;
+      return balance;
+    }, 0);
+    setFetchingBalance(false);
+    updateBalance(newBalance);
+  }
+
+  function updateFromBankButton() {
+    switch (fetchingBalance) {
+      case false: {
+        return (
+          <Button
+            fullWidth
+            variant="contained"
+            style={{ marginBottom: '1rem' }}
+            onClick={fetchBalance}
+          >
+            Update From Bank
+          </Button>
+        );
+      }
+      case true: {
+        return (
+          <Button
+            fullWidth
+            variant="contained"
+            style={{ marginBottom: '1rem' }}
+            disabled
+          >
+            Fetching balances...
+          </Button>
+        );
+      }
+    }
   }
 
   return (
@@ -71,14 +106,7 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
         {statePlaid?.accessToken &&
         state?.id !== 123 &&
         !statePlaid?.tokenExpired ? (
-          <Button
-            fullWidth
-            variant="contained"
-            style={{ marginBottom: '1rem' }}
-            onClick={fetchBalance}
-          >
-            Update From Bank
-          </Button>
+          updateFromBankButton()
         ) : (!statePlaid?.accessToken && state?.id !== 123 && state?.id) ||
           statePlaid?.tokenExpired ? (
           <App />
