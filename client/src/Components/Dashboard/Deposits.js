@@ -14,6 +14,7 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
   let { state, dispatch, statePlaid } = React.useContext(Context);
   let [fetchingBalance, setFetchingBalance] = React.useState(false);
+  let [inputType, setInputType] = React.useState('manual');
 
   async function updateBalance(newBalance) {
     let { data: updatedBalance } = await supabase
@@ -65,6 +66,16 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
     }
   }
 
+  function isManualSelected() {
+    if (inputType === 'manual') return 'outlined';
+    return 'text';
+  }
+
+  function isBankSelected() {
+    if (inputType === 'bank') return 'outlined';
+    return 'text';
+  }
+
   return (
     <div
       style={{
@@ -73,44 +84,72 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
       }}
     >
       <CssBaseline />
-      <div className="display-column" style={{ justifyContent: 'flex-start' }}>
+      <div
+        className="display-column"
+        style={{ justifyContent: 'space-between' }}
+      >
         <Title>Current HOA Balance</Title>
         <Typography component="h1" variant="h5">
           ${HOABalance}
         </Typography>
-        <CurrencyInput
-          id="input-example"
-          name="input-name"
-          prefix="$"
-          placeholder="Please enter a number"
-          decimalsLimit={2}
-          style={{
-            height: '2rem',
-            fontSize: '1rem',
-            color: state?.theme === 'light' ? '#121212' : 'white',
-            backgroundColor: state?.theme === 'light' ? 'white' : '#121212',
-          }}
-          onValueChange={(value) => setHOABalanceField(value)}
-        />
-        <Button
-          fullWidth
-          variant="contained"
-          style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}
-          onClick={() => {
-            dispatch(setUser({ ...state, balance: HOABalanceField }));
-            updateBalance(HOABalanceField);
-          }}
+        <div
+          className="display-row"
+          style={{ justifyContent: 'space-around', marginTop: '1rem' }}
         >
-          Update Balance
-        </Button>
-        {statePlaid?.accessToken &&
-        state?.id !== 123 &&
-        !statePlaid?.tokenExpired ? (
-          updateFromBankButton()
-        ) : (!statePlaid?.accessToken && state?.id !== 123 && state?.id) ||
-          statePlaid?.tokenExpired ? (
-          <App />
-        ) : null}
+          <Button
+            variant={isManualSelected()}
+            onClick={() => setInputType('manual')}
+          >
+            Manual
+          </Button>
+          <Button
+            variant={isBankSelected()}
+            onClick={() => setInputType('bank')}
+          >
+            Bank
+          </Button>
+        </div>
+
+        {inputType === 'manual' ? (
+          <div style={{ marginTop: '1rem' }}>
+            <CurrencyInput
+              id="input-example"
+              name="input-name"
+              prefix="$"
+              placeholder="Please enter a number"
+              decimalsLimit={2}
+              style={{
+                height: '2rem',
+                fontSize: '1rem',
+                color: state?.theme === 'light' ? '#121212' : 'white',
+                backgroundColor: state?.theme === 'light' ? 'white' : '#121212',
+              }}
+              onValueChange={(value) => setHOABalanceField(value)}
+            />
+            <Button
+              fullWidth
+              variant="contained"
+              style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}
+              onClick={() => {
+                dispatch(setUser({ ...state, balance: HOABalanceField }));
+                updateBalance(HOABalanceField);
+              }}
+            >
+              Update Balance
+            </Button>
+          </div>
+        ) : (
+          <div style={{ marginTop: '1rem' }}>
+            {statePlaid?.accessToken &&
+            state?.id !== 123 &&
+            !statePlaid?.tokenExpired ? (
+              updateFromBankButton()
+            ) : (!statePlaid?.accessToken && state?.id !== 123 && state?.id) ||
+              statePlaid?.tokenExpired ? (
+              <App />
+            ) : null}
+          </div>
+        )}
       </div>
     </div>
   );

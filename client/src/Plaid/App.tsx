@@ -75,7 +75,8 @@ const App = () => {
       }
       generateToken(paymentInitiation);
     };
-    init();
+    if(!statePlaid?.linkToken) init();
+    
   }, [dispatchPlaid, generateToken, getInfo]);
 
   return (
