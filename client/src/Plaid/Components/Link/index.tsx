@@ -35,6 +35,7 @@ const Link = () => {
             itemId: data.item_id,
             accessToken: data.access_token,
             isItemAccess: true,
+            tokenExpired: false,
           }));
            let expiration = dayjs().add(30, 'minute');
         let token = await supabase.from('access_tokens').select('*').eq('HOA', state?.id);

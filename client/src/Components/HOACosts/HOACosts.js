@@ -7,41 +7,39 @@ import Container from '@mui/material/Container';
 import SingleCost from './SingleCost';
 import { Context } from '../ContextProvider';
 import CreateCost from './CreateCosts';
-import App from '../../Plaid/App';
 
 export default function HOACosts() {
   let { state, stateCosts } = useContext(Context);
 
-  return <App />;
-  // return (
-  //   <ThemeProvider theme={state?.mdTheme}>
-  //     <CssBaseline />
-  //     <Box
-  //       component="main"
-  //       sx={{
-  //         flexGrow: 1,
-  //         height: '100vh',
-  //         overflow: 'auto',
-  //       }}
-  //     >
-  //       <br />
-  //       <CreateCost />
+  return (
+    <ThemeProvider theme={state?.mdTheme}>
+      <CssBaseline />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          height: '100vh',
+          overflow: 'auto',
+        }}
+      >
+        <br />
+        <CreateCost />
 
-  //       {stateCosts?.length > 0 ? (
-  //         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-  //           <Grid container spacing={3}>
-  //             <Grid item xs={12} md={8} lg={9}>
-  //               {stateCosts.map((cost) => (
-  //                 <div key={cost.id}>
-  //                   <SingleCost theCost={cost} />
-  //                   <br />
-  //                 </div>
-  //               ))}
-  //             </Grid>
-  //           </Grid>
-  //         </Container>
-  //       ) : null}
-  //     </Box>
-  //   </ThemeProvider>
-  // );
+        {stateCosts?.length > 0 ? (
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={8} lg={9}>
+                {stateCosts.map((cost) => (
+                  <div key={cost.id}>
+                    <SingleCost theCost={cost} />
+                    <br />
+                  </div>
+                ))}
+              </Grid>
+            </Grid>
+          </Container>
+        ) : null}
+      </Box>
+    </ThemeProvider>
+  );
 }

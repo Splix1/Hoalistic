@@ -14,6 +14,7 @@ import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { setScenarios } from './Store/Scenarios';
 import { setPlaid } from './Store/Plaid';
+const dayjs = require('dayjs');
 
 export async function fetchUserData(
   user,
@@ -77,6 +78,12 @@ async function fetchScenarios(user, dispatchScenarios) {
   dispatchScenarios(setScenarios(scenariosData));
 }
 
+function isTokenExpired(date) {
+  let current = dayjs();
+  let expiration = dayjs(date);
+  return current.diff(expiration) > 0;
+}
+
 function App() {
   const {
     state,
@@ -133,6 +140,7 @@ function App() {
             isItemAccess: true,
             linkToken: '', // Don't set to null or error message will show up briefly when site loads
             accessToken: accessTokenData[0]?.access_token || null,
+            tokenExpired: isTokenExpired(accessTokenData[0]?.expiration),
             itemId: null,
             isError: false,
             backend: true,

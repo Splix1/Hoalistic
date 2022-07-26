@@ -15,20 +15,6 @@ const dayjs = require('dayjs');
 export default function Deposits({ generateChartData, HOABalance, user }) {
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
   let { state, dispatch, statePlaid } = React.useContext(Context);
-  let [tokenExpired, setTokenExpired] = React.useState(false);
-
-  React.useEffect(() => {
-    async function getToken() {
-      let t = await supabase
-        .from('access_tokens')
-        .select('*')
-        .eq('HOA', state?.id);
-      let expiration = dayjs(t.data[0].expiration);
-      let current = dayjs();
-      if (current.diff(expiration) > 0) setTokenExpired(true);
-    }
-    if (state?.id !== 123) getToken();
-  }, [statePlaid]);
 
   async function updateBalance(newBalance) {
     let { data: updatedBalance } = await supabase
@@ -82,7 +68,9 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
         >
           Update Balance
         </Button>
-        {/* {statePlaid?.accessToken && state?.id !== 123 && !tokenExpired ? (
+        {statePlaid?.accessToken &&
+        state?.id !== 123 &&
+        !statePlaid?.tokenExpired ? (
           <Button
             fullWidth
             variant="contained"
@@ -91,9 +79,10 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
           >
             Update From Bank
           </Button>
-        ) : !statePlaid?.accessToken && state?.id !== 123 && state?.id ? (
+        ) : (!statePlaid?.accessToken && state?.id !== 123 && state?.id) ||
+          statePlaid?.tokenExpired ? (
           <App />
-        ) : null} */}
+        ) : null}
       </div>
     </div>
   );
