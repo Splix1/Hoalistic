@@ -29,6 +29,7 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
     setFetchingBalance(true);
     const response = await fetch('/api/balance', { method: 'GET' });
     const data = await response.json();
+
     let newBalance = data?.accounts?.reduce((balance, account) => {
       balance += account?.balances?.available;
       return balance;
@@ -84,10 +85,7 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
       }}
     >
       <CssBaseline />
-      <div
-        className="display-column"
-        style={{ justifyContent: 'space-between' }}
-      >
+      <div className="display-column">
         <Title>Current HOA Balance</Title>
         <Typography component="h1" variant="h5">
           ${HOABalance}

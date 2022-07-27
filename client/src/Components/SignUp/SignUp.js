@@ -13,11 +13,12 @@ import supabase, { storage } from '../../client';
 import { Context } from '../ContextProvider';
 import { setUser } from '../../Store/User';
 import { TextareaAutosize } from '@mui/material';
+import { setPlaid } from '../../Store/Plaid';
 
 const theme = createTheme();
 
 export default function SignUp() {
-  const { dispatch } = useContext(Context);
+  const { dispatch, dispatchPlaid } = useContext(Context);
   const history = useHistory();
 
   const handleSubmit = async (event) => {
@@ -85,6 +86,23 @@ export default function SignUp() {
         alert('There was a problem signing up.');
         return;
       }
+      dispatchPlaid(
+        setPlaid({
+          linkSuccess: false,
+          isItemAccess: true,
+          linkToken: '', // Don't set to null or error message will show up briefly when site loads
+          accessToken: null,
+          itemId: null,
+          isError: false,
+          backend: true,
+          products: ['transactions'],
+          linkTokenError: {
+            error_type: '',
+            error_code: '',
+            error_message: '',
+          },
+        })
+      );
       dispatch(
         setUser({
           ...newUser[0],
