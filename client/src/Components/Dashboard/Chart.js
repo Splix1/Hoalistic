@@ -35,6 +35,8 @@ export default function FutureProjections({
     dataLabels: {
       enabled: showLabels,
       formatter: function (val, opts) {
+        val = Math.trunc(val);
+
         if (val < 0) return `-$${numberWithCommas(Math.abs(val))}`;
         return `$${numberWithCommas(val)}`;
       },
@@ -42,6 +44,8 @@ export default function FutureProjections({
     tooltip: {
       y: {
         formatter: (val) => {
+          val = Math.trunc(val);
+
           if (val < 0) return `-$${numberWithCommas(Math.abs(val))}`;
 
           return `$${numberWithCommas(val)}`;
@@ -51,6 +55,7 @@ export default function FutureProjections({
   };
   function numberWithCommas(x) {
     if (!x) return;
+    x = Math.trunc(x);
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 

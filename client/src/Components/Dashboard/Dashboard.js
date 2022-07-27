@@ -170,7 +170,7 @@ function DashboardContent() {
       if (!isInData) {
         data.push({ name: 'Current Projection', data: [] });
       }
-      data[0].data.push(futureProjection);
+      data[0].data.push(Math.trunc(futureProjection));
 
       //loop over scenarios, creating a projection for current month with each scenario
       for (let i = 0; i < stateScenarios?.length; i++) {
@@ -203,12 +203,12 @@ function DashboardContent() {
         if (!isInData) {
           data.push({
             name: `${stateScenarios[i].name}`,
-            data: [currentProjection],
+            data: [Math.trunc(currentProjection)],
           });
         } else {
           for (let j = 0; j < data.length; j++) {
             if (data[j].name === `${stateScenarios[i].name}`) {
-              data[j].data.push(currentProjection);
+              data[j].data.push(Math.trunc(currentProjection));
             }
           }
         }
@@ -250,6 +250,8 @@ function DashboardContent() {
 
   function numberWithCommas(x) {
     if (!x) return;
+
+    x = Math.trunc(x);
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 

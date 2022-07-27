@@ -11,6 +11,8 @@ export default function SingleCost({ theCost }) {
 
   function numberWithCommas(x) {
     if (!x) return;
+
+    x = Math.trunc(x);
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
