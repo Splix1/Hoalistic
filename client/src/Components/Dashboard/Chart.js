@@ -126,42 +126,78 @@ export default function FutureProjections({
           </Button>
         )}
 
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}
-          >
-            {monthsToAdd > 0 ? (
+        {chartType === 'FutureProjections' ? (
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}
+            >
+              {monthsToAdd > 0 ? (
+                <div
+                  style={{
+                    cursor: 'pointer',
+                    marginRight: '1rem',
+                  }}
+                  onClick={() => setMonthsToAdd(monthsToAdd - 12)}
+                >
+                  <ArrowBackIcon />
+                </div>
+              ) : (
+                <div
+                  style={{
+                    marginRight: '1rem',
+                  }}
+                >
+                  <ArrowBackIcon style={{ color: 'gray' }} />
+                </div>
+              )}
+
+              <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => setMonthsToAdd(monthsToAdd + 12)}
+              >
+                <ArrowForwardIcon />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}
+            >
               <div
                 style={{
                   cursor: 'pointer',
                   marginRight: '1rem',
                 }}
-                onClick={() => setMonthsToAdd(monthsToAdd - 12)}
+                onClick={() => setMonthsToAdd(monthsToAdd + 12)}
               >
                 <ArrowBackIcon />
               </div>
-            ) : (
-              <div
-                style={{
-                  marginRight: '1rem',
-                }}
-              >
-                <ArrowBackIcon style={{ color: 'gray' }} />
-              </div>
-            )}
 
-            <div
-              style={{ cursor: 'pointer' }}
-              onClick={() => setMonthsToAdd(monthsToAdd + 12)}
-            >
-              <ArrowForwardIcon />
+              {monthsToAdd > 0 ? (
+                <div
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setMonthsToAdd(monthsToAdd - 12)}
+                >
+                  <ArrowForwardIcon />
+                </div>
+              ) : (
+                <div style={{ cursor: 'pointer' }}>
+                  <ArrowForwardIcon style={{ color: 'gray' }} />
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        )}
+
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <Scenarios />
           <NewScenario />
