@@ -28,9 +28,9 @@ function DashboardContent() {
   let [projects, setStateProjects] = React.useState([]);
   let [chartData, setChartData] = React.useState([]);
   let [monthlyAssessments, setMonthlyAssessments] = React.useState([]);
-
   let [HOABalance, setHOABalance] = React.useState(0);
   let [monthsToAdd, setMonthsToAdd] = React.useState(0);
+  let [chartType, setChartType] = React.useState('FutureProjections');
 
   let {
     state,
@@ -76,15 +76,21 @@ function DashboardContent() {
   }, [state, stateCosts, stateUnits]);
 
   React.useEffect(() => {
-    generateChartData(state);
-  }, [HOABalance, projects, stateScenarios, monthsToAdd, stateCosts]);
+    if (chartType === 'FutureProjections') {
+      generateChartData(state);
+    } else {
+      generatePreviousBalances(state);
+    }
+  }, [
+    HOABalance,
+    projects,
+    stateScenarios,
+    monthsToAdd,
+    stateCosts,
+    chartType,
+  ]);
 
   async function generateChartData(currentUser) {
-    let sumOfCosts = recurringCosts.reduce((sum, currentCost) => {
-      sum += currentCost.cost;
-      return sum;
-    }, 0);
-
     let { data: monthly_assessments } = await supabase
       .from('Units')
       .select('monthly_assessment')
@@ -223,6 +229,93 @@ function DashboardContent() {
     setChartData(data);
   }
 
+  async function generatePreviousBalances(user) {
+    let { data: monthly_assessments } = await supabase
+      .from('Units')
+      .select('monthly_assessment')
+      .eq('HOA', user.id);
+
+    let sumOfAssessments = monthly_assessments.reduce(
+      (sum, currentAssessment) => {
+        sum += currentAssessment.monthly_assessment;
+        return sum;
+      },
+      0
+    );
+
+    let data = [];
+    let dates = [];
+    let currentMonth = new Date().getMonth() + 1;
+    let currentYear = new Date().getFullYear();
+    let months = {
+      1: 'Jan',
+      2: 'Feb',
+      3: 'Mar',
+      4: 'Apr',
+      5: 'May',
+      6: 'Jun',
+      7: 'Jul',
+      8: 'Aug',
+      9: 'Sep',
+      10: 'Oct',
+      11: 'Nov',
+      12: 'Dec',
+    };
+
+    let j = 1;
+    let yearCounter = 0;
+
+    for (let i = 0; i < 12 + monthsToAdd; i++) {
+      let monthCounter = i + 1;
+      //if month + j is greater than 12 therefore not a month and in a new year
+      if (months[currentMonth - j] === undefined) {
+        yearCounter++;
+        j = -(12 - currentMonth);
+      }
+      let dataDate = dayjs(`${currentYear - yearCounter}-${currentMonth - j}`);
+      let projectsToSubtract = projects
+        .filter((project) => {
+          let projectDate = dayjs(project.begin_date);
+
+          if (projectDate.diff(dataDate) >= 0) {
+            return project;
+          }
+        })
+        .reduce((subSum, currentProjCost) => {
+          subSum += currentProjCost.cost;
+          return subSum;
+        }, 0);
+
+      let correctAssSum = sumOfAssessments * monthCounter;
+      let correctCostSum = stateCosts?.reduce((total, currentCost) => {
+        return (
+          total +
+          calculateCost(currentCost, dataDate, monthCounter, yearCounter)
+        );
+      }, 0);
+
+      let previousBalance =
+        +user.balance - correctAssSum + correctCostSum + projectsToSubtract;
+
+      let isInData = false;
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].name === 'Previous Balances') isInData = true;
+      }
+      if (!isInData) {
+        data.push({ name: 'Previous Balances', data: [] });
+      }
+      data[0].data.unshift(Math.trunc(previousBalance));
+
+      dates.unshift(
+        mobileOrComputer(months[currentMonth - j], currentYear - yearCounter)
+      );
+      j++;
+    }
+
+    setChartYears(dates);
+    setChartData(data);
+  }
+
   function calculateCost(cost, dataDate, monthCounter, yearCounter) {
     let costCreated = dayjs(cost.created_at);
     switch (cost?.occurrence) {
@@ -281,6 +374,8 @@ function DashboardContent() {
                   monthsToAdd={monthsToAdd}
                   setMonthsToAdd={setMonthsToAdd}
                   years={chartYears}
+                  chartType={chartType}
+                  setChartType={setChartType}
                 />
               </Grid>
               <Grid item xs={12} md={4} lg={3}>
@@ -299,6 +394,8 @@ function DashboardContent() {
                     HOABalance={HOABalance}
                     setHOABalance={setHOABalance}
                     user={user}
+                    chartType={chartType}
+                    generatePreviousBalances={generatePreviousBalances}
                   />
                 </Paper>
               </Grid>

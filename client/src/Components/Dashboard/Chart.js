@@ -14,6 +14,8 @@ export default function FutureProjections({
   monthsToAdd,
   setMonthsToAdd,
   years,
+  setChartType,
+  chartType,
 }) {
   const { state } = React.useContext(Context);
   const [showLabels, setShowLabels] = React.useState(false);
@@ -59,6 +61,16 @@ export default function FutureProjections({
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
+  function isFutureProjections() {
+    if (chartType === 'FutureProjections') return 'outlined';
+    return 'text';
+  }
+
+  function isTransactionHistory() {
+    if (chartType === 'TransactionHistory') return 'outlined';
+    return 'text';
+  }
+
   return (
     <Paper
       sx={{
@@ -72,7 +84,22 @@ export default function FutureProjections({
       md={10}
     >
       <CssBaseline />
-      <Title>Future Projections</Title>
+      <div className="display-row" style={{ justifyContent: 'center' }}>
+        <Button
+          variant={isFutureProjections()}
+          style={{ marginRight: '1rem' }}
+          onClick={() => setChartType('FutureProjections')}
+        >
+          Future Projections
+        </Button>
+        <Button
+          variant={isTransactionHistory()}
+          onClick={() => setChartType('PreviousBalances')}
+        >
+          Previous Balances
+        </Button>
+      </div>
+
       <Chart
         options={options}
         series={data}

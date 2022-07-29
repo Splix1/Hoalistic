@@ -10,7 +10,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import App from '../../Plaid/App';
 const dayjs = require('dayjs');
 
-export default function Deposits({ generateChartData, HOABalance, user }) {
+export default function Deposits({
+  generateChartData,
+  HOABalance,
+  user,
+  generatePreviousBalances,
+  chartType,
+}) {
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
   let { state, dispatch, statePlaid } = React.useContext(Context);
   let [fetchingBalance, setFetchingBalance] = React.useState(false);
@@ -22,7 +28,11 @@ export default function Deposits({ generateChartData, HOABalance, user }) {
       .update([{ balance: +newBalance }])
       .eq('id', user?.id);
     dispatch(setUser({ ...state, balance: updatedBalance[0]?.balance }));
-    generateChartData(updatedBalance[0]);
+    if (chartType === 'FutureProjections') {
+      generateChartData(updatedBalance[0]);
+    } else {
+      generatePreviousBalances(updatedBalance[0]);
+    }
   }
 
   async function fetchBalance() {
