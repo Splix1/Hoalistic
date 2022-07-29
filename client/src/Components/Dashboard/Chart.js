@@ -66,8 +66,8 @@ export default function FutureProjections({
     return 'text';
   }
 
-  function isTransactionHistory() {
-    if (chartType === 'TransactionHistory') return 'outlined';
+  function isPreviousBalances() {
+    if (chartType === 'PreviousBalances') return 'outlined';
     return 'text';
   }
 
@@ -93,7 +93,7 @@ export default function FutureProjections({
           Future Projections
         </Button>
         <Button
-          variant={isTransactionHistory()}
+          variant={isPreviousBalances()}
           onClick={() => setChartType('PreviousBalances')}
         >
           Previous Balances
