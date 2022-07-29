@@ -38,6 +38,7 @@ function DashboardContent() {
     stateUnits,
     stateScenarios,
     stateProjects,
+    stateTransactions,
     dispatchUnits,
     dispatchCosts,
     dispatchProjects,
@@ -293,9 +294,21 @@ function DashboardContent() {
           calculateCost(currentCost, dataDate, monthCounter, yearCounter)
         );
       }, 0);
+      let transactionsToAdd = stateTransactions?.reduce(
+        (total, transaction) => {
+          let transactionDate = dayjs(transaction.authorized_date);
+          if (transactionDate.diff(dataDate) >= 0) total += transaction.amount;
+          return total;
+        },
+        0
+      );
 
       let previousBalance =
-        +user.balance - correctAssSum + correctCostSum + projectsToSubtract;
+        +user.balance -
+        correctAssSum +
+        correctCostSum +
+        projectsToSubtract +
+        transactionsToAdd;
 
       let isInData = false;
       for (let i = 0; i < data.length; i++) {

@@ -39,7 +39,6 @@ export default function Deposits({
     setFetchingBalance(true);
     const response = await fetch('/api/accounts', { method: 'GET' });
     const data = await response.json();
-    console.log('data', data);
     let newBalance = data?.accounts?.reduce((balance, account) => {
       balance += account?.balances?.available;
       return balance;

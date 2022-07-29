@@ -8,6 +8,9 @@ import { Context } from '../ContextProvider';
 import Chart from 'react-apexcharts';
 import Scenarios from '../Scenarios/Scenarios';
 import NewScenario from '../Scenarios/NewScenario';
+import App from '../../Plaid/App';
+import supabase from '../../client';
+import { setTransactions } from '../../Store/Transactions';
 
 export default function FutureProjections({
   data,
@@ -17,8 +20,10 @@ export default function FutureProjections({
   setChartType,
   chartType,
 }) {
-  const { state } = React.useContext(Context);
+  const { state, statePlaid, stateTransactions, dispatchTransactions } =
+    React.useContext(Context);
   const [showLabels, setShowLabels] = React.useState(false);
+  const [fetchingTransactions, setFetchingTransactions] = React.useState(false);
 
   const options = {
     chart: {
@@ -71,6 +76,77 @@ export default function FutureProjections({
     return 'text';
   }
 
+  async function fetchTransactions() {
+    setFetchingTransactions(true);
+    const response = await fetch('/api/transactions', { method: 'GET' });
+    const data = await response.json();
+    let newTransactions = [];
+
+    for (let i = 0; i < data?.latest_transactions.length; i++) {
+      let {
+        amount,
+        transaction_type,
+        payment_channel,
+        merchant_name,
+        authorized_date,
+        datetime,
+        check_number,
+        transaction_id,
+      } = data.latest_transactions[i];
+      let { payee, payer } = data.latest_transactions[i].payment_meta;
+
+      let { data: transactionData } = await supabase
+        .from('transactions')
+        .insert({
+          amount,
+          transaction_type,
+          payment_channel,
+          merchant_name,
+          authorized_date,
+          datetime,
+          check_number,
+          payee,
+          payer,
+          transaction_id,
+          HOA: state?.id,
+        });
+      newTransactions.push(transactionData[0]);
+    }
+    dispatchTransactions(
+      setTransactions([...stateTransactions, ...newTransactions])
+    );
+    setFetchingTransactions(false);
+  }
+
+  function fetchTransactionsButton() {
+    switch (fetchingTransactions) {
+      case false: {
+        return (
+          <Button
+            fullWidth
+            variant="contained"
+            style={{ width: '12rem', height: '1.5rem', marginLeft: '0.5rem' }}
+            onClick={fetchTransactions}
+          >
+            Fetch Transactions
+          </Button>
+        );
+      }
+      case true: {
+        return (
+          <Button
+            fullWidth
+            variant="contained"
+            style={{ width: '9rem', height: '1.5rem', marginLeft: '0.5rem' }}
+            disabled
+          >
+            Fetching transactions...
+          </Button>
+        );
+      }
+    }
+  }
+
   return (
     <Paper
       sx={{
@@ -108,23 +184,39 @@ export default function FutureProjections({
         height="300rem"
       />
       <div className="display-row" style={{ justifyContent: 'space-between' }}>
-        {!showLabels ? (
-          <Button
-            variant="contained"
-            style={{ width: '9rem', height: '1.5rem' }}
-            onClick={() => setShowLabels(true)}
-          >
-            show labels
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            style={{ width: '9rem', height: '1.5rem' }}
-            onClick={() => setShowLabels(false)}
-          >
-            hide labels
-          </Button>
-        )}
+        <div className="display-row">
+          {!showLabels ? (
+            <Button
+              variant="contained"
+              style={{ width: '9rem', height: '1.5rem' }}
+              onClick={() => setShowLabels(true)}
+            >
+              show labels
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              style={{ width: '9rem', height: '1.5rem' }}
+              onClick={() => setShowLabels(false)}
+            >
+              hide labels
+            </Button>
+          )}
+          {chartType === 'PreviousBalances' ? (
+            <div>
+              {statePlaid?.accessToken &&
+              state?.id !== 123 &&
+              !statePlaid?.tokenExpired ? (
+                fetchTransactionsButton()
+              ) : (!statePlaid?.accessToken &&
+                  state?.id !== 123 &&
+                  state?.id) ||
+                statePlaid?.tokenExpired ? (
+                <App />
+              ) : null}
+            </div>
+          ) : null}
+        </div>
 
         {chartType === 'FutureProjections' ? (
           <div style={{ display: 'flex', flexDirection: 'column' }}>

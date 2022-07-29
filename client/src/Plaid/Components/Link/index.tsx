@@ -76,7 +76,7 @@ const Link = () => {
   }, [ready, open, isOauth]);
 
   return (
-    <Button fullWidth variant="contained" onClick={() => open()} disabled={!ready}>
+    <Button fullWidth variant="contained" onClick={() => open()} disabled={!ready} style={{ height: '1.5rem', marginLeft: '0.5rem'}}>
       Connect Bank
     </Button>
   );
