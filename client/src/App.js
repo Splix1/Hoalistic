@@ -14,6 +14,7 @@ import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { setScenarios } from './Store/Scenarios';
 import { setPlaid } from './Store/Plaid';
+import { setTransactions } from './Store/Transactions';
 const dayjs = require('dayjs');
 
 export async function fetchUserData(
@@ -78,6 +79,15 @@ async function fetchScenarios(user, dispatchScenarios) {
   dispatchScenarios(setScenarios(scenariosData));
 }
 
+async function fetchTransactions(user, dispatchTransactions) {
+  let { data: transactionsData } = await supabase
+    .from('transactions')
+    .select('*, transaction_categories(name)')
+    .eq('HOA', user?.id);
+
+  dispatchTransactions(setTransactions(transactionsData));
+}
+
 function isTokenExpired(date) {
   let current = dayjs();
   let expiration = dayjs(date);
@@ -95,6 +105,7 @@ function App() {
     dispatchFiles,
     dispatchScenarios,
     dispatchPlaid,
+    dispatchTransactions,
     statePlaid,
   } = useContext(Context);
 
@@ -167,8 +178,10 @@ function App() {
           dispatchFiles,
           dispatchScenarios,
           dispatchPlaid,
-          statePlaid
+          statePlaid,
+          dispatchTransactions
         );
+        fetchTransactions(data[0], dispatchTransactions);
       }
       fetchUser();
     }

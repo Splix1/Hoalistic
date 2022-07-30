@@ -17,6 +17,7 @@ import { Context } from '../ContextProvider';
 import { setUnits } from '../../Store/Units';
 import { setCosts } from '../../Store/Costs';
 import { setProjects } from '../../Store/Projects';
+import { setTransactions } from '../../Store/Transactions';
 import RecurringCosts from './RecurringCosts';
 import UpcomingProjects from './UpcomingProjects';
 import Units from './Units';
@@ -42,6 +43,7 @@ function DashboardContent() {
     dispatchUnits,
     dispatchCosts,
     dispatchProjects,
+    dispatchTransactions,
   } = React.useContext(Context);
   let [chartYears, setChartYears] = React.useState([]);
 

@@ -129,9 +129,6 @@ export default function FutureProjections({
           .select('*')
           .eq('name', category[i]);
 
-        console.log('categoryData', categoryData);
-        console.log('transactionData', transactionData);
-
         if (categoryData?.length === 0) {
           let { data: newCategory } = await supabase
             .from('transaction_categories')
@@ -161,7 +158,7 @@ export default function FutureProjections({
     );
     setFetchingTransactions(false);
   }
-  console.log('stateTransactions', stateTransactions);
+
   function fetchTransactionsButton() {
     switch (fetchingTransactions) {
       case false: {

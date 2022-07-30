@@ -87,7 +87,9 @@ export default function Scenarios() {
               </Typography>
               <div className="display-column">
                 {stateScenarios?.map((scenario) => {
-                  return <SingleScenario scenario={scenario} />;
+                  return (
+                    <SingleScenario scenario={scenario} key={scenario.id} />
+                  );
                 })}
               </div>
             </div>
