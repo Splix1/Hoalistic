@@ -14,6 +14,7 @@ import supabase from '../../client';
 import { Context } from '../ContextProvider';
 import { setUser } from '../../Store/User';
 import { fetchUserData } from '../../App';
+import { fetchTransactions } from '../../App';
 
 const theme = createTheme();
 
@@ -26,6 +27,7 @@ function LandingPage() {
     dispatchDocuments,
     dispatchFiles,
     dispatchScenarios,
+    dispatchTransactions,
   } = useContext(Context);
   const history = useHistory();
 
@@ -62,6 +64,7 @@ function LandingPage() {
         dispatchFiles,
         dispatchScenarios
       );
+      fetchTransactions(data[0], dispatchTransactions);
       history.push('/dashboard');
     }
   };
