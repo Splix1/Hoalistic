@@ -82,6 +82,10 @@ export default function FutureProjections({
     const response = await fetch('/api/transactions', { method: 'GET' });
     const data = await response.json();
     let newTransactions = [];
+    let transaction_ids = stateTransactions?.reduce((ids, transaction) => {
+      ids.push(transaction.transaction_id);
+      return ids;
+    }, []);
 
     for (let i = 0; i < data?.latest_transactions.length; i++) {
       let {
@@ -93,9 +97,13 @@ export default function FutureProjections({
         datetime,
         check_number,
         transaction_id,
+        category,
       } = data.latest_transactions[i];
       let { payee, payer } = data.latest_transactions[i].payment_meta;
 
+      if (transaction_ids.includes(transaction_id)) {
+        continue;
+      }
       let { data: transactionData } = await supabase
         .from('transactions')
         .insert({
@@ -111,14 +119,49 @@ export default function FutureProjections({
           transaction_id,
           HOA: state?.id,
         });
+
+      let transactionCategories = [];
+
+      for (let i = 0; i < category?.length; i++) {
+        transactionCategories.push(category[i]);
+        let { data: categoryData } = await supabase
+          .from('transaction_categories')
+          .select('*')
+          .eq('name', category[i]);
+
+        console.log('categoryData', categoryData);
+        console.log('transactionData', transactionData);
+
+        if (categoryData?.length === 0) {
+          let { data: newCategory } = await supabase
+            .from('transaction_categories')
+            .insert({ name: category[i] });
+
+          let { data: newTransactionCategory } = await supabase
+            .from('HOA_transaction_categories')
+            .insert({
+              transaction: transactionData[0].id,
+              category: newCategory[0].id,
+            });
+        } else {
+          let { data: newTransactionCategory } = await supabase
+            .from('HOA_transaction_categories')
+            .insert({
+              transaction: transactionData[0].id,
+              category: categoryData[0].id,
+            });
+        }
+      }
+      transactionData[0]['category'] = transactionCategories;
       newTransactions.push(transactionData[0]);
+      transaction_ids.push(transaction_id);
     }
     dispatchTransactions(
       setTransactions([...stateTransactions, ...newTransactions])
     );
     setFetchingTransactions(false);
   }
-
+  console.log('stateTransactions', stateTransactions);
   function fetchTransactionsButton() {
     switch (fetchingTransactions) {
       case false: {
