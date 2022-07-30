@@ -24,6 +24,7 @@ export default function FutureProjections({
     React.useContext(Context);
   const [showLabels, setShowLabels] = React.useState(false);
   const [fetchingTransactions, setFetchingTransactions] = React.useState(false);
+  const [connectingBank, setConnectingBank] = React.useState(false);
 
   const options = {
     chart: {
@@ -147,6 +148,25 @@ export default function FutureProjections({
     }
   }
 
+  function isConnectingBank() {
+    switch (connectingBank) {
+      case true: {
+        return <App />;
+      }
+      case false: {
+        return (
+          <Button
+            variant="contained"
+            onClick={() => setConnectingBank(true)}
+            style={{ width: '12rem', height: '1.5rem', marginLeft: '0.5rem' }}
+          >
+            Fetch Transactions
+          </Button>
+        );
+      }
+    }
+  }
+
   return (
     <Paper
       sx={{
@@ -206,14 +226,14 @@ export default function FutureProjections({
             <div>
               {statePlaid?.accessToken &&
               state?.id !== 123 &&
-              !statePlaid?.tokenExpired ? (
-                fetchTransactionsButton()
-              ) : (!statePlaid?.accessToken &&
-                  state?.id !== 123 &&
-                  state?.id) ||
-                statePlaid?.tokenExpired ? (
-                <App />
-              ) : null}
+              !statePlaid?.tokenExpired
+                ? fetchTransactionsButton()
+                : (!statePlaid?.accessToken &&
+                    state?.id !== 123 &&
+                    state?.id) ||
+                  statePlaid?.tokenExpired
+                ? isConnectingBank()
+                : null}
             </div>
           ) : null}
         </div>
