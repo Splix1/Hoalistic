@@ -159,6 +159,8 @@ export default function FutureProjections({
     setFetchingTransactions(false);
   }
 
+  console.log('transactions', stateTransactions);
+
   function fetchTransactionsButton() {
     switch (fetchingTransactions) {
       case false: {
