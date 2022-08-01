@@ -82,11 +82,11 @@ export default function FutureProjections({
     const response = await fetch('/api/transactions', { method: 'GET' });
     const data = await response.json();
     console.log('data', data);
-    let newTransactions = [];
     let transaction_ids = stateTransactions?.reduce((ids, transaction) => {
       ids.push(transaction.transaction_id);
       return ids;
     }, []);
+    let transactionsToAdd = [];
 
     for (let i = 0; i < data?.latest_transactions?.length; i++) {
       let {
@@ -105,26 +105,25 @@ export default function FutureProjections({
       if (transaction_ids.includes(transaction_id)) {
         continue;
       }
-      let { data: transactionData } = await supabase
-        .from('transactions')
-        .insert({
-          amount,
-          transaction_type,
-          payment_channel,
-          merchant_name,
-          authorized_date,
-          date,
-          check_number,
-          payee,
-          payer,
-          transaction_id,
-          HOA: state?.id,
-          categories: category?.join(', '),
-        });
-
-      newTransactions.push(transactionData[0]);
-      transaction_ids.push(transaction_id);
+      transactionsToAdd.push({
+        amount,
+        transaction_type,
+        payment_channel,
+        merchant_name,
+        authorized_date,
+        date,
+        check_number,
+        transaction_id,
+        categories: category?.join(', '),
+        payee,
+        payer,
+      });
     }
+
+    let { data: newTransactions } = await supabase
+      .from('transactions')
+      .insert(transactionsToAdd);
+
     dispatchTransactions(
       setTransactions([...stateTransactions, ...newTransactions])
     );
