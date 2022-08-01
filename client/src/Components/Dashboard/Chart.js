@@ -117,6 +117,7 @@ export default function FutureProjections({
         categories: category?.join(', '),
         payee,
         payer,
+        HOA: state?.id,
       });
     }
 
