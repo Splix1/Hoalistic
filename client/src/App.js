@@ -82,7 +82,7 @@ async function fetchScenarios(user, dispatchScenarios) {
 export async function fetchTransactions(user, dispatchTransactions) {
   let { data: transactionsData } = await supabase
     .from('transactions')
-    .select('*, transaction_categories(name)')
+    .select('*')
     .eq('HOA', user?.id);
 
   dispatchTransactions(setTransactions(transactionsData));
