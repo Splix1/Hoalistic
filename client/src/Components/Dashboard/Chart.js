@@ -188,8 +188,6 @@ export default function FutureProjections({
     }
   }
 
-  console.log('data', data);
-
   return (
     <Paper
       sx={{
@@ -215,7 +213,7 @@ export default function FutureProjections({
           variant={isPreviousBalances()}
           onClick={() => setChartType('PreviousBalances')}
         >
-          Previous Balances
+          Transaction History
         </Button>
       </div>
 
@@ -229,7 +227,10 @@ export default function FutureProjections({
       <Plot
         data={data}
         layout={{
-          title: 'Future Projections',
+          title:
+            chartType === 'FutureProjections'
+              ? 'Future Projections'
+              : 'Transaction History',
           width: 820,
         }}
       />
