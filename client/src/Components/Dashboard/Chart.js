@@ -11,6 +11,7 @@ import NewScenario from '../Scenarios/NewScenario';
 import App from '../../Plaid/App';
 import supabase from '../../client';
 import { setTransactions } from '../../Store/Transactions';
+import Plot from 'react-plotly.js';
 
 export default function FutureProjections({
   data,
@@ -19,6 +20,7 @@ export default function FutureProjections({
   years,
   setChartType,
   chartType,
+  transactions,
 }) {
   const { state, statePlaid, stateTransactions, dispatchTransactions } =
     React.useContext(Context);
@@ -61,6 +63,7 @@ export default function FutureProjections({
       },
     },
   };
+
   function numberWithCommas(x) {
     if (!x) return;
     x = Math.trunc(x);
@@ -82,6 +85,10 @@ export default function FutureProjections({
     const response = await fetch('/api/transactions', { method: 'GET' });
     const data = await response.json();
     console.log('data', data);
+    await supabase
+      .from('HOAs')
+      .update({ cursor: data?.cursor })
+      .eq('id', state?.id);
     let transaction_ids = stateTransactions?.reduce((ids, transaction) => {
       ids.push(transaction.transaction_id);
       return ids;
@@ -131,7 +138,7 @@ export default function FutureProjections({
     setFetchingTransactions(false);
   }
 
-  console.log('transactions', stateTransactions);
+  // console.log('transactions', stateTransactions);
 
   function fetchTransactionsButton() {
     switch (fetchingTransactions) {
@@ -181,13 +188,15 @@ export default function FutureProjections({
     }
   }
 
+  console.log('data', data);
+
   return (
     <Paper
       sx={{
         p: 2,
         display: 'flex',
         flexDirection: 'column',
-        height: '25rem',
+        height: 'fit-content',
       }}
       xs={24}
       sm={16}
@@ -210,14 +219,24 @@ export default function FutureProjections({
         </Button>
       </div>
 
-      <Chart
+      {/* <Chart
         options={options}
         series={data}
         type="line"
         width="100%"
         height="300rem"
+      /> */}
+      <Plot
+        data={data}
+        layout={{
+          title: 'Future Projections',
+          width: 820,
+        }}
       />
-      <div className="display-row" style={{ justifyContent: 'space-between' }}>
+      <div
+        className="display-row"
+        style={{ justifyContent: 'space-between', marginTop: '0.5rem' }}
+      >
         <div className="display-row">
           {!showLabels ? (
             <Button

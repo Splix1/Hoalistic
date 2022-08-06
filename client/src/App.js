@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { setScenarios } from './Store/Scenarios';
 import { setPlaid } from './Store/Plaid';
 import { setTransactions } from './Store/Transactions';
+import axios from 'axios';
 const dayjs = require('dayjs');
 
 export async function fetchUserData(
@@ -163,6 +164,11 @@ function App() {
             },
           })
         );
+
+        await axios.post('/api/state_access_token', {
+          ACCESS_TOKEN: accessTokenData[0]?.access_token,
+          cursor: data[0]?.cursor,
+        });
         dispatch(
           setUser({
             ...data[0],
