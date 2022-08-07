@@ -109,7 +109,14 @@ function DashboardContent() {
     );
 
     let data = [
-      { type: 'scatter', mode: 'lines+markers', x: [], y: [], text: [] },
+      {
+        type: 'scatter',
+        mode: 'lines+markers',
+        x: [],
+        y: [],
+        text: [],
+        name: 'Future Projection',
+      },
     ];
     let dates = [];
     let currentMonth = new Date().getMonth() + 1;
@@ -210,6 +217,7 @@ function DashboardContent() {
             y: [currentProjection],
             x: [],
             text: [`${stateScenarios[k].name}`],
+            name: stateScenarios[k].name,
           });
         } else {
           for (let l = 0; l < data.length; l++) {
@@ -241,6 +249,7 @@ function DashboardContent() {
         x: [],
         y: [],
         text: [],
+        name: 'Transaction History',
         hover_data: ['amount', 'categories'],
         hovertemplate:
           '<br><b>Balance</b>: $%{y:.2f}<br>' +
@@ -353,185 +362,6 @@ function DashboardContent() {
     );
   }
 
-  // async function generatePreviousBalances(user) {
-  //   let { data: monthly_assessments } = await supabase
-  //     .from('Units')
-  //     .select('monthly_assessment')
-  //     .eq('HOA', user.id);
-
-  //   let sumOfAssessments = monthly_assessments.reduce(
-  //     (sum, currentAssessment) => {
-  //       sum += currentAssessment.monthly_assessment;
-  //       return sum;
-  //     },
-  //     0
-  //   );
-
-  //   let data = [
-  //     { type: 'scatter', mode: 'lines+markers', x: [], y: [], text: [] },
-  //   ];
-  //   let dates = [];
-  //   let transactions = [];
-  //   let currentMonth = new Date().getMonth() + 1;
-  //   let currentYear = new Date().getFullYear();
-  //   let months = {
-  //     1: 'Jan',
-  //     2: 'Feb',
-  //     3: 'Mar',
-  //     4: 'Apr',
-  //     5: 'May',
-  //     6: 'Jun',
-  //     7: 'Jul',
-  //     8: 'Aug',
-  //     9: 'Sep',
-  //     10: 'Oct',
-  //     11: 'Nov',
-  //     12: 'Dec',
-  //   };
-
-  //   let j = 1;
-  //   let yearCounter = 0;
-
-  //   for (let i = 0; i < 12 + monthsToAdd; i++) {
-  //     let monthCounter = i + 1;
-  //     //if month + j is greater than 12 therefore not a month and in a new year
-  //     if (months[currentMonth - j] === undefined) {
-  //       yearCounter++;
-  //       j = -(12 - currentMonth);
-  //     }
-  //     let currentMonthTransactions = [];
-  //     let dataDate = dayjs(`${currentYear - yearCounter}-${currentMonth - j}`);
-  //     let projectsToSubtract = projects
-  //       .filter((project) => {
-  //         let projectDate = dayjs(project.begin_date);
-
-  //         if (projectDate.diff(dataDate) >= 0) {
-  //           return project;
-  //         }
-  //       })
-  //       .reduce((subSum, currentProjCost) => {
-  //         subSum += currentProjCost.cost;
-  //         return subSum;
-  //       }, 0);
-
-  //     let correctAssSum = sumOfAssessments * monthCounter;
-  //     let correctCostSum = stateCosts?.reduce((total, currentCost) => {
-  //       return (
-  //         total +
-  //         calculateCost(currentCost, dataDate, monthCounter, yearCounter)
-  //       );
-  //     }, 0);
-  //     let transactionsToAdd = stateTransactions?.reduce(
-  //       (total, transaction) => {
-  //         let transactionDate = dayjs(transaction.authorized_date);
-  //         if (transactionDate.diff(dataDate) >= 0) {
-  //           total += transaction.amount;
-  //           currentMonthTransactions.push(transaction);
-  //         }
-  //         return total;
-  //       },
-  //       0
-  //     );
-
-  //     let previousBalance =
-  //       +user.balance -
-  //       correctAssSum +
-  //       correctCostSum +
-  //       projectsToSubtract +
-  //       transactionsToAdd;
-
-  //     let isInData = false;
-  //     for (let i = 0; i < data.length; i++) {
-  //       if (data[i].name === 'Previous Balances') isInData = true;
-  //     }
-  //     if (!isInData) {
-  //       data.push({ name: 'Previous Balances', data: [] });
-  //     }
-  //     data[0].data.unshift(Math.trunc(previousBalance));
-  //     currentMonthTransactions = currentMonthTransactions.reduce(
-  //       (str, transac) => {
-  //         str += `amount=${transac.amount} \n categories=${transac.categories} `;
-  //         return str;
-  //       },
-  //       ''
-  //     );
-
-  //     transactions.push(currentMonthTransactions);
-  //     dates.unshift(
-  //       mobileOrComputer(months[currentMonth - j], currentYear - yearCounter)
-  //     );
-  //     j++;
-  //   }
-  //   setChartTransactions(transactions);
-  //   setChartYears(dates);
-  //   setChartData(data);
-  // }
-
-  // async function generatePreviousBalances() {
-  //   let sumOfAssessments = stateUnits?.reduce((sum, currentUnit) => {
-  //     sum += currentUnit.monthly_assessment;
-  //     return sum;
-  //   }, 0);
-
-  //   let data = [];
-  //   let dates = [];
-  //   let transactions = [];
-  //   let currentDate = dayjs().add(1, 'month').subtract(1, 'day');
-  //   let months = {
-  //     1: 'Jan',
-  //     2: 'Feb',
-  //     3: 'Mar',
-  //     4: 'Apr',
-  //     5: 'May',
-  //     6: 'Jun',
-  //     7: 'Jul',
-  //     8: 'Aug',
-  //     9: 'Sep',
-  //     10: 'Oct',
-  //     11: 'Nov',
-  //     12: 'Dec',
-  //   };
-
-  //   let newTransactions = generateTransactionsForMonth(
-  //     currentDate.$M + 1,
-  //     currentDate
-  //   );
-  //   transactions.push(...newTransactions);
-
-  //   for (let i = 0; i < monthsToAdd; i++) {
-  //     currentDate = dayjs(currentDate.$d).subtract(1, 'month');
-  //     let newTransactions = generateTransactionsForMonth(
-  //       currentDate.$M + 1,
-  //       currentDate
-  //     );
-  //     transactions.push(...newTransactions);
-  //   }
-
-  // }
-
-  // function generateTransactionsForMonth(month, currentDate) {
-  //   let newTransactions = [];
-  //   while (currentDate.$D >= 1 && currentDate.$M + 1 === month) {
-  //     let daysTransactions = [];
-  //     for (let i = 0; i < stateTransactions?.length; i++) {
-  //       let transactionDate = dayjs(stateTransactions[i].date);
-  //       let isMonth = transactionDate.$M + 1 === currentDate.$M + 1;
-  //       let isYear = transactionDate.$y === currentDate.$y;
-  //       let isDay = transactionDate.$D === currentDate.$D;
-  //       if (isMonth && isYear && isDay)
-  //         daysTransactions.push(stateTransactions[i]);
-  //     }
-  //     let transactionStr = '';
-  //     for (let j = 0; j < daysTransactions.length; j++) {
-  //       transactionStr += `amount=${daysTransactions[i].amount} \n categories=${daysTransactions[i].categories}`;
-  //     }
-  //     newTransactions.push(transactionStr);
-  //     currentDate = dayjs(currentDate.$d).subtract(1, 'day');
-  //   }
-  //   return newTransactions;
-  // }
-
-  // generatePreviousBalances();
   function calculateCost(cost, dataDate, monthCounter, yearCounter) {
     let costCreated = dayjs(cost.created_at);
     switch (cost?.occurrence) {
