@@ -194,7 +194,7 @@ export default function FutureProjections({
         p: 2,
         display: 'flex',
         flexDirection: 'column',
-        height: 'fit-content',
+        height: '550px',
       }}
       xs={24}
       sm={16}

@@ -433,7 +433,7 @@ function DashboardContent() {
                     flexDirection: 'column',
                     justifyContent: 'space-evenly',
                     alignItems: 'center',
-                    height: '25rem',
+                    height: '550px',
                   }}
                 >
                   <Deposits
