@@ -54,6 +54,7 @@ let PAYMENT_ID = null;
 // We store the transfer_id in memory - in production, store it in a secure
 // persistent data store
 let TRANSFER_ID = null;
+let cursor = null;
 
 // Initialize the Plaid client
 // Find your API keys in the Dashboard (https://dashboard.plaid.com/account/keys)
@@ -215,15 +216,19 @@ app.get('/api/auth', function (request, response, next) {
     .catch(next);
 });
 
+app.post('/api/state_access_token', function (request, response, next) {
+  ACCESS_TOKEN = request.body.ACCESS_TOKEN;
+  cursor = request.body.cursor;
+  response.send('');
+});
+
 // Retrieve Transactions for an Item
 // https://plaid.com/docs/#transactions
 app.get('/api/transactions', function (request, response, next) {
   Promise.resolve()
     .then(async function () {
       // Set cursor to empty to receive all historical updates
-      let cursor = null;
 
-      // New transaction updates since "cursor"
       let added = [];
       let modified = [];
       // Removed transaction ids
@@ -234,7 +239,6 @@ app.get('/api/transactions', function (request, response, next) {
         const request = {
           access_token: ACCESS_TOKEN,
           cursor: cursor,
-          count: 500,
         };
         const response = await client.transactionsSync(request);
         const data = response.data;
@@ -250,9 +254,13 @@ app.get('/api/transactions', function (request, response, next) {
 
       const compareTxnsByDateAscending = (a, b) =>
         (a.date > b.date) - (a.date < b.date);
-      // Return the 8 most recent transactions
+
       const recently_added = [...added].sort(compareTxnsByDateAscending);
-      response.json({ latest_transactions: recently_added });
+
+      response.json({
+        latest_transactions: recently_added,
+        cursor: cursor,
+      });
     })
     .catch(next);
 });
