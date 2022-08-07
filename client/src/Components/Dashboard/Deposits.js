@@ -147,14 +147,7 @@ export default function Deposits({
           </div>
         ) : (
           <div style={{ marginTop: '1rem' }}>
-            {statePlaid?.accessToken &&
-            state?.id !== 123 &&
-            !statePlaid?.tokenExpired ? (
-              updateFromBankButton()
-            ) : (!statePlaid?.accessToken && state?.id !== 123 && state?.id) ||
-              statePlaid?.tokenExpired ? (
-              <App />
-            ) : null}
+            {statePlaid?.accessToken ? updateFromBankButton() : <App />}
           </div>
         )}
       </div>

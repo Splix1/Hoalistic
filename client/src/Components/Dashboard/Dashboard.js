@@ -80,7 +80,7 @@ function DashboardContent() {
   }, [state, stateCosts, stateUnits]);
 
   React.useEffect(() => {
-    if (chartType === 'FutureProjections') {
+    if (chartType === 'Future Projections') {
       generateChartData(state);
     } else {
       generatePreviousBalances(state);
