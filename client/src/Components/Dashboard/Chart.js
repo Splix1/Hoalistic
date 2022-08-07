@@ -71,12 +71,12 @@ export default function FutureProjections({
   }
 
   function isFutureProjections() {
-    if (chartType === 'FutureProjections') return 'outlined';
+    if (chartType === 'Future Projections') return 'outlined';
     return 'text';
   }
 
-  function isPreviousBalances() {
-    if (chartType === 'PreviousBalances') return 'outlined';
+  function isTransactionHistory() {
+    if (chartType === 'Transaction History') return 'outlined';
     return 'text';
   }
 
@@ -169,25 +169,6 @@ export default function FutureProjections({
     }
   }
 
-  function isConnectingBank() {
-    switch (connectingBank) {
-      case true: {
-        return <App />;
-      }
-      case false: {
-        return (
-          <Button
-            variant="contained"
-            onClick={() => setConnectingBank(true)}
-            style={{ width: '12rem', height: '1.5rem', marginLeft: '0.5rem' }}
-          >
-            Fetch Transactions
-          </Button>
-        );
-      }
-    }
-  }
-
   return (
     <Paper
       sx={{
@@ -205,13 +186,13 @@ export default function FutureProjections({
         <Button
           variant={isFutureProjections()}
           style={{ marginRight: '1rem' }}
-          onClick={() => setChartType('FutureProjections')}
+          onClick={() => setChartType('Future Projections')}
         >
           Future Projections
         </Button>
         <Button
-          variant={isPreviousBalances()}
-          onClick={() => setChartType('PreviousBalances')}
+          variant={isTransactionHistory()}
+          onClick={() => setChartType('Transaction History')}
         >
           Transaction History
         </Button>
@@ -227,10 +208,7 @@ export default function FutureProjections({
       <Plot
         data={data}
         layout={{
-          title:
-            chartType === 'FutureProjections'
-              ? 'Future Projections'
-              : 'Transaction History',
+          title: chartType,
           width: 820,
         }}
       />
@@ -256,23 +234,14 @@ export default function FutureProjections({
               hide labels
             </Button>
           )}
-          {chartType === 'PreviousBalances' ? (
-            <div>
-              {statePlaid?.accessToken &&
-              state?.id !== 123 &&
-              !statePlaid?.tokenExpired
-                ? fetchTransactionsButton()
-                : (!statePlaid?.accessToken &&
-                    state?.id !== 123 &&
-                    state?.id) ||
-                  statePlaid?.tokenExpired
-                ? isConnectingBank()
-                : null}
-            </div>
+          {chartType === 'Transaction History' && statePlaid?.accessToken ? (
+            <div>{fetchTransactionsButton()}</div>
+          ) : chartType === 'Transaction History' ? (
+            <App />
           ) : null}
         </div>
 
-        {chartType === 'FutureProjections' ? (
+        {chartType === 'Future Projections' ? (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div
               style={{
