@@ -210,6 +210,10 @@ export default function FutureProjections({
         layout={{
           title: chartType,
           width: 820,
+          paper_bgcolor:
+            state?.theme === 'light' ? 'layout.paper_bgcolor' : '#121212',
+          plot_bgcolor:
+            state?.theme === 'light' ? 'layout.paper_bgcolor' : '#121212',
         }}
       />
       <div

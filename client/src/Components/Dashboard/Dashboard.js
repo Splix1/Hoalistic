@@ -31,7 +31,7 @@ function DashboardContent() {
   let [monthlyAssessments, setMonthlyAssessments] = React.useState([]);
   let [HOABalance, setHOABalance] = React.useState(0);
   let [monthsToAdd, setMonthsToAdd] = React.useState(0);
-  let [chartType, setChartType] = React.useState('FutureProjections');
+  let [chartType, setChartType] = React.useState('Future Projections');
 
   let {
     state,
