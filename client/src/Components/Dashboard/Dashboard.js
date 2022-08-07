@@ -283,7 +283,7 @@ function DashboardContent() {
     let amount = 0;
     let transactionsCategories = [];
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < stateTransactions?.length; i++) {
       let currentTransaction = transactions[i];
       let currentTransactionDate = dayjs(currentTransaction.date);
       let day = currentTransactionDate.$D;
@@ -319,6 +319,7 @@ function DashboardContent() {
     data[0].text.reverse();
     data[0].x.reverse();
     data[0].y.reverse();
+
     setChartData(data);
   }
 

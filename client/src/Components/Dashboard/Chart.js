@@ -309,40 +309,7 @@ export default function FutureProjections({
               </div>
             </div>
           </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}
-            >
-              <div
-                style={{
-                  cursor: 'pointer',
-                  marginRight: '1rem',
-                }}
-                onClick={() => setMonthsToAdd(monthsToAdd + 12)}
-              >
-                <ArrowBackIcon />
-              </div>
-
-              {monthsToAdd > 0 ? (
-                <div
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => setMonthsToAdd(monthsToAdd - 12)}
-                >
-                  <ArrowForwardIcon />
-                </div>
-              ) : (
-                <div style={{ cursor: 'pointer' }}>
-                  <ArrowForwardIcon style={{ color: 'gray' }} />
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+        ) : null}
 
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <Scenarios />
