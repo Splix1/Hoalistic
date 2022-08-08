@@ -15,6 +15,8 @@ import { Context } from '../ContextProvider';
 import { setUser } from '../../Store/User';
 import { fetchUserData } from '../../App';
 import { fetchTransactions } from '../../App';
+import { setPlaid } from '../../Store/Plaid';
+import axios from 'axios';
 
 const theme = createTheme();
 
@@ -28,6 +30,7 @@ function LandingPage() {
     dispatchFiles,
     dispatchScenarios,
     dispatchTransactions,
+    dispatchPlaid,
   } = useContext(Context);
   const history = useHistory();
 
@@ -49,6 +52,10 @@ function LandingPage() {
       }
     } else {
       let { data } = await supabase.from('HOAs').select('*').eq('email', email);
+      let { data: accessTokenData } = await supabase
+        .from('access_tokens')
+        .select('*')
+        .eq('HOA', data[0]?.id);
       dispatch(
         setUser({
           ...data[0],
@@ -65,6 +72,28 @@ function LandingPage() {
         dispatchScenarios
       );
       fetchTransactions(data[0], dispatchTransactions);
+      dispatchPlaid(
+        setPlaid({
+          linkSuccess: false,
+          isItemAccess: true,
+          linkToken: '', // Don't set to null or error message will show up briefly when site loads
+          accessToken: accessTokenData[0]?.access_token || null,
+          itemId: null,
+          isError: false,
+          backend: true,
+          products: ['transactions'],
+          linkTokenError: {
+            error_type: '',
+            error_code: '',
+            error_message: '',
+          },
+        })
+      );
+
+      await axios.post('/api/state_access_token', {
+        ACCESS_TOKEN: accessTokenData[0]?.access_token,
+        cursor: data[0]?.cursor,
+      });
       history.push('/dashboard');
     }
   };
