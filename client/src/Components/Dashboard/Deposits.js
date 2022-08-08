@@ -8,6 +8,7 @@ import { Context } from '../ContextProvider';
 import supabase from '../../client';
 import CssBaseline from '@mui/material/CssBaseline';
 import App from '../../Plaid/App';
+import { setPlaid } from '../../Store/Plaid';
 const dayjs = require('dayjs');
 
 export default function Deposits({
@@ -18,7 +19,8 @@ export default function Deposits({
   chartType,
 }) {
   let [HOABalanceField, setHOABalanceField] = React.useState(0);
-  let { state, dispatch, statePlaid } = React.useContext(Context);
+  let { state, dispatch, statePlaid, dispatchPlaid } =
+    React.useContext(Context);
   let [fetchingBalance, setFetchingBalance] = React.useState(false);
   let [inputType, setInputType] = React.useState('manual');
 
@@ -38,6 +40,14 @@ export default function Deposits({
   async function fetchBalance() {
     setFetchingBalance(true);
     const response = await fetch('/api/accounts', { method: 'GET' });
+    if (response?.status >= 400) {
+      await supabase
+        .from('access_tokens')
+        .update({ access_token: '' })
+        .eq('HOA', state?.id);
+      dispatchPlaid(setPlaid({ ...statePlaid, accessToken: '' }));
+      return;
+    }
     const data = await response.json();
     let newBalance = data?.accounts?.reduce((balance, account) => {
       balance += account?.balances?.available;

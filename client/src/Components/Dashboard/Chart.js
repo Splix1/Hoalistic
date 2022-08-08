@@ -12,6 +12,7 @@ import App from '../../Plaid/App';
 import supabase from '../../client';
 import { setTransactions } from '../../Store/Transactions';
 import Plot from 'react-plotly.js';
+import { setPlaid } from '../../Store/Plaid';
 
 export default function FutureProjections({
   data,
@@ -22,8 +23,13 @@ export default function FutureProjections({
   chartType,
   transactions,
 }) {
-  const { state, statePlaid, stateTransactions, dispatchTransactions } =
-    React.useContext(Context);
+  const {
+    state,
+    statePlaid,
+    stateTransactions,
+    dispatchTransactions,
+    dispatchPlaid,
+  } = React.useContext(Context);
   const [showLabels, setShowLabels] = React.useState(false);
   const [fetchingTransactions, setFetchingTransactions] = React.useState(false);
   const [connectingBank, setConnectingBank] = React.useState(false);
@@ -83,6 +89,14 @@ export default function FutureProjections({
   async function fetchTransactions() {
     setFetchingTransactions(true);
     const response = await fetch('/api/transactions', { method: 'GET' });
+    if (response?.status >= 400) {
+      await supabase
+        .from('access_tokens')
+        .update({ access_token: '' })
+        .eq('HOA', state?.id);
+      dispatchPlaid(setPlaid({ ...statePlaid, accessToken: '' }));
+      return;
+    }
     const data = await response.json();
     console.log('data', data);
     await supabase
@@ -210,10 +224,6 @@ export default function FutureProjections({
         layout={{
           title: chartType,
           width: 820,
-          paper_bgcolor:
-            state?.theme === 'light' ? 'layout.paper_bgcolor' : '#121212',
-          plot_bgcolor:
-            state?.theme === 'light' ? 'layout.paper_bgcolor' : '#121212',
         }}
       />
       <div
