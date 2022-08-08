@@ -98,7 +98,7 @@ export default function FutureProjections({
       return;
     }
     const data = await response.json();
-    console.log('data', data);
+
     await supabase
       .from('HOAs')
       .update({ cursor: data?.cursor })
@@ -151,8 +151,6 @@ export default function FutureProjections({
     );
     setFetchingTransactions(false);
   }
-
-  // console.log('transactions', stateTransactions);
 
   function fetchTransactionsButton() {
     switch (fetchingTransactions) {
