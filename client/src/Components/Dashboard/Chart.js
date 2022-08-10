@@ -30,45 +30,7 @@ export default function FutureProjections({
     dispatchTransactions,
     dispatchPlaid,
   } = React.useContext(Context);
-  const [showLabels, setShowLabels] = React.useState(false);
   const [fetchingTransactions, setFetchingTransactions] = React.useState(false);
-  const [connectingBank, setConnectingBank] = React.useState(false);
-
-  const options = {
-    chart: {
-      id: 'basic-bar',
-    },
-    xaxis: {
-      categories: years,
-    },
-    theme: {
-      mode: state?.theme,
-      palette: 'palette1',
-      monochrome: {
-        enabled: false,
-      },
-    },
-    dataLabels: {
-      enabled: showLabels,
-      formatter: function (val, opts) {
-        val = Math.trunc(val);
-
-        if (val < 0) return `-$${numberWithCommas(Math.abs(val))}`;
-        return `$${numberWithCommas(val)}`;
-      },
-    },
-    tooltip: {
-      y: {
-        formatter: (val) => {
-          val = Math.trunc(val);
-
-          if (val < 0) return `-$${numberWithCommas(Math.abs(val))}`;
-
-          return `$${numberWithCommas(val)}`;
-        },
-      },
-    },
-  };
 
   function numberWithCommas(x) {
     if (!x) return;
@@ -229,23 +191,6 @@ export default function FutureProjections({
         style={{ justifyContent: 'space-between', marginTop: '0.5rem' }}
       >
         <div className="display-row">
-          {!showLabels ? (
-            <Button
-              variant="contained"
-              style={{ width: '9rem', height: '1.5rem' }}
-              onClick={() => setShowLabels(true)}
-            >
-              show labels
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              style={{ width: '9rem', height: '1.5rem' }}
-              onClick={() => setShowLabels(false)}
-            >
-              hide labels
-            </Button>
-          )}
           {chartType === 'Transaction History' && statePlaid?.accessToken ? (
             <div>{fetchTransactionsButton()}</div>
           ) : chartType === 'Transaction History' ? (
