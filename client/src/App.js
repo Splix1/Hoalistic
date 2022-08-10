@@ -129,10 +129,6 @@ function App() {
           .from('HOAs')
           .select('*')
           .eq('email', curUser?.email);
-        let { data: accessTokenData } = await supabase
-          .from('access_tokens')
-          .select('*')
-          .eq('HOA', data[0]?.id);
 
         if (location?.pathname === '/projects')
           await fetchProjects(data[0], dispatchProjects);
@@ -146,13 +142,22 @@ function App() {
         if (location?.pathname === '/documents')
           await fetchDocuments(data[0], dispatchDocuments, dispatchFiles);
 
+        let { data: accessToken } = await axios.post(
+          '/api/state_access_token',
+          {
+            cursor: data[0]?.cursor,
+            id: data[0]?.id,
+          }
+        );
+
+        console.log('data', accessToken);
+
         dispatchPlaid(
           setPlaid({
             linkSuccess: false,
             isItemAccess: true,
             linkToken: '', // Don't set to null or error message will show up briefly when site loads
-            accessToken: accessTokenData[0]?.access_token || null,
-            tokenExpired: isTokenExpired(accessTokenData[0]?.expiration),
+            accessToken: accessToken?.isValidToken,
             itemId: null,
             isError: false,
             backend: true,
@@ -165,10 +170,6 @@ function App() {
           })
         );
 
-        await axios.post('/api/state_access_token', {
-          ACCESS_TOKEN: accessTokenData[0]?.access_token,
-          cursor: data[0]?.cursor,
-        });
         dispatch(
           setUser({
             ...data[0],

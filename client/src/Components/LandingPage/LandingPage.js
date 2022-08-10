@@ -52,10 +52,11 @@ function LandingPage() {
       }
     } else {
       let { data } = await supabase.from('HOAs').select('*').eq('email', email);
-      let { data: accessTokenData } = await supabase
-        .from('access_tokens')
-        .select('*')
-        .eq('HOA', data[0]?.id);
+      let { data: accessToken } = await axios.post('/api/state_access_token', {
+        cursor: data[0]?.cursor,
+        id: data[0]?.id,
+      });
+
       dispatch(
         setUser({
           ...data[0],
@@ -77,7 +78,7 @@ function LandingPage() {
           linkSuccess: false,
           isItemAccess: true,
           linkToken: '', // Don't set to null or error message will show up briefly when site loads
-          accessToken: accessTokenData[0]?.access_token || null,
+          accessToken: accessToken[0]?.isValidToken,
           itemId: null,
           isError: false,
           backend: true,
@@ -90,10 +91,6 @@ function LandingPage() {
         })
       );
 
-      await axios.post('/api/state_access_token', {
-        ACCESS_TOKEN: accessTokenData[0]?.access_token,
-        cursor: data[0]?.cursor,
-      });
       history.push('/dashboard');
     }
   };
