@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const moment = require('moment');
 const cors = require('cors');
 const path = require('path');
+const supabase = require('./client');
 
 const APP_PORT = process.env.PORT || 8000;
 const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID;
@@ -55,6 +56,7 @@ let PAYMENT_ID = null;
 // persistent data store
 let TRANSFER_ID = null;
 let cursor = null;
+let userID = null;
 
 // Initialize the Plaid client
 // Find your API keys in the Dashboard (https://dashboard.plaid.com/account/keys)
@@ -193,9 +195,15 @@ app.post('/api/set_access_token', function (request, response, next) {
       if (PLAID_PRODUCTS.includes('transfer')) {
         TRANSFER_ID = await authorizeAndCreateTransfer(ACCESS_TOKEN);
       }
+
+      let { data: accessToken } = await supabase
+        .from('access_tokens')
+        .update({ access_token: ACCESS_TOKEN, item_id: ITEM_ID })
+        .eq('HOA', userID);
+
       response.json({
-        access_token: ACCESS_TOKEN,
-        item_id: ITEM_ID,
+        access_token: !!ACCESS_TOKEN,
+        item_id: !!ITEM_ID,
         error: null,
       });
     })
@@ -216,10 +224,29 @@ app.get('/api/auth', function (request, response, next) {
     .catch(next);
 });
 
-app.post('/api/state_access_token', function (request, response, next) {
-  ACCESS_TOKEN = request.body.ACCESS_TOKEN;
-  cursor = request.body.cursor;
-  response.send('');
+app.post('/api/state_access_token', async function (request, response, next) {
+  cursor = request?.body?.cursor;
+  userID = request?.body?.id;
+
+  try {
+    let { data, error } = await supabase
+      .from('access_tokens')
+      .select('*')
+      .eq('HOA', userID);
+
+    if (data?.length > 0) {
+      ACCESS_TOKEN = data[0]?.access_token;
+      ITEM_ID = data[0]?.item_id;
+    } else {
+      await supabase
+        .from('access_tokens')
+        .insert({ HOA: userID, access_token: null, item_id: null });
+    }
+  } catch (err) {
+    console.log('ERRORRRRRRR', err);
+  }
+
+  response.send({ isValidToken: !!ACCESS_TOKEN });
 });
 
 // Retrieve Transactions for an Item
