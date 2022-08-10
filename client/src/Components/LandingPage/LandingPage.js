@@ -57,6 +57,8 @@ function LandingPage() {
         id: data[0]?.id,
       });
 
+      console.log('wtf?', accessToken);
+
       dispatch(
         setUser({
           ...data[0],
@@ -78,7 +80,7 @@ function LandingPage() {
           linkSuccess: false,
           isItemAccess: true,
           linkToken: '', // Don't set to null or error message will show up briefly when site loads
-          accessToken: accessToken[0]?.isValidToken,
+          accessToken: accessToken?.isValidToken,
           itemId: null,
           isError: false,
           backend: true,
