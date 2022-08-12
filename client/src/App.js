@@ -150,8 +150,6 @@ function App() {
           }
         );
 
-        console.log('data', accessToken);
-
         dispatchPlaid(
           setPlaid({
             linkSuccess: false,

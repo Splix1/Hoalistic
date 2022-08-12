@@ -13,6 +13,7 @@ import supabase from '../../client';
 import { setTransactions } from '../../Store/Transactions';
 import Plot from 'react-plotly.js';
 import { setPlaid } from '../../Store/Plaid';
+import Transactions from './Transactions';
 
 export default function FutureProjections({
   data,
@@ -191,6 +192,12 @@ export default function FutureProjections({
         style={{ justifyContent: 'space-between', marginTop: '0.5rem' }}
       >
         <div className="display-row">
+          {chartType === 'Transaction History' ? (
+            <div>
+              <Transactions />
+            </div>
+          ) : null}
+
           {chartType === 'Transaction History' && statePlaid?.accessToken ? (
             <div>{fetchTransactionsButton()}</div>
           ) : chartType === 'Transaction History' ? (
