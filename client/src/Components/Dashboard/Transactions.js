@@ -182,13 +182,22 @@ export default function Transactions() {
                 >
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center" style={{ color: '#90caf9' }}>
+                      <TableCell
+                        align="center"
+                        style={{ color: '#90caf9', fontSize: '1.5rem' }}
+                      >
                         Date
                       </TableCell>
-                      <TableCell align="center" style={{ color: '#90caf9' }}>
+                      <TableCell
+                        align="center"
+                        style={{ color: '#90caf9', fontSize: '1.5rem' }}
+                      >
                         Amount
                       </TableCell>
-                      <TableCell align="center" style={{ color: '#90caf9' }}>
+                      <TableCell
+                        align="center"
+                        style={{ color: '#90caf9', fontSize: '1.5rem' }}
+                      >
                         Categories
                       </TableCell>
                     </TableRow>
@@ -204,13 +213,22 @@ export default function Transactions() {
                       let date = dayjs(transaction.date);
                       return (
                         <TableRow key={transaction.id}>
-                          <TableCell align="center">{`${date.$M}/${date.$D}/${date.$y}`}</TableCell>
-                          <TableCell align="center">
+                          <TableCell
+                            align="center"
+                            style={{ fontSize: '1rem' }}
+                          >{`${date.$M}/${date.$D}/${date.$y}`}</TableCell>
+                          <TableCell
+                            align="center"
+                            style={{ fontSize: '1rem' }}
+                          >
                             {transaction.amount > 0
                               ? `-$${transaction.amount}`
                               : `+$${Math.abs(transaction.amount)}`}
                           </TableCell>
-                          <TableCell align="center">
+                          <TableCell
+                            align="center"
+                            style={{ fontSize: '1rem' }}
+                          >
                             {transaction.categories}
                           </TableCell>
                         </TableRow>
