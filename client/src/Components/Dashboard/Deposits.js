@@ -25,10 +25,11 @@ export default function Deposits({
   let [inputType, setInputType] = React.useState('manual');
 
   async function updateBalance(newBalance) {
-    let { data: updatedBalance } = await supabase
+    let { data: updatedBalance, error: updatedBalanceError } = await supabase
       .from('HOAs')
       .update([{ balance: +newBalance }])
       .eq('id', user?.id);
+
     dispatch(setUser({ ...state, balance: updatedBalance[0]?.balance }));
     if (chartType === 'FutureProjections') {
       generateChartData(updatedBalance[0]);
@@ -49,6 +50,15 @@ export default function Deposits({
       return;
     }
     const data = await response.json();
+
+    if (data?.error?.error_code === 'ITEM_LOGIN_REQUIRED') {
+      await supabase
+        .from('access_tokens')
+        .update({ access_token: '' })
+        .eq('HOA', state?.id);
+      dispatchPlaid(setPlaid({ ...statePlaid, accessToken: '' }));
+      return;
+    }
     let newBalance = data?.accounts?.reduce((balance, account) => {
       balance += account?.balances?.available;
       return balance;
