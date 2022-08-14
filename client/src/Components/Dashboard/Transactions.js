@@ -250,7 +250,7 @@ export default function Transactions() {
                           <TableCell
                             align="center"
                             style={{ fontSize: '1rem' }}
-                          >{`${date.$M}/${date.$D}/${date.$y}`}</TableCell>
+                          >{`${date.$M + 1}/${date.$D}/${date.$y}`}</TableCell>
                           <TableCell
                             align="center"
                             style={{ fontSize: '1rem' }}

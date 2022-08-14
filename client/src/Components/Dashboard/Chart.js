@@ -67,6 +67,8 @@ export default function FutureProjections({
         .from('access_tokens')
         .update({ access_token: '' })
         .eq('HOA', state?.id);
+      await supabase.from('HOAs').update({ cursor: '' }).eq('id', state?.id);
+      await fetch('/api/clear_cursor', { method: 'POST' });
       dispatchPlaid(setPlaid({ ...statePlaid, accessToken: '' }));
       return;
     }
