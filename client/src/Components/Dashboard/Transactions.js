@@ -109,11 +109,16 @@ export default function Transactions() {
   const [exitColor, setExitColor] = React.useState('white');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [transactions, setTransactions] = React.useState(stateTransactions);
+  const [currentFilter, setCurrentFilter] = React.useState('date');
+
+  React.useEffect(() => {
+    if (currentFilter === 'date') filterByDate();
+    if (currentFilter === 'amount') filterByAmount();
+  }, [currentFilter]);
 
   const emptyRows =
-    page > 0
-      ? Math.max(0, (1 + page) * rowsPerPage - stateTransactions?.length)
-      : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - transactions?.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -123,6 +128,21 @@ export default function Transactions() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const filterByDate = () => {
+    let sortedByDate = transactions?.sort(
+      (a, b) => (a.date > b.date) - (a.date < b.date)
+    );
+    setTransactions(sortedByDate);
+  };
+
+  const filterByAmount = () => {
+    let sortedByAmount = transactions?.sort(
+      (a, b) => (a.amount > b.amount) - (a.amount < b.amount)
+    );
+    setTransactions(sortedByAmount);
+  };
+
   return (
     <div>
       <Button
@@ -184,13 +204,27 @@ export default function Transactions() {
                     <TableRow>
                       <TableCell
                         align="center"
-                        style={{ color: '#90caf9', fontSize: '1.5rem' }}
+                        style={{
+                          color: '#90caf9',
+                          fontSize: '1.5rem',
+                          cursor: 'pointer',
+                          textDecoration:
+                            currentFilter === 'date' ? 'underline' : 'none',
+                        }}
+                        onClick={() => setCurrentFilter('date')}
                       >
                         Date
                       </TableCell>
                       <TableCell
                         align="center"
-                        style={{ color: '#90caf9', fontSize: '1.5rem' }}
+                        style={{
+                          color: '#90caf9',
+                          fontSize: '1.5rem',
+                          cursor: 'pointer',
+                          textDecoration:
+                            currentFilter === 'amount' ? 'underline' : 'none',
+                        }}
+                        onClick={() => setCurrentFilter('amount')}
                       >
                         Amount
                       </TableCell>
@@ -204,11 +238,11 @@ export default function Transactions() {
                   </TableHead>
                   <TableBody>
                     {(rowsPerPage > 0
-                      ? stateTransactions?.slice(
+                      ? transactions?.slice(
                           page * rowsPerPage,
                           page * rowsPerPage + rowsPerPage
                         )
-                      : stateTransactions
+                      : transactions
                     ).map((transaction) => {
                       let date = dayjs(transaction.date);
                       return (
@@ -253,7 +287,7 @@ export default function Transactions() {
                           { label: 'All', value: -1 },
                         ]}
                         colSpan={3}
-                        count={stateTransactions?.length}
+                        count={transactions?.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         SelectProps={{
