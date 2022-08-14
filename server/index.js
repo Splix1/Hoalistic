@@ -249,6 +249,11 @@ app.post('/api/state_access_token', async function (request, response, next) {
   response.send({ isValidToken: !!ACCESS_TOKEN });
 });
 
+app.post('/api/clear_cursor', async function (request, response, next) {
+  cursor = null;
+  response.send('');
+});
+
 // Retrieve Transactions for an Item
 // https://plaid.com/docs/#transactions
 app.get('/api/transactions', function (request, response, next) {
