@@ -143,6 +143,13 @@ export default function Transactions() {
     setTransactions(sortedByAmount);
   };
 
+  const filterByName = () => {
+    let sortedByName = transactions?.sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    setTransactions(sortedByName);
+  };
+
   return (
     <div>
       <Button
@@ -202,6 +209,19 @@ export default function Transactions() {
                 >
                   <TableHead>
                     <TableRow>
+                      <TableCell
+                        align="center"
+                        style={{
+                          color: '#90caf9',
+                          fontSize: '1.5rem',
+                          cursor: 'pointer',
+                          textDecoration:
+                            currentFilter === 'name' ? 'underline' : 'none',
+                        }}
+                        onClick={() => setCurrentFilter('name')}
+                      >
+                        Name
+                      </TableCell>
                       <TableCell
                         align="center"
                         style={{
