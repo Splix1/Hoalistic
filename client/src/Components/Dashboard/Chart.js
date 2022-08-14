@@ -61,6 +61,15 @@ export default function FutureProjections({
       return;
     }
     const data = await response.json();
+    console.log('transactions', data);
+    if (data?.error?.error_code === 'ITEM_LOGIN_REQUIRED') {
+      await supabase
+        .from('access_tokens')
+        .update({ access_token: '' })
+        .eq('HOA', state?.id);
+      dispatchPlaid(setPlaid({ ...statePlaid, accessToken: '' }));
+      return;
+    }
 
     await supabase
       .from('HOAs')
