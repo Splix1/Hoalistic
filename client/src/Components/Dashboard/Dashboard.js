@@ -294,7 +294,7 @@ function DashboardContent() {
         date = currentTransactionDate;
         let previousBalance = getPreviousBalance(date, amount);
         data[0].y.push(Math.trunc(previousBalance));
-        data[0].x.push(`${months[date.$M + 1]}/${date.$D}`);
+        data[0].x.push(`${months[date.$M + 1]}/${date.$D}/${date.$y}`);
         data[0].text.push({
           amount: Math.trunc(amount),
           categories: transactionsCategories.join(', '),
@@ -307,8 +307,8 @@ function DashboardContent() {
 
       if (day === date.$D && month === date.$M && year === date.$y) {
         amount += currentTransaction.amount;
-        let categories = currentTransaction.categories.split(', ');
-        for (let j = 0; j < categories.length; j++) {
+        let categories = currentTransaction?.categories?.split(', ');
+        for (let j = 0; j < categories?.length; j++) {
           if (!transactionsCategories.includes(categories[j])) {
             transactionsCategories.push(categories[j]);
           }
