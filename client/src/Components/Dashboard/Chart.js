@@ -167,7 +167,7 @@ export default function FutureProjections({
     let a = document.createElement('a');
     const object_URL = URL.createObjectURL(blob);
     a.href = object_URL;
-    a.download = 'data.csv';
+    a.download = `${chartType}.csv`;
     document.body.appendChild(a);
     a.click();
     URL.revokeObjectURL(object_URL);
@@ -274,17 +274,19 @@ export default function FutureProjections({
         ) : null}
 
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <Button
-            variant="contained"
-            onClick={() => exportCSV(data[0])}
-            style={{
-              width: 'fit-content',
-              height: '1.5rem',
-              marginRight: '0.5rem',
-            }}
-          >
-            Export FT
-          </Button>
+          {chartType === 'Future Projections' ? (
+            <Button
+              variant="contained"
+              onClick={() => exportCSV(data[0])}
+              style={{
+                width: 'fit-content',
+                height: '1.5rem',
+                marginRight: '0.5rem',
+              }}
+            >
+              Export FT to CSV
+            </Button>
+          ) : null}
           <Scenarios />
           <NewScenario />
         </div>
