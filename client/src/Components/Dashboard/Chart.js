@@ -274,7 +274,7 @@ export default function FutureProjections({
         ) : null}
 
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          {chartType === 'Future Projections' ? (
+          {data.length > 0 ? (
             <Button
               variant="contained"
               onClick={() => exportCSV(data[0])}
@@ -284,9 +284,10 @@ export default function FutureProjections({
                 marginRight: '0.5rem',
               }}
             >
-              Export FT to CSV
+              Export to CSV
             </Button>
           ) : null}
+
           <Scenarios />
           <NewScenario />
         </div>
