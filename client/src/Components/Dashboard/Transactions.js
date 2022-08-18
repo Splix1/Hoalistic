@@ -112,11 +112,6 @@ export default function Transactions() {
   const [transactions, setTransactions] = React.useState(stateTransactions);
   const [currentFilter, setCurrentFilter] = React.useState('date');
 
-  React.useEffect(() => {
-    if (currentFilter === 'date') filterByDate();
-    if (currentFilter === 'amount') filterByAmount();
-  }, [currentFilter]);
-
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - transactions?.length) : 0;
 
@@ -218,7 +213,10 @@ export default function Transactions() {
                           textDecoration:
                             currentFilter === 'name' ? 'underline' : 'none',
                         }}
-                        onClick={() => setCurrentFilter('name')}
+                        onClick={() => {
+                          setCurrentFilter('name');
+                          filterByName();
+                        }}
                       >
                         Name
                       </TableCell>
@@ -231,7 +229,10 @@ export default function Transactions() {
                           textDecoration:
                             currentFilter === 'date' ? 'underline' : 'none',
                         }}
-                        onClick={() => setCurrentFilter('date')}
+                        onClick={() => {
+                          setCurrentFilter('date');
+                          filterByDate();
+                        }}
                       >
                         Date
                       </TableCell>
@@ -244,7 +245,10 @@ export default function Transactions() {
                           textDecoration:
                             currentFilter === 'amount' ? 'underline' : 'none',
                         }}
-                        onClick={() => setCurrentFilter('amount')}
+                        onClick={() => {
+                          setCurrentFilter('amount');
+                          filterByAmount();
+                        }}
                       >
                         Amount
                       </TableCell>
@@ -267,6 +271,12 @@ export default function Transactions() {
                       let date = dayjs(transaction.date);
                       return (
                         <TableRow key={transaction.id}>
+                          <TableCell
+                            align="center"
+                            style={{ fontSize: '1rem' }}
+                          >
+                            {transaction.name || 'No Name'}
+                          </TableCell>
                           <TableCell
                             align="center"
                             style={{ fontSize: '1rem' }}

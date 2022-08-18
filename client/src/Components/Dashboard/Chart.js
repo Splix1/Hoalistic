@@ -157,6 +157,22 @@ export default function FutureProjections({
     }
   }
 
+  function exportCSV(gd) {
+    let text = 'Month, Future Projection \n';
+    for (let i = 0; i < gd.x.length; i++) {
+      text += `${gd.x[i]}, ${gd.y[i]} \n`;
+    }
+
+    let blob = new Blob([text], { type: 'text/plain' });
+    let a = document.createElement('a');
+    const object_URL = URL.createObjectURL(blob);
+    a.href = object_URL;
+    a.download = 'data.csv';
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(object_URL);
+  }
+
   return (
     <Paper
       sx={{
@@ -258,6 +274,17 @@ export default function FutureProjections({
         ) : null}
 
         <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <Button
+            variant="contained"
+            onClick={() => exportCSV(data[0])}
+            style={{
+              width: 'fit-content',
+              height: '1.5rem',
+              marginRight: '0.5rem',
+            }}
+          >
+            Export FT
+          </Button>
           <Scenarios />
           <NewScenario />
         </div>
