@@ -14,6 +14,7 @@ import { setTransactions } from '../../Store/Transactions';
 import Plot from 'react-plotly.js';
 import { setPlaid } from '../../Store/Plaid';
 import Transactions from './Transactions';
+import ExportData from './ExportData';
 
 export default function FutureProjections({
   data,
@@ -61,7 +62,7 @@ export default function FutureProjections({
       return;
     }
     const data = await response.json();
-    console.log('transactions', data);
+
     if (data?.error?.error_code === 'ITEM_LOGIN_REQUIRED') {
       await supabase
         .from('access_tokens')
@@ -155,22 +156,6 @@ export default function FutureProjections({
         );
       }
     }
-  }
-
-  function exportCSV(gd) {
-    let text = 'Month, Future Projection \n';
-    for (let i = 0; i < gd.x.length; i++) {
-      text += `${gd.x[i]}, ${gd.y[i]} \n`;
-    }
-
-    let blob = new Blob([text], { type: 'text/plain' });
-    let a = document.createElement('a');
-    const object_URL = URL.createObjectURL(blob);
-    a.href = object_URL;
-    a.download = `${chartType}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    URL.revokeObjectURL(object_URL);
   }
 
   return (
@@ -274,19 +259,7 @@ export default function FutureProjections({
         ) : null}
 
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          {data.length > 0 ? (
-            <Button
-              variant="contained"
-              onClick={() => exportCSV(data[0])}
-              style={{
-                width: 'fit-content',
-                height: '1.5rem',
-                marginRight: '0.5rem',
-              }}
-            >
-              Export to CSV
-            </Button>
-          ) : null}
+          {data.length > 0 ? <ExportData data={data} /> : null}
 
           <Scenarios />
           <NewScenario />
