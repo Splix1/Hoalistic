@@ -211,22 +211,6 @@ export default function Transactions() {
                           fontSize: '1.5rem',
                           cursor: 'pointer',
                           textDecoration:
-                            currentFilter === 'name' ? 'underline' : 'none',
-                        }}
-                        onClick={() => {
-                          setCurrentFilter('name');
-                          filterByName();
-                        }}
-                      >
-                        Name
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{
-                          color: '#90caf9',
-                          fontSize: '1.5rem',
-                          cursor: 'pointer',
-                          textDecoration:
                             currentFilter === 'date' ? 'underline' : 'none',
                         }}
                         onClick={() => {
@@ -236,6 +220,23 @@ export default function Transactions() {
                       >
                         Date
                       </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{
+                          color: '#90caf9',
+                          fontSize: '1.5rem',
+                          cursor: 'pointer',
+                          textDecoration:
+                            currentFilter === 'name' ? 'underline' : 'none',
+                        }}
+                        onClick={() => {
+                          setCurrentFilter('name');
+                          filterByName();
+                        }}
+                      >
+                        Name
+                      </TableCell>
+
                       <TableCell
                         align="center"
                         style={{
@@ -274,13 +275,13 @@ export default function Transactions() {
                           <TableCell
                             align="center"
                             style={{ fontSize: '1rem' }}
-                          >
-                            {transaction.name || 'No Name'}
-                          </TableCell>
+                          >{`${date.$M + 1}/${date.$D}/${date.$y}`}</TableCell>
                           <TableCell
                             align="center"
                             style={{ fontSize: '1rem' }}
-                          >{`${date.$M + 1}/${date.$D}/${date.$y}`}</TableCell>
+                          >
+                            {transaction.name || 'No Name'}
+                          </TableCell>
                           <TableCell
                             align="center"
                             style={{ fontSize: '1rem' }}
