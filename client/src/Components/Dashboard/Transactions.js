@@ -111,6 +111,7 @@ export default function Transactions() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [transactions, setTransactions] = React.useState(stateTransactions);
   const [currentFilter, setCurrentFilter] = React.useState('date');
+  const [sortLowestHighest, setSortLowestHighest] = React.useState(true);
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - transactions?.length) : 0;
@@ -125,23 +126,42 @@ export default function Transactions() {
   };
 
   const filterByDate = () => {
-    let sortedByDate = transactions?.sort(
-      (a, b) => (a.date > b.date) - (a.date < b.date)
-    );
+    let sortedByDate;
+    if (sortLowestHighest) {
+      sortedByDate = transactions?.sort(
+        (a, b) => (a.date > b.date) - (a.date < b.date)
+      );
+    } else {
+      sortedByDate = transactions?.sort(
+        (a, b) => (a.date < b.date) - (a.date > b.date)
+      );
+    }
     setTransactions(sortedByDate);
   };
 
   const filterByAmount = () => {
-    let sortedByAmount = transactions?.sort(
-      (a, b) => (a.amount > b.amount) - (a.amount < b.amount)
-    );
+    let sortedByAmount;
+    if (sortLowestHighest) {
+      sortedByAmount = transactions?.sort(
+        (a, b) => (a.amount > b.amount) - (a.amount < b.amount)
+      );
+    } else {
+      sortedByAmount = transactions?.sort(
+        (a, b) => (a.amount < b.amount) - (a.amount > b.amount)
+      );
+    }
     setTransactions(sortedByAmount);
   };
 
   const filterByName = () => {
-    let sortedByName = transactions?.sort((a, b) =>
-      a.name.localeCompare(b.name)
-    );
+    let sortedByName;
+    if (sortLowestHighest) {
+      sortedByName = transactions?.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      sortedByName = transactions
+        ?.sort((a, b) => a.name.localeCompare(b.name))
+        .reverse();
+    }
     setTransactions(sortedByName);
   };
 
@@ -214,6 +234,8 @@ export default function Transactions() {
                             currentFilter === 'date' ? 'underline' : 'none',
                         }}
                         onClick={() => {
+                          if (currentFilter === 'date')
+                            setSortLowestHighest(!sortLowestHighest);
                           setCurrentFilter('date');
                           filterByDate();
                         }}
@@ -230,6 +252,8 @@ export default function Transactions() {
                             currentFilter === 'name' ? 'underline' : 'none',
                         }}
                         onClick={() => {
+                          if (currentFilter === 'name')
+                            setSortLowestHighest(!sortLowestHighest);
                           setCurrentFilter('name');
                           filterByName();
                         }}
@@ -247,6 +271,8 @@ export default function Transactions() {
                             currentFilter === 'amount' ? 'underline' : 'none',
                         }}
                         onClick={() => {
+                          if (currentFilter === 'amount')
+                            setSortLowestHighest(!sortLowestHighest);
                           setCurrentFilter('amount');
                           filterByAmount();
                         }}
