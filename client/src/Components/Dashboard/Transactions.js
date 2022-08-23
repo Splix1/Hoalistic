@@ -165,6 +165,28 @@ export default function Transactions() {
     setTransactions(sortedByName);
   };
 
+  const exportTransactions = () => {
+    let text = `Date, Name, Amount, Categories \n`;
+    for (let i = 0; i < stateTransactions?.length; i++) {
+      let transaction = stateTransactions[i];
+      let transactionDate = dayjs(transaction.date);
+      text += `${transactionDate.$M}/${transactionDate.$D}/${
+        transactionDate.$y
+      }, ${transaction.name}, ${transaction.amount}, ${transaction.categories
+        ?.split(', ')
+        .join('/')} \n`;
+    }
+
+    let blob = new Blob([text], { type: 'text/plain' });
+    let a = document.createElement('a');
+    const object_URL = URL.createObjectURL(blob);
+    a.href = object_URL;
+    a.download = `Transactions.csv`;
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(object_URL);
+  };
+
   return (
     <div>
       <Button
@@ -357,6 +379,13 @@ export default function Transactions() {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         ActionsComponent={TablePaginationActions}
                       />
+                      <Button
+                        variant="contained"
+                        style={{ height: '1.3rem', marginTop: '2rem' }}
+                        onClick={() => exportTransactions()}
+                      >
+                        Export all to CSV
+                      </Button>
                     </TableRow>
                   </TableFooter>
                 </Table>
