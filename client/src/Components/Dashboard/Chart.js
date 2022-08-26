@@ -259,7 +259,7 @@ export default function FutureProjections({
         ) : null}
 
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          {data.length > 0 ? <ExportData data={data} /> : null}
+          {data[0]?.x?.length > 0 ? <ExportData data={data} /> : null}
 
           <Scenarios />
           <NewScenario />
