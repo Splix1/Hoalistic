@@ -379,13 +379,15 @@ export default function Transactions() {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         ActionsComponent={TablePaginationActions}
                       />
-                      <Button
-                        variant="contained"
-                        style={{ height: '1.3rem', marginTop: '2rem' }}
-                        onClick={() => exportTransactions()}
-                      >
-                        Export all to CSV
-                      </Button>
+                      {stateTransactions?.length > 0 ? (
+                        <Button
+                          variant="contained"
+                          style={{ height: '1.3rem', marginTop: '2rem' }}
+                          onClick={() => exportTransactions()}
+                        >
+                          Export all to CSV
+                        </Button>
+                      ) : null}
                     </TableRow>
                   </TableFooter>
                 </Table>
