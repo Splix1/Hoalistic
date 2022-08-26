@@ -170,7 +170,7 @@ export default function Transactions() {
     for (let i = 0; i < stateTransactions?.length; i++) {
       let transaction = stateTransactions[i];
       let transactionDate = dayjs(transaction.date);
-      text += `${transactionDate.$M}/${transactionDate.$D}/${
+      text += `${transactionDate.$M + 1}/${transactionDate.$D}/${
         transactionDate.$y
       }, ${transaction.name}, ${transaction.amount}, ${transaction.categories
         ?.split(', ')
