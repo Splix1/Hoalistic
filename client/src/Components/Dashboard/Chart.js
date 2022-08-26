@@ -78,10 +78,6 @@ export default function FutureProjections({
       .from('HOAs')
       .update({ cursor: data?.cursor })
       .eq('id', state?.id);
-    let transaction_ids = stateTransactions?.reduce((ids, transaction) => {
-      ids.push(transaction.transaction_id);
-      return ids;
-    }, []);
     let transactionsToAdd = [];
 
     for (let i = 0; i < data?.latest_transactions?.length; i++) {
@@ -98,10 +94,44 @@ export default function FutureProjections({
         category,
       } = data.latest_transactions[i];
       let { payee, payer } = data.latest_transactions[i].payment_meta;
+      let transactionsCategories = category?.join(', ');
 
-      if (transaction_ids.includes(transaction_id)) {
-        continue;
+      //need to cancel out duplicates, possible to grab same transaction with different ID
+      let isDuplicateTransaction = false;
+      for (let j = 0; j < stateTransactions?.length; j++) {
+        let currentStateTransaction = stateTransactions[j];
+        let amountIsSame = currentStateTransaction.amount === amount;
+        let transactionTypeIsSame =
+          currentStateTransaction.transaction_type === transaction_type;
+        let paymentChannelIsSame =
+          currentStateTransaction.payment_channel === payment_channel;
+        let nameIsSame = currentStateTransaction.name === name;
+        let merchantNameIsSame =
+          currentStateTransaction.merchant_name === merchant_name;
+        let authorizedDateIsSame =
+          currentStateTransaction.authorized_date === authorized_date;
+        let dateIsSame = currentStateTransaction.date === date;
+        let checkNumberIsSame =
+          currentStateTransaction.check_number === check_number;
+        let categoriesIsSame =
+          currentStateTransaction.categories === transactionsCategories;
+        if (
+          amountIsSame &&
+          transactionTypeIsSame &&
+          paymentChannelIsSame &&
+          nameIsSame &&
+          merchantNameIsSame &&
+          authorizedDateIsSame &&
+          dateIsSame &&
+          checkNumberIsSame &&
+          categoriesIsSame
+        ) {
+          isDuplicateTransaction = true;
+          break;
+        }
       }
+      if (isDuplicateTransaction) continue;
+
       transactionsToAdd.push({
         amount,
         transaction_type,
