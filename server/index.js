@@ -225,7 +225,6 @@ app.get('/api/auth', function (request, response, next) {
 });
 
 app.post('/api/state_access_token', async function (request, response, next) {
-  cursor = request?.body?.cursor;
   userID = request?.body?.id;
 
   try {
