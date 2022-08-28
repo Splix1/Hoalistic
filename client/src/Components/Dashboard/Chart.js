@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { Paper, Button } from '@mui/material';
-import Title from './Title';
 import CssBaseline from '@mui/material/CssBaseline';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Context } from '../ContextProvider';
-import Chart from 'react-apexcharts';
 import Scenarios from '../Scenarios/Scenarios';
 import NewScenario from '../Scenarios/NewScenario';
 import App from '../../Plaid/App';
@@ -20,10 +18,8 @@ export default function FutureProjections({
   data,
   monthsToAdd,
   setMonthsToAdd,
-  years,
   setChartType,
   chartType,
-  transactions,
 }) {
   const {
     state,
@@ -62,6 +58,7 @@ export default function FutureProjections({
       return;
     }
     const data = await response.json();
+    console.log('data', data);
 
     if (data?.error?.error_code === 'ITEM_LOGIN_REQUIRED') {
       await supabase
@@ -166,7 +163,8 @@ export default function FutureProjections({
           <Button
             fullWidth
             variant="contained"
-            style={{ width: '12rem', height: '1.5rem', marginLeft: '0.5rem' }}
+            className="fetch-transactions"
+            style={{ marginLeft: '0.5rem' }}
             onClick={fetchTransactions}
           >
             Fetch Transactions
@@ -178,7 +176,8 @@ export default function FutureProjections({
           <Button
             fullWidth
             variant="contained"
-            style={{ width: '9rem', height: '1.5rem', marginLeft: '0.5rem' }}
+            className="fetching-transactions"
+            style={{ marginLeft: '0.5rem' }}
             disabled
           >
             Fetching transactions...
@@ -187,6 +186,8 @@ export default function FutureProjections({
       }
     }
   }
+
+  console.log('data', data);
 
   return (
     <Paper
@@ -201,11 +202,11 @@ export default function FutureProjections({
       md={10}
     >
       <CssBaseline />
-      <div className="display-row" style={{ justifyContent: 'center' }}>
+      <div className="display-row justify-center">
         <Button
           variant={isFutureProjections()}
-          style={{ marginRight: '1rem' }}
           onClick={() => setChartType('Future Projections')}
+          style={{ marginRight: '1rem' }}
         >
           Future Projections
         </Button>

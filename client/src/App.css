@@ -31,15 +31,7 @@ body::-webkit-scrollbar {
   margin-top: 10px;
 }
 
-.display-row {
-  display: flex;
-  flex-direction: row;
-}
 
-.display-column {
-  display: flex;
-  flex-direction: column;
-}
 
 .single-unit, .single-project, .single-cost {
   display: flex;
@@ -84,3 +76,26 @@ body::-webkit-scrollbar {
   right: -20px;
 }
 
+.display-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.display-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.fetch-transactions {
+  width: 12rem;
+  height: 1.5rem;
+}
+
+.fetching-transactions {
+  width: 9rem;
+  height: 1.5rem;
+}

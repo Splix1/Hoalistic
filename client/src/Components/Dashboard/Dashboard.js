@@ -244,7 +244,7 @@ function DashboardContent() {
   async function generatePreviousBalances() {
     let data = [
       {
-        type: 'scatter',
+        type: 'line',
         mode: 'lines+markers',
         x: [],
         y: [],
@@ -293,8 +293,9 @@ function DashboardContent() {
       if (day !== date.$D || month !== date.$M || year !== date.$y) {
         date = currentTransactionDate;
         let previousBalance = getPreviousBalance(date, amount);
+
         data[0].y.push(Math.trunc(previousBalance));
-        data[0].x.push(`${months[date.$M + 1]}/${date.$D}/${date.$y}`);
+        data[0].x.push(`${date.$y}-${date.$M}-${date.$D}`);
         data[0].text.push({
           amount: Math.trunc(amount),
           categories: transactionsCategories.join(', '),
