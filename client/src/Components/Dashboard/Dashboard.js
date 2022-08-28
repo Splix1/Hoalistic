@@ -295,7 +295,7 @@ function DashboardContent() {
         let previousBalance = getPreviousBalance(date, amount);
 
         data[0].y.push(Math.trunc(previousBalance));
-        data[0].x.push(`${date.$y}-${date.$M}-${date.$D}`);
+        data[0].x.push(`${date.$y}-${date.$M + 1}-${date.$D}`);
         data[0].text.push({
           amount: Math.trunc(amount),
           categories: transactionsCategories.join(', '),
