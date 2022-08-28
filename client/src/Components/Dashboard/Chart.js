@@ -89,40 +89,23 @@ export default function FutureProjections({
         check_number,
         transaction_id,
         category,
+        pending,
       } = data.latest_transactions[i];
       let { payee, payer } = data.latest_transactions[i].payment_meta;
-      let transactionsCategories = category?.join(', ');
+      if (pending) continue;
 
       //need to cancel out duplicates, possible to grab same transaction with different ID
       let isDuplicateTransaction = false;
       for (let j = 0; j < stateTransactions?.length; j++) {
-        let currentStateTransaction = stateTransactions[j];
-        let amountIsSame = currentStateTransaction.amount === amount;
-        let transactionTypeIsSame =
-          currentStateTransaction.transaction_type === transaction_type;
-        let paymentChannelIsSame =
-          currentStateTransaction.payment_channel === payment_channel;
-        let nameIsSame = currentStateTransaction.name === name;
-        let merchantNameIsSame =
-          currentStateTransaction.merchant_name === merchant_name;
-        let authorizedDateIsSame =
-          currentStateTransaction.authorized_date === authorized_date;
-        let dateIsSame = currentStateTransaction.date === date;
-        let checkNumberIsSame =
-          currentStateTransaction.check_number === check_number;
-        let categoriesIsSame =
-          currentStateTransaction.categories === transactionsCategories;
-        if (
-          amountIsSame &&
-          transactionTypeIsSame &&
-          paymentChannelIsSame &&
-          nameIsSame &&
-          merchantNameIsSame &&
-          authorizedDateIsSame &&
-          dateIsSame &&
-          checkNumberIsSame &&
-          categoriesIsSame
-        ) {
+        let ID = stateTransactions[j].transaction_id;
+        if (ID === transaction_id) {
+          isDuplicateTransaction = true;
+          break;
+        }
+      }
+      for (let j = 0; j < transactionsToAdd.length; j++) {
+        let ID = transactionsToAdd[j].transaction_id;
+        if (ID === transaction_id) {
           isDuplicateTransaction = true;
           break;
         }
@@ -186,8 +169,6 @@ export default function FutureProjections({
       }
     }
   }
-
-  console.log('data', data);
 
   return (
     <Paper
