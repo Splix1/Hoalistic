@@ -356,29 +356,32 @@ export default function Transactions() {
                   </TableBody>
                   <TableFooter>
                     <TableRow>
-                      <TablePagination
-                        rowsPerPageOptions={[
-                          5,
-                          10,
-                          25,
-                          50,
-                          100,
-                          { label: 'All', value: -1 },
-                        ]}
-                        colSpan={3}
-                        count={transactions?.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        SelectProps={{
-                          inputProps: {
-                            'aria-label': 'rows per page',
-                          },
-                          native: true,
-                        }}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        ActionsComponent={TablePaginationActions}
-                      />
+                      {stateTransactions?.length ? (
+                        <TablePagination
+                          rowsPerPageOptions={[
+                            5,
+                            10,
+                            25,
+                            50,
+                            100,
+                            { label: 'All', value: -1 },
+                          ]}
+                          colSpan={3}
+                          count={transactions?.length}
+                          rowsPerPage={rowsPerPage}
+                          page={page}
+                          SelectProps={{
+                            inputProps: {
+                              'aria-label': 'rows per page',
+                            },
+                            native: true,
+                          }}
+                          onPageChange={handleChangePage}
+                          onRowsPerPageChange={handleChangeRowsPerPage}
+                          ActionsComponent={TablePaginationActions}
+                        />
+                      ) : null}
+
                       {stateTransactions?.length > 0 ? (
                         <Button
                           variant="contained"
