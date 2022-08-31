@@ -24,19 +24,85 @@ export default function BasicInfo() {
           </Typography>
         </Title>
         <div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
-              Built in {state?.estYearBuilt}
-            </Typography>
-            <Typography sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
-              {state?.email}
-            </Typography>
-            <Typography sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
-              {state?.address}
-            </Typography>
-            <Typography sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
-              {state?.city}, {state?.state} {state?.zip}
-            </Typography>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}
+          >
+            <div>
+              <Typography
+                sx={{
+                  fontSize: '1.5rem',
+                  marginBottom: '1rem',
+                  color: '#90caf9',
+                }}
+              >
+                Built in
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: '1.5rem',
+                  marginBottom: '1rem',
+                  color: '#90caf9',
+                }}
+              >
+                Email
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: '1.5rem',
+                  marginBottom: '1rem',
+                  color: '#90caf9',
+                }}
+              >
+                Street Address
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: '1.5rem',
+                  marginBottom: '1rem',
+                  color: '#90caf9',
+                }}
+              >
+                City, State ZIP
+              </Typography>
+            </div>
+            <div>
+              <Typography
+                sx={{
+                  fontSize: '1.5rem',
+                  marginBottom: '1rem',
+                }}
+              >
+                {state?.estYearBuilt}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: '1.5rem',
+                  marginBottom: '1rem',
+                }}
+              >
+                {state?.email}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: '1.5rem',
+                  marginBottom: '1rem',
+                }}
+              >
+                {state?.address}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: '1.5rem',
+                  marginBottom: '1rem',
+                }}
+              >
+                {state?.city}, {state?.state} {state?.zip}
+              </Typography>
+            </div>
           </div>
         </div>
       </div>
