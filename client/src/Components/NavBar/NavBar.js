@@ -12,6 +12,8 @@ import { setUser } from '../../Store/User';
 import BasicMenu from '../DropdownMenu/DropdownMenu';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { createTheme } from '@mui/material/styles';
 import { setCosts } from '../../Store/Costs';
 import { setFiles } from '../../Store/Files';
@@ -69,8 +71,8 @@ export default function NavBar() {
         <Toolbar>
           <BasicMenu />
 
-          <IconButton sx={{ ml: 1 }} onClick={updateTheme} color="inherit">
-            {state.theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          <IconButton sx={{ ml: 1 }} onClick={updateTheme}>
+            {state.theme === 'dark' ? <StarIcon /> : <StarBorderIcon />}
           </IconButton>
           <Typography
             variant="h4"
@@ -81,15 +83,29 @@ export default function NavBar() {
           </Typography>
           {!state?.id ? (
             <div>
-              <Button color="inherit" onClick={() => history.push('/')}>
+              <Button
+                color="inherit"
+                onClick={() => history.push('/')}
+                style={{ color: '#90caf9' }}
+              >
                 Login
               </Button>
-              <Button color="inherit" onClick={() => history.push('/signup')}>
+              <Button
+                color="inherit"
+                onClick={() => history.push('/signup')}
+                style={{ color: '#90caf9' }}
+              >
                 Sign Up
               </Button>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                color: '#90caf9',
+              }}
+            >
               <h4>
                 <NavLink
                   to="/profile"
@@ -98,7 +114,11 @@ export default function NavBar() {
                   Hello, {state?.name?.split(' ')[0]}
                 </NavLink>
               </h4>
-              <Button id="sign-out-button" onClick={signOut}>
+              <Button
+                id="sign-out-button"
+                onClick={signOut}
+                style={{ color: '#90caf9' }}
+              >
                 Sign Out
               </Button>
             </div>
