@@ -9,14 +9,15 @@ export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    if (anchorEl) {
+      handleClose();
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
   };
-  const handleClose = (path) => {
+  const handleClose = () => {
     setAnchorEl(null);
-    history.push(path);
   };
-
-  const history = useHistory();
 
   return (
     <IconButton
@@ -25,11 +26,7 @@ export default function BasicMenu() {
       color="inherit"
       aria-label="menu"
       sx={{ mr: 2 }}
-      onMouseEnter={(evt) => {
-        if (!anchorEl) {
-          handleClick(evt);
-        }
-      }}
+      onClick={handleClick}
     >
       <MenuIcon
         id="basic-button"
