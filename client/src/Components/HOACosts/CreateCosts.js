@@ -13,6 +13,10 @@ import { setCosts } from '../../Store/Costs';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import OccurrenceMenu from './OccurrenceMenu';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
 
 const style = {
   position: 'absolute',
@@ -106,20 +110,22 @@ export default function CreateCost() {
 
             <div className="display-column" style={{ alignItems: 'center' }}>
               <Title>Amount</Title>
-              <CurrencyInput
-                prefix="$"
-                placeholder="Amount"
-                decimalsLimit={2}
-                style={{
-                  height: '3.5rem',
-                  fontSize: '1rem',
-                  color: state?.theme === 'light' ? '#121212' : 'white',
-                  marginRight: '1rem',
-                  backgroundColor:
-                    state?.theme === 'light' ? 'white' : '#121212',
-                }}
-                onValueChange={(value) => setCost(value)}
-              />
+              <FormControl sx={{ m: 1 }} style={{ width: '14.6rem' }}>
+                <InputLabel htmlFor="outlined-adornment-amount">
+                  Amount
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-amount"
+                  value={cost}
+                  defaultValue={0}
+                  type="number"
+                  onChange={(evt) => setCost(evt.target.value)}
+                  startAdornment={
+                    <InputAdornment position="start">$</InputAdornment>
+                  }
+                  label="Amount"
+                />
+              </FormControl>
             </div>
 
             <div

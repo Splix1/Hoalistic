@@ -13,6 +13,10 @@ import supabase from '../../client';
 import { setUnits } from '../../Store/Units';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
 
 const style = {
   position: 'absolute',
@@ -118,20 +122,22 @@ export default function CreateUnit() {
             >
               <div className="display-column" style={{ alignItems: 'center' }}>
                 <Title>Monthly Assessment</Title>
-                <CurrencyInput
-                  prefix="$"
-                  placeholder="Assessment Amount"
-                  decimalsLimit={2}
-                  style={{
-                    height: '3.5rem',
-                    fontSize: '1rem',
-                    color: state?.theme === 'light' ? '#121212' : 'white',
-                    marginRight: '1rem',
-                    backgroundColor:
-                      state?.theme === 'light' ? 'white' : '#121212',
-                  }}
-                  onValueChange={(value) => setMonthlyAssessment(value)}
-                />
+                <FormControl sx={{ m: 1 }} style={{ width: '14.6rem' }}>
+                  <InputLabel htmlFor="outlined-adornment-amount">
+                    Amount
+                  </InputLabel>
+                  <OutlinedInput
+                    id="outlined-adornment-amount"
+                    value={monthly_assessment}
+                    defaultValue={0}
+                    type="number"
+                    onChange={(evt) => setMonthlyAssessment(evt.target.value)}
+                    startAdornment={
+                      <InputAdornment position="start">$</InputAdornment>
+                    }
+                    label="Amount"
+                  />
+                </FormControl>
               </div>
             </div>
 
