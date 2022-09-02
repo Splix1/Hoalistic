@@ -28,7 +28,7 @@ export default function BasicInfo() {
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
             }}
           >
             <div>
@@ -66,7 +66,7 @@ export default function BasicInfo() {
                   color: '#90caf9',
                 }}
               >
-                City, State ZIP
+                City, State & ZIP
               </Typography>
             </div>
             <div>
