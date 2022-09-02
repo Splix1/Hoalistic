@@ -13,6 +13,10 @@ import supabase from '../../client';
 import { setProjects } from '../../Store/Projects';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
 
 const style = {
   position: 'absolute',
@@ -120,21 +124,22 @@ export default function EditProject({ project }) {
 
             <div className="display-column" style={{ alignItems: 'center' }}>
               <Title>Project Cost</Title>
-              <CurrencyInput
-                prefix="$"
-                placeholder="Project Cost"
-                decimalsLimit={2}
-                defaultValue={project?.cost}
-                style={{
-                  height: '3.5rem',
-                  fontSize: '1rem',
-                  color: state?.theme === 'light' ? '#121212' : 'white',
-                  marginRight: '1rem',
-                  backgroundColor:
-                    state?.theme === 'light' ? 'white' : '#121212',
-                }}
-                onValueChange={(value) => setCost(value)}
-              />
+              <FormControl sx={{ m: 1 }} style={{ width: '14.6rem' }}>
+                <InputLabel htmlFor="outlined-adornment-amount">
+                  Amount
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-amount"
+                  value={cost}
+                  defaultValue={project?.cost}
+                  type="number"
+                  onChange={(evt) => setCost(evt.target.value)}
+                  startAdornment={
+                    <InputAdornment position="start">$</InputAdornment>
+                  }
+                  label="Amount"
+                />
+              </FormControl>
             </div>
 
             <Title style={{ marginTop: '0.5rem' }}>Date</Title>

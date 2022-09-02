@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const history = useHistory();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     if (anchorEl) {
@@ -15,8 +16,9 @@ export default function BasicMenu() {
       setAnchorEl(event.currentTarget);
     }
   };
-  const handleClose = () => {
+  const handleClose = (path) => {
     setAnchorEl(null);
+    history.push(path);
   };
 
   return (
