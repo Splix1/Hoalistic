@@ -50,21 +50,14 @@ export default function EditingBasicInfo({ newInfo, setNewInfo }) {
             setNewInfo({ ...newInfo, estYearBuilt: +evt.target.value })
           }
         />
-        <TextField
-          required
-          type="email"
-          fullWidth
-          id="email"
-          label="Email"
-          name="email"
-          defaultValue={state?.email}
-          autoComplete="there@that.com"
-          className="editing-unit"
-          style={{ marginBottom: '1rem' }}
-          onChange={(evt) =>
-            setNewInfo({ ...newInfo, email: evt.target.value })
-          }
-        />
+        <Typography
+          sx={{
+            fontSize: '1.5rem',
+            marginBottom: '1rem',
+          }}
+        >
+          {state?.email}
+        </Typography>
         <TextField
           required
           fullWidth

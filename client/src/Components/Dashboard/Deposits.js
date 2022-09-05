@@ -119,7 +119,7 @@ export default function Deposits({
       <div className="display-column">
         <Title>Current HOA Balance</Title>
         <Typography component="h1" variant="h5">
-          ${HOABalance}
+          ${HOABalance || 0}
         </Typography>
         <div
           className="display-row"

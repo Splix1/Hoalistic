@@ -18,6 +18,8 @@ import { setTransactions } from './Store/Transactions';
 import axios from 'axios';
 const dayjs = require('dayjs');
 
+const theme = createTheme({ palette: { mode: 'light' } });
+
 export async function fetchUserData(
   user,
   dispatchCosts,
@@ -200,7 +202,7 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={state?.mdTheme}>
+    <ThemeProvider theme={state?.mdTheme || theme}>
       <div className="App">
         {state?.id ? <NavBar id="navbar" /> : null}
         <Routes />
