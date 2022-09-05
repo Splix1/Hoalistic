@@ -40,7 +40,7 @@ const StepOne = () => {
             <h3>Add a cost </h3>
           </div>
           <div className="start-content">
-            <h3>Fill out a simple form to keep track of your costs!</h3>
+            <h3>Fill out a simple form to keep track of all of your costs!</h3>
           </div>
         </div>
         <div className="create-img">
