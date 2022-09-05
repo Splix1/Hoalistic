@@ -15,7 +15,7 @@ const Intro = () => {
             documentation, track budgets and create new projections.
           </h2>
         </div>
-        <div className="intro-signup-button">
+        <div className="intro-signup-button display-row">
           <Link to="/login">
             <button>Log in</button>
           </Link>
