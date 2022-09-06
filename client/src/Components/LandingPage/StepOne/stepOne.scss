@@ -17,9 +17,11 @@
   .create-container {
     display: flex;
     align-items: center;
+    
 
     .start-text {
-      max-width: 50%;
+      max-width: 20%;
+      min-width: 20%;
     }
 
     .start-header {
@@ -62,7 +64,8 @@
     }
 
     .join-text {
-      max-width: 50%;
+      max-width: 20%;
+      min-width: 20%;
       margin-top: 5%;
       margin-left: 5%;
     }
