@@ -3,11 +3,11 @@ import './stepOne.scss';
 
 const StepOne = () => {
   return (
-    <div className="stepOne">
-      <div className="header">
+    <div className="stepOne stack">
+      <div className="header stack">
         <h1>Add your units, projects and any costs you may have!</h1>
       </div>
-      <div className="create-container">
+      <div className="create-container stack">
         <div className="start-text">
           <div className="start-header">
             <h3>Add a unit </h3>
@@ -20,7 +20,7 @@ const StepOne = () => {
           <img className="proj-form-img" src="addUnit.png" alt="" />
         </div>
       </div>
-      <div className="create-container">
+      <div className="create-container stack">
         <div className="start-text">
           <div className="start-header">
             <h3>Add a project </h3>
@@ -34,7 +34,7 @@ const StepOne = () => {
         </div>
       </div>
 
-      <div className="create-container">
+      <div className="create-container stack">
         <div className="start-text">
           <div className="start-header">
             <h3>Add a cost </h3>

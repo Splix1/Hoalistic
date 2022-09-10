@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './intro.scss';
+import './intro.css';
 
 const Intro = () => {
   return (
-    <div className="intro">
+    <div className="intro stack">
       <div className="intro-text">
         <div className="intro-header">
           <h1>Introducing Hoalistic</h1>

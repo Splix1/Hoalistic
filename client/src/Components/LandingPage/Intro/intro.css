@@ -1,0 +1,96 @@
+.intro {
+  color: #90caf9;
+  margin-top: -3%;
+  height: 120vh;
+
+}
+
+.intro > .intro-text {
+  margin-top: 9%;
+  margin-left: 8%;
+  max-width: 33%;
+}
+
+.intro > .intro-header > h1 {
+
+    font-size: 72px;
+    margin-bottom: 0;
+    color: #90caf9;
+  
+}
+
+.intro >  .intro-description {
+   font-size: 14px;
+   color: #c5c6c7;
+   line-height: 30px;
+ }
+
+ .intro > .intro-signup-button {
+  margin-top: 40px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.intro>.intro-text>.intro-signup-button>a>button {
+  box-shadow: 2px 5px 6px rgba(255, 255, 255, 0.30);
+    transform: translateY(-1px);
+    transition: all 150ms ease-in-out 0s;
+}
+
+.intro > .intro-text > .intro-signup-button > a > button {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 1000;
+  text-align: center;
+  background-color: #90caf9;
+  color: #FFF;
+  border-radius: 2em;
+  border: 2px solid;
+  border-color: #439292;
+  height: 60px;
+  width: 200px;
+  cursor: pointer;
+}
+
+.intro > .world-container > .world-img {
+  height: 900px;
+    width: 1000px;
+}
+
+.intro > .world-container > .astro-img {
+  position: absolute;
+  bottom: 10%;
+  right: 20%;
+  height: 400px;
+  width: 400px;
+  z-index: 2;
+  object-fit: cover;
+  animation-name: float-y;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
+
+.intro > .world-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  max-width: 77%;
+}
+
+ @keyframes float-y {
+   50% {
+     transform: translateY(-120px)
+   }
+
+   ;
+ }
+
+ @media (max-width: 768px) {
+   .stack {
+     flex-direction: column;
+   }
+
+   .intro > .world-container {
+    margin-top: 1rem;
+   }
+ }
