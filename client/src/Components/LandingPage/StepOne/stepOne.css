@@ -1,0 +1,103 @@
+.stepOne {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20%;
+  padding-bottom: 2rem;
+}
+
+.stepOne > .header {
+  margin-top: 2%;
+  max-width: 50%;
+  margin-bottom: 5%;
+}
+
+.stepOne > .header > h1 {
+  font-size: 45px;
+  color: #90caf9;
+}
+
+.stepOne > .create-container >  .start-text {
+   max-width: 20%;
+   min-width: 20%;
+ }
+
+.stepOne > .create-container > .start-header {
+  color: #fff;
+}
+
+.stepOne > .create-container > .start-content {
+  color: #c5c6c7;
+}
+
+.stepOne > .create-container > h3 {
+  max-width: 70%;
+  line-height: 30px;
+  margin: 0;
+}
+
+.stepOne > .create-container > .create-img > img {
+height: 500px;
+  width: fit-content;
+  margin-right: 1rem;
+  box-shadow: 0px 51px 95px -49px rgba(255, 255, 255, 0.2);
+  border-radius: 25px;
+}
+
+.stepOne > .create-container {
+  display: flex;
+  align-items: center;
+}
+
+.stepOne > .join-container > .join > .join-img {
+  height: 500px;
+    width: fit-content;
+    box-shadow: 0px 51px 95px -44px rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+}
+
+.stepOne > .join-container > .join-text {
+  max-width: 20%;
+  min-width: 20%;
+  margin-top: 5%;
+  margin-left: 5%;
+}
+
+.stepOne > .join-container > .join-header {
+  color: #fff;
+}
+
+.stepOne > .join-container > .join-content {
+  color: #c5c6c7;
+}
+
+.stepOne > .join-container > h3 {
+    max-width: 70%;
+    line-height: 30px;
+    margin: 0;
+  }
+
+.stepOne > .join-container {
+  display: flex;
+  margin-top: 5%;
+
+}
+
+
+
+@media (max-width: 768px) {
+  .stack {
+    flex-direction: column;
+    margin-left: 0%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .stepOne > .header {
+    max-width: 100%;
+  }
+
+  .stepOne > .create-container > .create-img > .proj-form-img {
+    width: 48rem;
+    height: 48rem;
+  }
+}
