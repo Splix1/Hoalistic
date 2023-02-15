@@ -58,7 +58,6 @@ export default function FutureProjections({
       return;
     }
     const data = await response.json();
-    console.log('data', data);
 
     if (data?.error?.error_code === 'ITEM_LOGIN_REQUIRED') {
       await supabase

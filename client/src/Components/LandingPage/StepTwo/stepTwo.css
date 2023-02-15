@@ -1,0 +1,113 @@
+.stepTwo{
+  display: flex;
+  flex-direction: column;
+  margin-left: 20%;
+  padding-bottom: 2rem;
+}
+
+.stepTwo > .team-header {
+  margin-top: 2%;
+  max-width: 50%;
+  margin-bottom: 5%;
+}
+
+.stepTwo > .team-header > h1 {
+  font-size: 45px;
+  color: #90caf9;
+}
+
+
+
+
+.stepTwo > .team-container > .landing-profile-text {
+  max-width: 20%;
+  min-width: 20%;
+}
+
+.stepTwo > .team-container >  .landing-profile-header {
+   color: #fff;
+ }
+
+.stepTwo > .team-container > .landing-profile-content {
+  color: #c5c6c7;
+}
+
+.stepTwo > .team-container > h3 {
+  max-width: 70%;
+  line-height: 30px;
+  margin: 0;
+}
+
+.stepTwo > .team-container > .landing-profile-img > img {
+  height: 500px;
+    width: fit-content;
+    margin-right: 1rem;
+    box-shadow: 0px 51px 95px -49px rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+}
+
+.stepTwo > .team-container {
+  display: flex;
+  align-items: center;
+}
+
+.stepTwo > .landing-chat-container > .landing-chat-img > img {
+height: 500px;
+  width: fit-content;
+  margin-right: 1rem;
+  box-shadow: 0px 51px 95px -44px rgba(255, 255, 255, 0.2);
+  border-radius: 25px;
+}
+
+.stepTwo > .landing-chat-container > .landing-chat-text {
+  max-width: 20%;
+  min-width: 20%;
+  margin-top: 5%;
+}
+
+.stepTwo > .landing-chat-container > .landing-chat-header {
+  color: #fff;
+}
+
+.stepTwo > .landing-chat-container > .landing-chat-content {
+  color: #c5c6c7;
+}
+
+.stepTwo > .landing-chat-container > h3 {
+  max-width: 70%;
+  line-height: 30px;
+  margin: 0;
+}
+
+.stepTwo > .landing-chat-container {
+  display: flex;
+  margin-top: 5%;
+}
+
+
+@media (max-width: 768px) {
+  .stack {
+    flex-direction: column;
+    margin-left: 0%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .stepTwo {
+    font-size: 2rem;
+  }
+
+  .stepTwo > .team-container > .landing-profile-text > .landing-profile-header,
+  .stepTwo > .team-container > .landing-profile-text > .landing-chat-content {
+    max-width: 100%;
+  }
+
+  .stepTwo > .team-header {
+    max-width: 100%;
+  }
+
+  .stepTwo > .team-container > .landing-profile-img > .proj-form-img {
+    width: 48rem;
+    height: 48rem;
+  }
+}
