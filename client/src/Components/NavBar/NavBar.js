@@ -14,6 +14,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { LightMode, DarkMode } from '@mui/icons-material';
 import { createTheme } from '@mui/material/styles';
 import { setCosts } from '../../Store/Costs';
 import { setFiles } from '../../Store/Files';
@@ -72,7 +73,7 @@ export default function NavBar() {
           <BasicMenu />
 
           <IconButton sx={{ ml: 1 }} onClick={updateTheme}>
-            {state.theme === 'dark' ? <StarIcon /> : <StarBorderIcon />}
+            {state.theme === 'dark' ? <LightMode /> : <DarkMode color="white" />}
           </IconButton>
           <Typography
             variant="h4"
