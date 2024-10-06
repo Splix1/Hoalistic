@@ -9,7 +9,7 @@
     "@mui/material": "5.5.1",
     "@supabase/supabase-js": "1.31.1",
     "@testing-library/jest-dom": "5.16.4",
-    "@testing-library/react": "13.2.0",
+    "@testing-library/react": "12.1.5",
     "@testing-library/user-event": "13.5.0",
     "axios": "0.27.2",
     "classnames": "2.2.6",
