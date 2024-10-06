@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Callout from "plaid-threads/Callout";
-import Button from "plaid-threads/Button";
+import { Button } from "@mui/material";
 import InlineLink from "plaid-threads/InlineLink";
 
 import Link from "../Link";
@@ -17,7 +17,10 @@ const Header = () => {
   return (
     <div className={styles.grid}>   
           {<div>
-              <Link />
+            <Button fullWidth variant="contained" disabled={true} style={{ height: '1.5rem', marginLeft: '0.5rem'}}>
+      Connect Bank
+    </Button>
+              {/* <Link /> */}
             </div>}
       
      

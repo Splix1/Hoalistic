@@ -134,6 +134,7 @@ export default function Deposits({
           <Button
             variant={isBankSelected()}
             onClick={() => setInputType('bank')}
+            disabled={true}
           >
             Bank
           </Button>
